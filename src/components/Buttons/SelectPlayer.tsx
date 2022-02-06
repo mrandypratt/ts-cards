@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { Player } from "../../data/classes/Player";
 
 let buttonStyles = {
   width: "60%",
@@ -15,7 +16,13 @@ let unclickableButtonStyles = {
   backgroundColor: "gray",
 }
 
-export function SelectPlayerButton({ player, disabled, onClick}) {
+type SelectPlayerButtonProps = {
+  player: Player;
+  disabled: boolean;
+  onClick: () => void;
+}
+
+export function SelectPlayerButton({ player, disabled, onClick}: SelectPlayerButtonProps) {
   let clickStyle = disabled ? unclickableButtonStyles : clickableButtonStyles;
 
   return (
