@@ -1,4 +1,3 @@
-import { Card } from "@mui/material";
 import { promptCards } from "../cards/promptCards";
 import { responseCards } from "../cards/responseCards";
 import { RoundProps } from "../types/RoundProps";
@@ -38,7 +37,7 @@ export class Game {
   
   dealCardsToPlayers() {
     this.players.forEach((player) => {
-      while (player.cards.length < 5) {
+      while (player.cards.length < CARDS_PER_PLAYER) {
         player.drawCard(this.responseCards.pop() || new ResponseCard("Error: out of Responses"));
       }
     });
