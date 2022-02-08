@@ -1,16 +1,15 @@
 import { shuffle } from "../functions/shuffle";
-import { Card } from "../classes/Card"
+import { Card } from "./Card"
 
 export class PromptCard extends Card {
-  constructor(text) {
-    super(text)
-    this.type = "prompt";
+  constructor(text: string) {
+    super(text, "prompt")
     PromptCard.allPromptCards.push(this);
   }
 
-  static allPromptCards = [];
+  static allPromptCards: PromptCard[] = [];
 
-  static shufflePromptCards() {
+  static shufflePromptCards(): PromptCard[] {
     return [...shuffle(PromptCard.allPromptCards)];
   }
 }

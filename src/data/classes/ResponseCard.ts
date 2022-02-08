@@ -2,15 +2,14 @@ import { shuffle } from "../functions/shuffle";
 import { Card } from "./Card"
 
 export class ResponseCard extends Card {
-  constructor(text) {
-    super(text)
-    this.type = "response";
+  constructor(text: string) {
+    super(text, "response")
     ResponseCard.allResponseCards.push(this);
   }
 
-  static allResponseCards = [];
+  static allResponseCards: ResponseCard[] = [];
 
-  static shuffleResponseCards() {
+  static shuffleResponseCards(): ResponseCard[] {
     return [...shuffle(ResponseCard.allResponseCards)];
   }
 }
