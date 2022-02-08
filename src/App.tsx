@@ -7,8 +7,9 @@ import { JudgeView } from "./views/JudgeView";
 import { DeclareWinnerView } from "./views/DeclareWinnerView";
 
 import { StatefulGame } from "./data/classes/StatefulGame";
+import { Player } from "./data/classes/Player";
 
-export default function App() {
+export const App = (): JSX.Element => {
   
   const [game, setGame] = useState(new StatefulGame());
 
@@ -30,12 +31,12 @@ export default function App() {
     );
   }
   
-  if (game.getPlayerById(game.view)) {
+  if (typeof game.view === "number") {
     let player = game.getPlayerById(game.view);
 
     return (
       <PlayerView 
-        player={player}
+        player={player || new Player("Error")}
         game={game}
         setGame={setGame} 
       />
@@ -59,4 +60,8 @@ export default function App() {
       />
     )
   }
+
+  return (
+    <div>Error</div>
+  )
 }
