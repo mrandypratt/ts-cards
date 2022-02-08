@@ -10,7 +10,7 @@ type SelectedCardType = {
 export class Round {
   players: Player[];
   judge: Player;
-  promptCard: PromptCard | undefined;
+  promptCard: PromptCard;
   selectedCards: SelectedCardType;
   winningCard: ResponseCard | null;
   winner: Player | null;

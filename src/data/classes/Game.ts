@@ -49,7 +49,7 @@ export class Game {
     const props: RoundProps = {
       players: this.getNonJudgePlayers(),
       judge: this.getJudgePlayer(),
-      promptCard: this.promptCards.pop()
+      promptCard: this.promptCards.pop() || new PromptCard('Oops! Out of Cards.')
     };
     
     this.round = new Round(props);
