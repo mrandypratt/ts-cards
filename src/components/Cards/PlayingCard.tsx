@@ -19,6 +19,7 @@ const styles = {
   response: {
     ...cardStyles,
     backgroundColor: "black",
+    color: "white",
   },
 
   prompt: {
@@ -29,8 +30,8 @@ const styles = {
 
 type PlayingCardProps = {
   type: "prompt" | "response";
-  style: React.CSSProperties | undefined;
-  onClick: () => void;
+  style?: React.CSSProperties | undefined;
+  onClick?: () => void;
   text: string;
 }
 
