@@ -1,6 +1,6 @@
 export const PlayersHandStyle = {
-  "overflow-x": "scroll",
-  "overflow-y": "visible",
+  overflowX: "scroll" as "scroll",
+  overflowY: "visible" as "visible",
   display: "flex",
   flexAlign: "center",
   alignItems: "center",

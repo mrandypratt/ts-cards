@@ -1,5 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import { CSSProperties } from "react"
 
 const cardStyles = {
   height: 200,
@@ -15,22 +16,34 @@ const cardStyles = {
   borderRadius: 8,
 }
 
-const styles = {
-  response: {
-    ...cardStyles,
-    backgroundColor: "black",
-    color: "white",
-  },
+const responseStyles = {
+  ...cardStyles,
+  backgroundColor: "black",
+  color: "white",
+}
 
-  prompt: {
-    ...cardStyles,
-    backgroundColor: "white"
-  },
+const promptStyles = {
+  ...cardStyles,
+  backgroundColor: "white"
+}
+
+const selectedStyles = {
+  ...responseStyles,
+  position: "relative",
+  top: -40,
+  borderColor: "yellow", 
+  borderWidth: 7,
+}
+
+const styles = {
+  response: responseStyles,
+  prompt: promptStyles,
+  selected: selectedStyles
 };
 
 type PlayingCardProps = {
-  type: "prompt" | "response";
-  style?: React.CSSProperties | undefined;
+  type: "prompt" | "response" | "selected";
+  style?: CSSProperties | undefined;
   onClick?: () => void;
   text: string;
 }

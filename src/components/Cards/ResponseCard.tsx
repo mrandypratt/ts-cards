@@ -3,15 +3,6 @@ import { Player } from "../../data/classes/Player";
 import { StatefulGame } from "../../data/classes/StatefulGame";
 import { PlayingCard } from "./PlayingCard";
 
-const unselectedStyles = {};
-
-const selectedStyles = {
-  position: "relative",
-  top: -40,
-  borderColor: "yellow", 
-  borderWidth: 7,
-}
-
 type ResponseCardProps = {
   player: Player;
   card: Card;
@@ -24,9 +15,8 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
   if (game.view === player.id) {
     return (
       <PlayingCard 
-        type="response" 
+        type={ game.round?.isCardSelected(player.name, card) ? "selected" : "response" }  
         text={ card.text } 
-        style={ game.round?.isCardSelected(player.name, card) ? selectedStyles : unselectedStyles } 
         onClick={ () => {
           game.round?.selectCard(player.name, card);
           setGame(game.clone());
@@ -38,13 +28,12 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
   if (game.view === game.VIEWS.judge) {
     return (
       <PlayingCard 
-        type="response" 
+        type={game.round?.isWinningCard(card) ? "selected" : "response"}
         text={ card.text } 
-        style={ card === game.round?.winningCard ? selectedStyles : unselectedStyles } 
         onClick={ () => {
           if (game.round) {
-            game.round.winningCard = card;
-            game.round.winner = player;
+            game.round?.setWinningCard(card);
+            game.round?.setWinner(player);
           }
           setGame(game.clone());
         }}

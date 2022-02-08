@@ -2,16 +2,13 @@ import { RoundProps } from "../types/RoundProps";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
-
-type SelectedCardType = {
-  [player: string]: ResponseCard | null;
-}
-
 export class Round {
   players: Player[];
   judge: Player;
   promptCard: PromptCard;
-  selectedCards: SelectedCardType;
+  selectedCards: {
+    [player: string]: ResponseCard | null
+  };
   winningCard: ResponseCard | null;
   winner: Player | null;
 
@@ -44,7 +41,7 @@ export class Round {
   }
 
   allSelectionsMade(): boolean {
-    return this.players.length === Object.keys(this.selectedCards).length;
+    return this.players.every(player => this.selectedCards[player.name] !== null);
   }
 
   removePlayedCards(): void {
@@ -56,7 +53,19 @@ export class Round {
     })
   }
 
-  isWinner(): boolean {
-    return this.winner !== null;
+  setWinningCard(card: ResponseCard): void {
+    this.winningCard = card;
+  }
+
+  setWinner(player: Player): void {
+    this.winner = player;
+  }
+
+  isWinningCard(card: ResponseCard): boolean {
+    return this.winningCard === card;
+  }
+
+  isWinningCardSelected(): boolean {
+    return this.winningCard !== null;
   }
 }
