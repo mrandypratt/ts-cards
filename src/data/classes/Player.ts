@@ -1,11 +1,11 @@
-import { Card } from "./Card";
+import { ResponseCard } from "./ResponseCard";
 
 let playerIdCounter = 0;
 
 export class Player {
   id: number;
   name: string;
-  cards: Card[];
+  cards: ResponseCard[];
 
   constructor(name: string) {
     this.id = playerIdCounter;
@@ -14,11 +14,11 @@ export class Player {
     this.cards = [];
   }
   
-  drawCard(card: Card): void {
-    this.cards.push(card);
+  drawCard(card: ResponseCard) : number {
+    return this.cards.push(card);
   }
 
-  getCardById(id: number): Card | undefined {
+  getCardById(id: number): ResponseCard | undefined {
     return this.cards.find(card => card.id === id);
   }
 }
