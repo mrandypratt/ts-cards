@@ -5,6 +5,5 @@ export const PlayersHandStyle = {
   flexAlign: "center",
   alignItems: "center",
   justifyContent: "center",
-
   paddingTop: 40
 }
