@@ -7,7 +7,7 @@ type DeclareWinnerViewProps = {
   setGame: (game: StatefulGame) => void;
 }
 
-export function DeclareWinnerView({ game, setGame }: DeclareWinnerViewProps) {
+export const DeclareWinnerView = ({ game, setGame }: DeclareWinnerViewProps): JSX.Element => {
   const round = game.round;
 
   if (round && round.winner && round.winningCard) {
