@@ -37,10 +37,8 @@ export class Game {
   
   dealCardsToPlayers() {
     this.players.forEach((player) => {
-      const newCard = this.responseCards.pop()
-      while (player.cards.length < CARDS_PER_PLAYER && 
-              newCard instanceof ResponseCard) {
-        player.drawCard(newCard);
+      while (player.cards.length < CARDS_PER_PLAYER) {
+        player.drawCard(this.responseCards.pop() || new ResponseCard("Error: out of Responses"));
       }
     });
   }
@@ -49,7 +47,7 @@ export class Game {
     const props: RoundProps = {
       players: this.getNonJudgePlayers(),
       judge: this.getJudgePlayer(),
-      promptCard: this.promptCards.pop()
+      promptCard: this.promptCards.pop() || new PromptCard('Oops! Out of Cards.')
     };
     
     this.round = new Round(props);

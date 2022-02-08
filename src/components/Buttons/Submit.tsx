@@ -25,7 +25,7 @@ const styles = {
 type SubmitButtonProps = {
   text: string;
   type: "submit" | "button";
-  onClick: () => void;
+  onClick?: () => void;
   disabled: boolean;
 }
 

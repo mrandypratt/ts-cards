@@ -1,10 +1,16 @@
 import { PlayerNameTextField } from "../components/Inputs/PlayerNameTextField";
-import SelectNumberOfPlayers from "../components/Inputs/SelectNumberOfPlayers";
+import { SelectNumberOfPlayers } from "../components/Inputs/SelectNumberOfPlayers";
 import { SubmitButton } from "../components/Buttons/Submit";
+import { StatefulGame } from "../data/classes/StatefulGame";
 
-export function EnterPlayersView({ game, setGame }) {
+type EnterPlayersViewProps = {
+  game: StatefulGame;
+  setGame: (game: StatefulGame) => void;
+}
 
-  const handleSubmit = (event) => {
+export const EnterPlayersView = ({ game, setGame }: EnterPlayersViewProps): JSX.Element => {
+
+  const initializeGame = (event: any) => {
     event.preventDefault();
     game.setView(game.VIEWS.selectPlayer);
     game.initializeGame();
@@ -16,14 +22,14 @@ export function EnterPlayersView({ game, setGame }) {
   
       <h1>Enter Players</h1>
   
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={initializeGame}>
   
         <SelectNumberOfPlayers
           game={game}
           setGame={setGame}
         />
   
-        {game.names.map((name, index) => {
+        {game.names.map((name: string, index: number): JSX.Element => {
           return (
             <PlayerNameTextField 
               key={index}
@@ -35,9 +41,9 @@ export function EnterPlayersView({ game, setGame }) {
         })}
   
         <SubmitButton 
-          disabled={!game.arePlayerNamesValid(game.names)}
+          disabled={!game.arePlayerNamesValid()}
           text="Submit Players"
-          type="submit"  
+          type="submit"
         />
   
       </form>
