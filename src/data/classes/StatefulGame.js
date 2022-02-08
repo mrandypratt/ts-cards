@@ -27,8 +27,8 @@ export class StatefulGame extends Game {
   
   arePlayerNamesValid () {
     return this.areAllFieldsFilled() && 
-    this.areAllNamesUnique() &&
-    this.containsValidCharacters();
+      this.areAllNamesUnique() &&
+      this.containsValidCharacters();
   }
 
   areAllFieldsFilled () {

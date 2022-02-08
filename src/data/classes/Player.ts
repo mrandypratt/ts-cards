@@ -14,8 +14,8 @@ export class Player {
     this.cards = [];
   }
   
-  drawCard(card: ResponseCard): void {
-    this.cards.push(card);
+  drawCard(card: ResponseCard) : number {
+    return this.cards.push(card);
   }
 
   getCardById(id: number): ResponseCard | undefined {

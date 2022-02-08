@@ -1,12 +1,7 @@
+import { RoundProps } from "../types/RoundProps";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
-
-type RoundProps = {
-  players: Player[];
-  judge: Player;
-  promptCard: PromptCard;
-}
 
 type SelectedCardType = {
   [player: string]: ResponseCard | null;
@@ -15,17 +10,14 @@ type SelectedCardType = {
 export class Round {
   players: Player[];
   judge: Player;
-  promptCard: PromptCard;
+  promptCard: PromptCard | undefined;
   selectedCards: SelectedCardType;
   winningCard: ResponseCard | null;
   winner: Player | null;
 
   constructor({ players, judge, promptCard }: RoundProps) {
-    // this.players = game.getNonJudgePlayers();
     this.players = players;
-    // this.judge = game.getJudgePlayer();
     this.judge = judge;
-    // this.promptCard = game.promptCards.pop();
     this.promptCard = promptCard;
     this.selectedCards = {};
     players.forEach(player => {
