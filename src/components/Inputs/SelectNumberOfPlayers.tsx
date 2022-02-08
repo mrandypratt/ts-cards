@@ -1,11 +1,17 @@
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import { StatefulGame } from '../../data/classes/StatefulGame';
 
 const numberOfPlayerOptions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export default function SelectNumberOfPlayers({ game, setGame }) {
+type SelectNumberOfPlayersProps = {
+  game: StatefulGame;
+  setGame: (game: StatefulGame) => void;
+}
+
+export const SelectNumberOfPlayers = ({ game, setGame }: SelectNumberOfPlayersProps) => {
   
-  const updateNumberOfPlayers = (event) => {
+  const updateNumberOfPlayers = (event: any) => {
     let originalLength = game.names.length;
     let newLength = event.target.value;
     game.names.length = newLength;

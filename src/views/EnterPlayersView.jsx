@@ -1,4 +1,4 @@
-import PlayerNameTextField from "../components/Inputs/PlayerNameTextField";
+import { PlayerNameTextField } from "../components/Inputs/PlayerNameTextField";
 import SelectNumberOfPlayers from "../components/Inputs/SelectNumberOfPlayers";
 import { SubmitButton } from "../components/Buttons/Submit";
 

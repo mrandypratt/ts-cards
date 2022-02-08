@@ -1,4 +1,3 @@
-import { getMaxListeners } from "process";
 import { Card } from "../../data/classes/Card";
 import { Player } from "../../data/classes/Player";
 import { StatefulGame } from "../../data/classes/StatefulGame";
