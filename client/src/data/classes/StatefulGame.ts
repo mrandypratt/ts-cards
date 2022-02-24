@@ -1,24 +1,18 @@
 import { arePlayerNamesValid } from "../functions/arePlayerNamesValid";
-import { ViewsType, ViewType } from "../types/ViewType";
+import { ViewsType, VIEWS, ViewType } from "../types/VIEWS";
 
 import { Game } from "./Game"
 
 export class StatefulGame extends Game {
   names: string[];
-  VIEWS: ViewsType;
   view: ViewType;
+  VIEWS: ViewsType;
 
   constructor() {
     super();
-    this.names = ["", "", ""];
-    this.VIEWS = {
-      enterPlayers: "enter-players",
-      selectPlayer: "player-select",
-      judge: "judge-view",
-      declareWinner: "declare-winner",
-      currentPlayer: null,
-    }
-    this.view = this.VIEWS.enterPlayers;
+    this.names = [];
+    this.view = "home";
+    this.VIEWS = VIEWS;
   }
   
   clone() {

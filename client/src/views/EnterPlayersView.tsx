@@ -12,7 +12,7 @@ export const EnterPlayersView = ({ game, setGame }: EnterPlayersViewProps): JSX.
 
   const initializeGame = (event: any) => {
     event.preventDefault();
-    game.setView(game.VIEWS.selectPlayer);
+    // game.setView(game.VIEWS.selectPlayer);
     game.initializeGame();
     setGame(game.clone());
   }

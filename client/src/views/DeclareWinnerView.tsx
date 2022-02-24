@@ -1,5 +1,6 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { ResponseCard } from "../components/Cards/ResponseCard";
+import { Round } from "../data/classes/Round";
 import { StatefulGame } from "../data/classes/StatefulGame";
 
 type DeclareWinnerViewProps = {
@@ -9,6 +10,13 @@ type DeclareWinnerViewProps = {
 
 export const DeclareWinnerView = ({ game, setGame }: DeclareWinnerViewProps): JSX.Element => {
   const round = game.round;
+
+  const resetGame = (round: Round, game: StatefulGame) => {
+    round.removePlayedCards();
+    game.createNewRound();
+    // game.setView(game.VIEWS.selectPlayer);
+    setGame(game.clone())
+  }
 
   if (round && round.winner && round.winningCard) {
     return (
@@ -24,12 +32,7 @@ export const DeclareWinnerView = ({ game, setGame }: DeclareWinnerViewProps): JS
         />
   
         <SubmitButton
-          onClick={() => {
-            round.removePlayedCards();
-            game.createNewRound();
-            game.setView(game.VIEWS.selectPlayer);
-            setGame(game.clone())
-          }}
+          onClick={() => resetGame(round, game)}
           type="button"
           text="Play Again"
           disabled={false}

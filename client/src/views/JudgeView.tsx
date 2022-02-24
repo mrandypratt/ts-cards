@@ -38,7 +38,7 @@ export const JudgeView = ({ game, setGame }: EnterPlayersViewProps): JSX.Element
       <SubmitButton
         disabled={!round.isWinningCardSelected()}
         onClick={() => {
-          game.setView(game.VIEWS.declareWinner);
+          // game.setView(game.VIEWS.declareWinner);
           setGame(game.clone());
         }}
         text="Submit Card"

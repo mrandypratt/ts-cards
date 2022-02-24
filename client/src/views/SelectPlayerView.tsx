@@ -39,7 +39,7 @@ export const SelectPlayerView = ({ game, setGame }: SelectPlayerViewProps): JSX.
         {round.allSelectionsMade() &&
           <SubmitButton
             onClick={() => {
-              game.setView(game.VIEWS.judge);
+              // game.setView(game.VIEWS.judge);
               setGame(game.clone());
             }}
             type="button"

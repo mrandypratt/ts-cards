@@ -1,30 +1,38 @@
 import { useState } from "react";
 
-import { EnterPlayersView } from "./views/EnterPlayersView"
-import { SelectPlayerView } from "./views/SelectPlayerView"
-import { PlayerView } from "./views/PlayerView";
-import { JudgeView } from "./views/JudgeView";
-import { DeclareWinnerView } from "./views/DeclareWinnerView";
-
 import { StatefulGame } from "./data/classes/StatefulGame";
 import { Player } from "./data/classes/Player";
 
+import { Home } from "./views/Home";
+import { GettingStarted } from "./views/info/GettingStarted";
+import { CreateLobby } from "./views/host/CreateLobby";
+import { PlayerView } from "./views/PlayerView";
+
 export const App = (): JSX.Element => {
   
-  const [game, setGame] = useState(new StatefulGame());
+  const [game, setGame] = useState(new StatefulGame());  
 
-  if (game.view === game.VIEWS.enterPlayers) {
-    return (
-      <EnterPlayersView 
+  if (game.view === game.VIEWS.home) {
+    return(
+      <Home
         game={game}
-        setGame={setGame} 
+        setGame={setGame}
+      />
+    )
+  }
+  
+  if (game.view === game.VIEWS.gettingStarted) {
+    return(
+      <GettingStarted
+        game={game}
+        setGame={setGame}
       />
     )
   }
 
-  if (game.view === game.VIEWS.selectPlayer) {
+  if (game.view === game.VIEWS.hostCreateLobby) {
     return (
-      <SelectPlayerView
+      <CreateLobby
         game={game}
         setGame={setGame} 
       />
@@ -41,24 +49,6 @@ export const App = (): JSX.Element => {
         setGame={setGame} 
       />
     );
-  }
-
-  if (game.view === game.VIEWS.judge) {
-    return (
-      <JudgeView
-        game={game}
-        setGame={setGame} 
-      />
-    );
-  }
-
-  if (game.view === game.VIEWS.declareWinner) {
-    return (
-      <DeclareWinnerView
-        game={game}
-        setGame={setGame} 
-      />
-    )
   }
 
   return (

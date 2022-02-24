@@ -25,30 +25,30 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
     );
   }
   
-  if (game.view === game.VIEWS.judge) {
-    return (
-      <PlayingCard 
-        type={game.round?.isWinningCard(card) ? "selected" : "response"}
-        text={ card.text } 
-        onClick={ () => {
-          if (game.round) {
-            game.round?.setWinningCard(card);
-            game.round?.setWinner(player);
-          }
-          setGame(game.clone());
-        }}
-      />
-    );
-  }
+  // if (game.view === game.VIEWS.judge) {
+  //   return (
+  //     <PlayingCard 
+  //       type={game.round?.isWinningCard(card) ? "selected" : "response"}
+  //       text={ card.text } 
+  //       onClick={ () => {
+  //         if (game.round) {
+  //           game.round?.setWinningCard(card);
+  //           game.round?.setWinner(player);
+  //         }
+  //         setGame(game.clone());
+  //       }}
+  //     />
+  //   );
+  // }
   
-  if (game.view === game.VIEWS.declareWinner) {
-    return (
-      <PlayingCard 
-        type="response" 
-        text={ card.text }
-      />
-    );
-  }
+  // if (game.view === game.VIEWS.declareWinner) {
+  //   return (
+  //     <PlayingCard 
+  //       type="response" 
+  //       text={ card.text }
+  //     />
+  //   );
+  // }
 
   return (
     <div>Error :)</div>

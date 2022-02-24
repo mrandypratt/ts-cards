@@ -39,7 +39,7 @@ export const PlayerView = ({ player, game, setGame }: PlayerViewProps): JSX.Elem
   
         <SubmitButton
           onClick={() => {
-            game.setView(game.VIEWS.selectPlayer)
+            // game.setView(game.VIEWS.selectPlayer)
             setGame(game.clone());
           }}
           disabled={!round.hasPlayerSelected(player.name)}
