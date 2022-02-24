@@ -6,6 +6,7 @@ export const Home = ({ game, setGame }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
     game.setView(game.VIEWS.hostCreateLobby);
+    game.addPlayer();
     setGame(game.clone());
   }
   

@@ -17,7 +17,6 @@ export class StatefulGame extends Game {
   
   clone() {
     return Object.assign(new StatefulGame(), this)
-    // return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
   }
 
   setView(view: ViewType): void {

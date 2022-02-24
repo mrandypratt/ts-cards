@@ -8,20 +8,25 @@ export const CreateLobby = ({game, setGame}: ViewPropsType): JSX.Element => {
   return (
     <div style={{ textAlign: "center" }}>
 
+    <h1><b>New Game</b></h1>
+
+    <hr></hr>
+
       <p>{MESSAGES.host.createLobby}</p>
 
       <Box>
         <TextField 
           id="standard-basic"
           label="Player Name"
-          variant="standard"
+          variant="outlined"
+          helperText="Enter your name here."
         />
       </Box>
 
       <SubmitButton
         text={"Create Lobby"}
         type={"submit"}
-        disabled={false} 
+        disabled={true} 
       />
 
     </div>

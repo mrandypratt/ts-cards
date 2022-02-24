@@ -28,6 +28,10 @@ export class Game {
     this.dealCardsToPlayers();
     this.createNewRound();
   }
+
+  addPlayer() {
+    return this.players.push(new Player(""));
+  }
   
   createPlayers(names: string[]): void {
     names.forEach(name => {
