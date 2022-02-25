@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { io } from "socket.io-client";
 
 import { StatefulGame } from "./data/classes/StatefulGame";
 import { Player } from "./data/classes/Player";
@@ -7,6 +8,10 @@ import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
 import { CreateLobby } from "./views/host/CreateLobby";
 import { PlayerView } from "./views/PlayerView";
+
+const socket = io("http://localhost:4000", {
+  transports: ["websocket"],
+});
 
 export const App = (): JSX.Element => {
   
