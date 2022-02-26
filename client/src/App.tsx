@@ -22,6 +22,7 @@ export const App = (): JSX.Element => {
       <Home
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     )
   }
