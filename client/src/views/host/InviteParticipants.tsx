@@ -1,15 +1,19 @@
 import { SubmitButton } from "../../components/Buttons/Submit";
-import { Player } from "../../data/classes/Player";
+import { StatefulGame } from "../../data/classes/StatefulGame";
 import { MESSAGES } from "../../data/constants/messages";
+import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-const participants = [new Player("Andy"), new Player("Sam"), new Player("Coburn")];
-
-export const InviteParticipants = ({game, setGame}: ViewPropsType): JSX.Element => {
+export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
   const startGame = () => {
     game.setView(game.VIEWS.home);
     setGame(game.clone());
   }
+
+  socket?.on(EVENTS.joinRoom, (game: string) => {
+    setGame(Object.assign(new StatefulGame(), JSON.parse(game)));
+    console.log("Game State Updated");
+  })
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -22,7 +26,7 @@ export const InviteParticipants = ({game, setGame}: ViewPropsType): JSX.Element 
     
     <div style={{border: "2px", borderStyle: "solid"}}>
 
-      <h3><b>CODE</b></h3>
+      <h3><b>{game.lobbyId}</b></h3>
 
     </div>
 
@@ -30,7 +34,7 @@ export const InviteParticipants = ({game, setGame}: ViewPropsType): JSX.Element 
 
     <h3><b><u>Participants:</u></b></h3>
 
-    {participants.map(participant => {
+    {game.players.map(participant => {
       return (
         <p key={participant.name}>{participant.name}</p>
       )

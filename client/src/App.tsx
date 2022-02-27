@@ -25,7 +25,6 @@ export const App = (): JSX.Element => {
       <Home
         game={game}
         setGame={setGame}
-        socket={socket}
       />
     )
   }
@@ -35,6 +34,7 @@ export const App = (): JSX.Element => {
       <GettingStarted
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     )
   }
@@ -43,7 +43,8 @@ export const App = (): JSX.Element => {
     return (
       <CreateLobby
         game={game}
-        setGame={setGame} 
+        setGame={setGame}
+        socket={socket}
       />
     );
   }
@@ -53,6 +54,7 @@ export const App = (): JSX.Element => {
       <InviteParticipants
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     );
   }
@@ -62,6 +64,7 @@ export const App = (): JSX.Element => {
       <JoinLobby
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     );
   }
@@ -71,6 +74,7 @@ export const App = (): JSX.Element => {
       <WaitingForHost
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     );
   }

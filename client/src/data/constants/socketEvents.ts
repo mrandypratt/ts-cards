@@ -1,3 +1,4 @@
 export const EVENTS = {
-  newGame: "new-game",
+  joinRoom: "join-room",
+  updateGameState: "update-game-state",
 }

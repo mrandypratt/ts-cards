@@ -3,10 +3,11 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
+import { EVENTS } from "../../data/constants/socketEvents";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-export const CreateLobby = ({game, setGame}: ViewPropsType): JSX.Element => {
+export const CreateLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
 
   const updateName = (event: any) => {
@@ -14,16 +15,19 @@ export const CreateLobby = ({game, setGame}: ViewPropsType): JSX.Element => {
   }
 
   const startLobby = () => {
+    game.generateLobbyId();
+    game.addPlayer(name, socket?.id)
     game.setView(game.VIEWS.host.inviteParticipants);
+    socket?.emit(EVENTS.joinRoom, game.lobbyId);
     setGame(game.clone());
   }
 
   return (
     <div style={{ textAlign: "center" }}>
 
-    <h1><b>New Game</b></h1>
+      <h1><b>Create Lobby</b></h1>
 
-    <hr></hr>
+      <hr></hr>
 
       <p>{MESSAGES.host.createLobby}</p>
 

@@ -29,8 +29,8 @@ export class Game {
     this.createNewRound();
   }
 
-  addPlayer() {
-    return this.players.push(new Player(""));
+  addPlayer(name: string, socketId: string | undefined) {
+    return this.players.push(new Player(name, socketId));
   }
   
   createPlayers(names: string[]): void {

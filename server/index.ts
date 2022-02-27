@@ -1,11 +1,13 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { StatefulGame } from "../client/src/data/classes/StatefulGame"
 
 const httpServer = createServer();
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, {});
 
 const EVENTS = {
-  newGame: "new-game",
+  joinRoom: "join-room",
+  updateGameState: "update-game-state",
 }
 
 io.on("connection", (socket) => {
@@ -14,8 +16,13 @@ io.on("connection", (socket) => {
     console.log(`Client ${socket.id} connected`);
   });
 
-  socket.on(EVENTS.newGame, (socket) => {
-    console.log(`Event from Back end socket ${JSON.stringify(socket)}`)
+  socket.on(EVENTS.joinRoom, (room: string) => {
+    socket.join(room);
+    console.log(`Client ${socket.id} joined Room ${room}`)
+  })
+
+  socket.on(EVENTS.updateGameState, (game: StatefulGame) => {
+    socket.to(game.lobbyId).emit(JSON.stringify(game));
   })
 
   socket.on("disconnect", () => {

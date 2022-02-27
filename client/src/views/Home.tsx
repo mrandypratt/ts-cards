@@ -2,7 +2,7 @@ import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
 
-export const Home = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const Home = ({ game, setGame }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
     game.setView(game.VIEWS.host.createLobby);

@@ -1,11 +1,8 @@
 import { SubmitButton } from "../../components/Buttons/Submit";
-import { Player } from "../../data/classes/Player";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-const participants = [new Player("Andy"), new Player("Sam"), new Player("Coburn")];
-
-export const WaitingForHost = ({game, setGame}: ViewPropsType): JSX.Element => {
+export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
 
   const returnHome = () => {
     game.setView(game.VIEWS.home);
@@ -19,9 +16,11 @@ export const WaitingForHost = ({game, setGame}: ViewPropsType): JSX.Element => {
 
       <hr></hr>
 
+      <h2>Lobby {game.lobbyId}</h2>
+
       <h3><b><u>Participants:</u></b></h3>
 
-      {participants.map(participant => {
+      {game.players.map(participant => {
         return (
           <p key={participant.name}>{participant.name}</p>
         )
