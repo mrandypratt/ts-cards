@@ -1,18 +1,16 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
-import { EVENTS } from "../data/constants/socketEvents"
 
 export const Home = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
-    game.setView(game.VIEWS.hostCreateLobby);
-    socket?.emit(EVENTS.newGame, socket.id);
+    game.setView(game.VIEWS.host.createLobby);
     setGame(game.clone());
   }
   
   const joinLobby = () => {
-    game.setView(game.VIEWS.guestJoinLobby);
+    game.setView(game.VIEWS.guest.joinLobby);
     setGame(game.clone());
   }
   

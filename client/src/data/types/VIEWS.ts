@@ -1,32 +1,52 @@
 export type ViewsType = {
   home: string,
   gettingStarted: string,
-  hostCreateLobby: string,
-  hostInviteParticipants: string,
-  guestJoinLobby: string,
-  guestWaitingForHost: string,
-  playerTurn: string,
-  playerSelectionMade: string,
-  judgeWaitingForSelections: string,
-  judgeTurn: string,
-  roundResults: string,
-  gameResults: string,
+  host: {
+    createLobby: string,
+    inviteParticipants: string,
+  },
+  guest: {
+    joinLobby: string,
+    waitingForHost: string,
+  },
+  player: {
+    turn: string,
+    selectionMade: string,
+  },
+  judge: {
+    waitingforSelections: string,
+    turn: string
+  },
+  results: {
+    round: string,
+    game: string
+  },
   currentPlayer: number | null,
 }
 
 export const VIEWS = {
   home: "home",
   gettingStarted: "gettngStarted",
-  hostCreateLobby: "hostCreateLobby",
-  hostInviteParticipants: "hostInviteParticipants",
-  guestJoinLobby: "guestJoinLobby",
-  guestWaitingForHost: "guestWaitingForHost",
-  playerTurn: "playerTurn",
-  playerSelectionMade: "playerSelectionMade",
-  judgeWaitingForSelections: "judgeWaitingForSelections",
-  judgeTurn: "judgeTurn",
-  roundResults: "roundResults",
-  gameResults: "gameResults",
+  host: {
+    createLobby: "hostCreateLobby",
+    inviteParticipants: "hostInviteParticipants"
+  },
+  guest: {
+    joinLobby: "guestJoinLobby",
+    waitingForHost: "guestWaitingForHost",
+  },
+  player: {
+    turn: "playerTurn",
+    selectionMade: "playerSelectionMade",
+  },
+  judge: {
+    waitingforSelections: "judgeWaitingForSelections",
+    turn: "judgeTurn",
+  },
+  results: {
+    round: "roundResults",
+    game: "gameResults"
+  },
   currentPlayer: null,
 }
 

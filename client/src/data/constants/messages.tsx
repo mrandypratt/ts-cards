@@ -25,7 +25,7 @@ export const MESSAGES = {
 
     waitingForHost: {
       success: "Success, you joined the lobby!",
-      pleaseWait: "Please wait...The game will begin as soon as the host confirms that all participants have joined."
+      pleaseWait: "The game will begin as soon as the host confirms that all participants have joined."
     }
   },
 

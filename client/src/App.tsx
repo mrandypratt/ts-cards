@@ -8,6 +8,9 @@ import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
 import { CreateLobby } from "./views/host/CreateLobby";
 import { PlayerView } from "./views/PlayerView";
+import { InviteParticipants } from "./views/host/InviteParticipants";
+import { JoinLobby } from "./views/guest/JoinLobby";
+import { WaitingForHost } from "./views/guest/WaitingForHost";
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -36,11 +39,38 @@ export const App = (): JSX.Element => {
     )
   }
 
-  if (game.view === game.VIEWS.hostCreateLobby) {
+  if (game.view === game.VIEWS.host.createLobby) {
     return (
       <CreateLobby
         game={game}
         setGame={setGame} 
+      />
+    );
+  }
+
+  if (game.view === game.VIEWS.host.inviteParticipants) {
+    return (
+      <InviteParticipants
+        game={game}
+        setGame={setGame}
+      />
+    );
+  }
+  
+  if (game.view === game.VIEWS.guest.joinLobby) {
+    return (
+      <JoinLobby
+        game={game}
+        setGame={setGame}
+      />
+    );
+  }
+
+  if (game.view === game.VIEWS.guest.waitingForHost) {
+    return (
+      <WaitingForHost
+        game={game}
+        setGame={setGame}
       />
     );
   }

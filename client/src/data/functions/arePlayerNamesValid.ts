@@ -6,7 +6,7 @@ const areAllNamesUnique = (names: string[]): boolean => {
   return !names.some((name, index) => names.indexOf(name) !== index)
 }
 
-const containsValidCharacters = (names: string[]): boolean => {
+export const containsValidCharacters = (names: string[]): boolean => {
   return names.every(name => name.match(/\S/));
 }
 

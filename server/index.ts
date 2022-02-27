@@ -14,8 +14,8 @@ io.on("connection", (socket) => {
     console.log(`Client ${socket.id} connected`);
   });
 
-  socket.on(EVENTS.newGame, (socketID) => {
-    console.log(`Event from Back end socket ${socketID}`)
+  socket.on(EVENTS.newGame, (socket) => {
+    console.log(`Event from Back end socket ${JSON.stringify(socket)}`)
   })
 
   socket.on("disconnect", () => {
