@@ -1,17 +1,17 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { ResponseCard } from "../components/Cards/ResponseCard";
 import { Round } from "../data/classes/Round";
-import { StatefulGame } from "../data/classes/StatefulGame";
+import { Game } from "../data/classes/Game";
 
 type DeclareWinnerViewProps = {
-  game: StatefulGame;
-  setGame: (game: StatefulGame) => void;
+  game: Game;
+  setGame: (game: Game) => void;
 }
 
 export const DeclareWinnerView = ({ game, setGame }: DeclareWinnerViewProps): JSX.Element => {
   const round = game.round;
 
-  const resetGame = (round: Round, game: StatefulGame) => {
+  const resetGame = (round: Round, game: Game) => {
     round.removePlayedCards();
     game.createNewRound();
     // game.setView(game.VIEWS.selectPlayer);

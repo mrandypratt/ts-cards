@@ -3,12 +3,12 @@ import { PromptCard } from "../components/Cards/PromptCard";
 import { ResponseCard } from "../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../components/Containers/PlayersHand";
 import { Player } from "../data/classes/Player";
-import { StatefulGame } from "../data/classes/StatefulGame";
+import { Game } from "../data/classes/Game";
 
 type PlayerViewProps = {
   player: Player;
-  game: StatefulGame;
-  setGame: (game: StatefulGame) => void;
+  game: Game;
+  setGame: (game: Game) => void;
 }
 
 export const PlayerView = ({ player, game, setGame }: PlayerViewProps): JSX.Element => {

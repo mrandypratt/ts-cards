@@ -1,18 +1,18 @@
 import { Card } from "../../data/classes/Card";
 import { Player } from "../../data/classes/Player";
-import { StatefulGame } from "../../data/classes/StatefulGame";
+import { Game } from "../../data/classes/Game";
 import { PlayingCard } from "./PlayingCard";
 
 type ResponseCardProps = {
   player: Player;
   card: Card;
-  game: StatefulGame;
-  setGame: (game: StatefulGame) => void;
+  game: Game;
+  setGame: (game: Game) => void;
 }
 
 export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps): JSX.Element => {
 
-  if (game.view === player.id) {
+  if (game.currentPlayerView(player.socketId) === player.socketId) {
     return (
       <PlayingCard 
         type={ game.round?.isCardSelected(player.name, card) ? "selected" : "response" }  

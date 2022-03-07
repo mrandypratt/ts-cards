@@ -6,6 +6,7 @@ import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { VIEWS } from "../../data/types/VIEWS";
 
 export const JoinLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
   const [ room, setRoom ] = useState("");
@@ -20,10 +21,11 @@ export const JoinLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element =
   }
   
   const joinLobby = () => {
-    game.addPlayer(name, socket?.id)
+    game.setName(socket?.id, name);
     socket?.emit(EVENTS.joinRoom, room);
-    game.setView(game.VIEWS.guest.waitingForHost);
+    game.setView(socket?.id, VIEWS.guest.waitingForHost);
     socket?.emit(EVENTS.updateGameState, game);
+    game.lobbyId = room;
     setGame(game.clone());
   }
 

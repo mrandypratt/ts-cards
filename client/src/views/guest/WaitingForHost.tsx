@@ -1,11 +1,12 @@
 import { SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { VIEWS } from "../../data/types/VIEWS";
 
 export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
 
   const returnHome = () => {
-    game.setView(game.VIEWS.home);
+    game.setView(socket?.id, VIEWS.home);
     setGame(game.clone());
   }
 

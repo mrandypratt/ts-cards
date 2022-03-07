@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { io } from "socket.io-client";
 
-import { StatefulGame } from "./data/classes/StatefulGame";
-import { Player } from "./data/classes/Player";
+import { Game } from "./data/classes/Game";
+import { VIEWS } from "./data/types/VIEWS";
 
 import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
 import { CreateLobby } from "./views/host/CreateLobby";
-import { PlayerView } from "./views/PlayerView";
 import { InviteParticipants } from "./views/host/InviteParticipants";
 import { JoinLobby } from "./views/guest/JoinLobby";
 import { WaitingForHost } from "./views/guest/WaitingForHost";
@@ -18,18 +17,24 @@ const socket = io("http://localhost:4000", {
 
 export const App = (): JSX.Element => {
   
-  const [game, setGame] = useState(new StatefulGame());  
+  const [game, setGame] = useState(new Game()); 
+  
+  socket.on("connect", () => {
+    game.addPlayer(socket?.id);
+    setGame(game.clone())
+  })
 
-  if (game.view === game.VIEWS.home) {
+  if (game.currentPlayerView(socket.id) === VIEWS.home) {
     return(
       <Home
         game={game}
         setGame={setGame}
+        socket={socket}
       />
     )
   }
   
-  if (game.view === game.VIEWS.gettingStarted) {
+  if (game.currentPlayerView(socket.id) === VIEWS.gettingStarted) {
     return(
       <GettingStarted
         game={game}
@@ -39,7 +44,7 @@ export const App = (): JSX.Element => {
     )
   }
 
-  if (game.view === game.VIEWS.host.createLobby) {
+  if (game.currentPlayerView(socket.id) === VIEWS.host.createLobby) {
     return (
       <CreateLobby
         game={game}
@@ -49,7 +54,7 @@ export const App = (): JSX.Element => {
     );
   }
 
-  if (game.view === game.VIEWS.host.inviteParticipants) {
+  if (game.currentPlayerView(socket.id) === VIEWS.host.inviteParticipants) {
     return (
       <InviteParticipants
         game={game}
@@ -59,7 +64,7 @@ export const App = (): JSX.Element => {
     );
   }
   
-  if (game.view === game.VIEWS.guest.joinLobby) {
+  if (game.currentPlayerView(socket.id) === VIEWS.guest.joinLobby) {
     return (
       <JoinLobby
         game={game}
@@ -69,24 +74,12 @@ export const App = (): JSX.Element => {
     );
   }
 
-  if (game.view === game.VIEWS.guest.waitingForHost) {
+  if (game.currentPlayerView(socket.id) === VIEWS.guest.waitingForHost) {
     return (
       <WaitingForHost
         game={game}
         setGame={setGame}
         socket={socket}
-      />
-    );
-  }
-  
-  if (typeof game.view === "number") {
-    let player = game.getPlayerById(game.view);
-
-    return (
-      <PlayerView 
-        player={player || new Player("Error")}
-        game={game}
-        setGame={setGame} 
       />
     );
   }

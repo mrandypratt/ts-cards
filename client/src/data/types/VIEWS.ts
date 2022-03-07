@@ -21,7 +21,6 @@ export type ViewsType = {
     round: string,
     game: string
   },
-  currentPlayer: number | null,
 }
 
 export const VIEWS = {
@@ -47,8 +46,4 @@ export const VIEWS = {
     round: "roundResults",
     game: "gameResults"
   },
-  currentPlayer: null,
 }
-
-
-export type ViewType = string | number;

@@ -2,12 +2,12 @@ import { SubmitButton } from "../components/Buttons/Submit";
 import { PromptCard } from "../components/Cards/PromptCard";
 import { ResponseCard } from "../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../components/Containers/PlayersHand";
-import { StatefulGame } from "../data/classes/StatefulGame";
+import { Game } from "../data/classes/Game";
 import { ResponseCard as ResponseCardClass } from "../data/classes/ResponseCard"
 
 type EnterPlayersViewProps = {
-  game: StatefulGame;
-  setGame: (game: StatefulGame) => void;
+  game: Game;
+  setGame: (game: Game) => void;
 }
 
 export const JudgeView = ({ game, setGame }: EnterPlayersViewProps): JSX.Element => {

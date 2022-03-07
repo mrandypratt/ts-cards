@@ -5,6 +5,7 @@ import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
 import { Round } from "./Round";
+import ShortUniqueID from "short-unique-id";
 
 const CARDS_PER_PLAYER = 3;
 
@@ -14,6 +15,8 @@ export class Game {
   players: Player[];
   promptCards: PromptCard[];
   responseCards: ResponseCard[];
+  lobbyIdGenerator: ShortUniqueID;
+  lobbyId: string | string[];
 
   constructor() {
     this.round = null;
@@ -21,22 +24,32 @@ export class Game {
     this.players = [];
     this.promptCards = [...promptCards];
     this.responseCards = [...responseCards];
+    this.lobbyIdGenerator = new ShortUniqueID({length: 8});
+    this.lobbyId = "";
+  }
+
+  clone() {
+    return Object.assign(new Game(), this)
+  }
+
+  generateLobbyId() {
+    this.lobbyId = this.lobbyIdGenerator();
   }
   
   initializeGame(names: string[]): void {
-    this.createPlayers(names);
     this.dealCardsToPlayers();
     this.createNewRound();
   }
 
-  addPlayer(name: string, socketId: string | undefined) {
-    return this.players.push(new Player(name, socketId));
+  addPlayer(socketId: string | undefined) {
+    return this.players.push(new Player(socketId));
   }
-  
-  createPlayers(names: string[]): void {
-    names.forEach(name => {
-      this.players.push(new Player(name));
-    });
+
+  setName(socketId: string | undefined, name: string): void {
+    let player = this.getPlayer(socketId);
+    if (player) {
+      player.name = name;
+    };
   }
   
   dealCardsToPlayers() {
@@ -58,9 +71,17 @@ export class Game {
     this.rounds.push(this.round);
   }
 
- 
-  getPlayerById(id: number): Player | undefined {
-    return this.players.find(player => player.id === id);
+  getPlayer(socketId: string | undefined): Player | undefined {
+    return this.players.find(player => player.socketId === socketId);
+  }
+
+  currentPlayerView(socketId: string | undefined): string | undefined {
+    return this.getPlayer(socketId)?.view;
+  }
+
+  setView(socketId: string | undefined, view: string): void {
+    let player = this.players.find(player => player.socketId === socketId)
+    player?.setView(view);
   }
 
   getJudgePlayer(): Player {

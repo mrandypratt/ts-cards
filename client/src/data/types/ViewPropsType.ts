@@ -1,8 +1,8 @@
 import { Socket } from "socket.io-client";
-import { StatefulGame } from "../classes/StatefulGame";
+import { Game } from "../classes/Game";
 
 export type ViewPropsType = {
-  game: StatefulGame;
-  setGame: (game: StatefulGame) => void;
+  game: Game;
+  setGame: (game: Game) => void;
   socket?: Socket;
 }

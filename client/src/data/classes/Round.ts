@@ -2,12 +2,13 @@ import { RoundProps } from "../types/RoundProps";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
+
 export class Round {
   players: Player[];
   judge: Player;
   promptCard: PromptCard;
   selectedCards: {
-    [player: string]: ResponseCard | null
+    [playerSocketId: string]: ResponseCard | null
   };
   winningCard: ResponseCard | null;
   winner: Player | null;
@@ -18,35 +19,51 @@ export class Round {
     this.promptCard = promptCard;
     this.selectedCards = {};
     players.forEach(player => {
-      this.selectedCards[player.name] = null;
+      if (player.socketId) {
+        this.selectedCards[player.socketId] = null;
+      }
     });
     this.winningCard = null;
     this.winner = null;
   }
 
-  selectCard(name: string, card: ResponseCard): void {
-    this.selectedCards[name] = card;
+  selectCard(socketId: string | undefined, card: ResponseCard): void {
+    if (socketId) {
+      this.selectedCards[socketId] = card;
+    }
   }
 
-  hasPlayerSelected(name: string) {
-    return !!this.selectedCards[name];
+  hasPlayerSelected(socketId: string | undefined): boolean {
+    if (socketId) {
+      return !!this.selectedCards[socketId];
+    } else {
+      return false;
+    }
   }
 
-  getSelection(name: string): ResponseCard | null {
-    return this.selectedCards[name];
+  getSelection(socketId: string | undefined): ResponseCard | null {
+    if (socketId) {
+      return this.selectedCards[socketId];
+    } else {
+      return null
+    }
   }
 
-  isCardSelected(name: string, card: ResponseCard): boolean {
-    return this.selectedCards[name] === card;
+  isCardSelected(socketId: string | undefined, card: ResponseCard): boolean {
+    if (socketId) {
+      return this.selectedCards[socketId] === card;
+    } else {
+      return false;
+    }
   }
 
   allSelectionsMade(): boolean {
-    return this.players.every(player => this.selectedCards[player.name] !== null);
+    return this.players.every(player => player.socketId && (this.selectedCards[player.socketId] !== null));
   }
 
   removePlayedCards(): void {
     this.players.forEach(player => {
-      const card = this.getSelection(player.name);
+      const card = this.getSelection(player.socketId);
       if (card !== null) {
         player.cards.splice(player.cards.indexOf(card), 1);
       }
