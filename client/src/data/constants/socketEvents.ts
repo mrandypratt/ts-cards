@@ -1,4 +1,7 @@
 export const EVENTS = {
+  createGame: "create-game",
   joinRoom: "join-room",
-  updateGameState: "update-game-state",
+  roomDoesNotExist: "room-does-not-exist",
+  updateServer: "update-server",
+  updateClient: "update-client",
 }

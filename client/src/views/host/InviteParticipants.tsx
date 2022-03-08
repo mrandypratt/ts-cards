@@ -10,12 +10,6 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
     game.setView(socket?.id, VIEWS.home);
     setGame(game.clone());
   }
-
-  socket?.on(EVENTS.joinRoom, (game: string) => {
-    setGame(Object.assign(new Game(), JSON.parse(game)));
-    console.log("Game State Updated");
-  })
-
   return (
     <div style={{ textAlign: "center" }}>
 
@@ -36,7 +30,6 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
     <h3><b><u>Participants:</u></b></h3>
 
     {game.players.map(participant => {
-      console.log(participant);
       return (
         <p key={participant.socketId}>{participant.name}</p>
       )

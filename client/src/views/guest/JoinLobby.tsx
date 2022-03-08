@@ -21,12 +21,10 @@ export const JoinLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element =
   }
   
   const joinLobby = () => {
-    game.setName(socket?.id, name);
-    socket?.emit(EVENTS.joinRoom, room);
+    game.setPlayerName(socket?.id, name);
+    game.setLobby(room);
     game.setView(socket?.id, VIEWS.guest.waitingForHost);
-    socket?.emit(EVENTS.updateGameState, game);
-    game.lobbyId = room;
-    setGame(game.clone());
+    socket?.emit(EVENTS.joinRoom, game, game.getPlayer(socket?.id));
   }
 
   return (

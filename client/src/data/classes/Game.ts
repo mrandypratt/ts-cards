@@ -16,7 +16,7 @@ export class Game {
   promptCards: PromptCard[];
   responseCards: ResponseCard[];
   lobbyIdGenerator: ShortUniqueID;
-  lobbyId: string | string[];
+  lobbyId: string;
 
   constructor() {
     this.round = null;
@@ -41,11 +41,11 @@ export class Game {
     this.createNewRound();
   }
 
-  addPlayer(socketId: string | undefined) {
-    return this.players.push(new Player(socketId));
+  addPlayer (player: Player) {
+    return this.players.push(player);
   }
 
-  setName(socketId: string | undefined, name: string): void {
+  setPlayerName(socketId: string | undefined, name: string): void {
     let player = this.getPlayer(socketId);
     if (player) {
       player.name = name;
@@ -69,6 +69,10 @@ export class Game {
     
     this.round = new Round(props);
     this.rounds.push(this.round);
+  }
+
+  setLobby(room: string): void {
+    this.lobbyId = room;
   }
 
   getPlayer(socketId: string | undefined): Player | undefined {

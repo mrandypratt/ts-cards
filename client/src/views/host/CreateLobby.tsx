@@ -17,10 +17,9 @@ export const CreateLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element
 
   const startLobby = () => {
     game.generateLobbyId();
-    game.setName(socket?.id, name);
+    game.setPlayerName(socket?.id, name);
     game.setView(socket?.id, VIEWS.host.inviteParticipants);
-    socket?.emit(EVENTS.joinRoom, game.lobbyId);
-    setGame(game.clone());
+    socket?.emit(EVENTS.createGame, game);
   }
 
   return (

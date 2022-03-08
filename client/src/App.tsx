@@ -10,6 +10,8 @@ import { CreateLobby } from "./views/host/CreateLobby";
 import { InviteParticipants } from "./views/host/InviteParticipants";
 import { JoinLobby } from "./views/guest/JoinLobby";
 import { WaitingForHost } from "./views/guest/WaitingForHost";
+import { EVENTS } from "./data/constants/socketEvents";
+import { Player } from "./data/classes/Player";
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -20,8 +22,12 @@ export const App = (): JSX.Element => {
   const [game, setGame] = useState(new Game()); 
   
   socket.on("connect", () => {
-    game.addPlayer(socket?.id);
+    game.addPlayer(new Player(socket?.id));
     setGame(game.clone())
+  })
+
+  socket.on(EVENTS.updateClient, (updatedGame) => {
+    setGame(Object.assign(game, updatedGame));
   })
 
   if (game.currentPlayerView(socket.id) === VIEWS.home) {

@@ -8,7 +8,7 @@ export class Player {
   name: string | undefined;
   cards: ResponseCard[];
   socketId: string | undefined;
-  room: string | null;
+  // room: string | null;
   view: string;
 
   constructor(socketId: string | undefined, name?: string) {
@@ -17,7 +17,7 @@ export class Player {
     this.name = name;
     this.cards = [];
     this.socketId = socketId;
-    this.room = null;
+    // this.room = null;
     this.view = VIEWS.home;
   }
   
