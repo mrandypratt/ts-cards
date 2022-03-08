@@ -7,11 +7,11 @@ import { EVENTS } from "../client/src/data/constants/socketEvents";
 const httpServer = createServer();
 const io = new Server(httpServer, {});
 
-type games = {
+type GameStore = {
   [lobbyId: string]: Game;
 }
 
-const games: games = {};
+const gameStore: GameStore = {};
 
 io.on("connection", (socket) => {
 
@@ -19,21 +19,17 @@ io.on("connection", (socket) => {
 
   socket.on(EVENTS.createGame, (game: Game) => {
     socket.join(game.lobbyId);
-    games[game.lobbyId] = Object.assign(new Game(), game);
+    gameStore[game.lobbyId] = Object.assign(new Game(), game);
     console.log(`Client ${socket.id} created Room ${game.lobbyId}`)
-    io.to(game.lobbyId).emit(EVENTS.updateClient, games[game.lobbyId]);
+    io.to(game.lobbyId).emit(EVENTS.updateClient, gameStore[game.lobbyId]);
   })
   
   socket.on(EVENTS.joinRoom, (game: Game, player: Player) => {
-    console.log(games)
-    console.log(games[game.lobbyId])
-    console.log(game)
-    if (games[game.lobbyId]) {
+    if (gameStore[game.lobbyId]) {
       socket.join(game.lobbyId);
       console.log(`Client ${socket.id} joined Room ${game.lobbyId}`)
-      games[game.lobbyId].addPlayer(player);
-      console.log(games[game.lobbyId])
-      io.to(game.lobbyId).emit(EVENTS.updateClient, games[game.lobbyId]);
+      gameStore[game.lobbyId].addPlayer(player);
+      io.to(game.lobbyId).emit(EVENTS.updateClient, gameStore[game.lobbyId]);
     } else {
       socket.emit(EVENTS.roomDoesNotExist, "error");
     }

@@ -10,6 +10,11 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
     game.setView(socket?.id, VIEWS.home);
     setGame(game.clone());
   }
+
+  const minimumPlayersJoined = (): boolean => {
+    return game.players.length < 3;
+  }
+
   return (
     <div style={{ textAlign: "center" }}>
 
@@ -39,12 +44,17 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
     <SubmitButton
       text={"Start Game"}
       type={"submit"}
-      disabled={false} 
+      disabled={minimumPlayersJoined()} 
       onClick={startGame}
     />
 
-    <p>{MESSAGES.host.inviteParticipants.minimumPlayers}</p>
 
+
+    { minimumPlayersJoined() && 
+      <p>
+        {MESSAGES.host.inviteParticipants.minimumPlayers}
+      </p>
+    }
 
     </div>
   );

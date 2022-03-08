@@ -1,14 +1,7 @@
-import { SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
 
 export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
-
-  const returnHome = () => {
-    game.setView(socket?.id, VIEWS.home);
-    setGame(game.clone());
-  }
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -27,12 +20,7 @@ export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Elem
         )
       })}
 
-      <SubmitButton
-        text={"Return Home"}
-        type={"submit"}
-        disabled={false} 
-        onClick={returnHome}
-      />
+      <hr></hr>
 
       <p>Please wait...</p>
 
