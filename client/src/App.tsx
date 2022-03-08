@@ -12,6 +12,9 @@ import { JoinLobby } from "./views/guest/JoinLobby";
 import { WaitingForHost } from "./views/guest/WaitingForHost";
 import { EVENTS } from "./data/constants/socketEvents";
 import { Player } from "./data/classes/Player";
+import { PlayerTurn } from "./views/player/PlayerTurn";
+import { JudgeWaitingForPlayers } from "./views/judge/JudgeWaitingForPlayers";
+import { GameDataType } from "./data/types/ClassTypes";
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -22,12 +25,12 @@ export const App = (): JSX.Element => {
   const [game, setGame] = useState(new Game()); 
   
   socket.on("connect", () => {
-    game.addPlayer(new Player(socket?.id));
+    game.addPlayer(new Player(socket.id));
     setGame(game.clone())
   })
 
-  socket.on(EVENTS.updateClient, (updatedGame) => {
-    setGame(Object.assign(game, updatedGame));
+  socket.on(EVENTS.updateClient, (updatedGame: GameDataType) => {
+    setGame(new Game(updatedGame));
   })
 
   if (game.currentPlayerView(socket.id) === VIEWS.home) {
@@ -83,6 +86,26 @@ export const App = (): JSX.Element => {
   if (game.currentPlayerView(socket.id) === VIEWS.guest.waitingForHost) {
     return (
       <WaitingForHost
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+
+  if (game.currentPlayerView(socket.id) === VIEWS.player.turn) {
+    return (
+      <PlayerTurn
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+  
+  if (game.currentPlayerView(socket.id) === VIEWS.judge.waitingforSelections) {
+    return (
+      <JudgeWaitingForPlayers
         game={game}
         setGame={setGame}
         socket={socket}

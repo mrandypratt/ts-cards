@@ -12,6 +12,7 @@ export type ViewsType = {
   player: {
     turn: string,
     selectionMade: string,
+    watchingJudge: string,
   },
   judge: {
     waitingforSelections: string,
@@ -37,6 +38,7 @@ export const VIEWS = {
   player: {
     turn: "playerTurn",
     selectionMade: "playerSelectionMade",
+    watchingJudge: "watchingJudge",
   },
   judge: {
     waitingforSelections: "judgeWaitingForSelections",

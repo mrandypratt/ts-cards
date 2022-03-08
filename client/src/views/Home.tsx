@@ -6,7 +6,7 @@ import { VIEWS } from "../data/types/VIEWS";
 export const Home = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
-    game.setView(socket?.id, VIEWS.host.createLobby);
+    game.setView(socket.id, VIEWS.host.createLobby);
     setGame(game.clone());
   }
   

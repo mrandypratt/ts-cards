@@ -1,16 +1,22 @@
-let cardIdCounter = 0;
+import { CardDataType } from "../types/ClassTypes";
 
-type cardType = "prompt" | "response";
+let cardIdCounter = 0;
 
 export class Card {
   id: number;
   text: string;
-  type: cardType;
+  type: string;
 
-  constructor(text: string, type: cardType) {
-    this.id = cardIdCounter;
-    cardIdCounter += 1;
-    this.text = text;
-    this.type = type;
+  constructor(text: string="", type: string="", cardData?: CardDataType) {
+    if (cardData) {
+      this.id = cardData.id;
+      this.text = cardData.text;
+      this.type = cardData.type;
+    } else {
+      this.id = cardIdCounter;
+      cardIdCounter += 1;
+      this.text = text;
+      this.type = type;
+    }
   }
 }

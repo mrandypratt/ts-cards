@@ -2,9 +2,10 @@ import { Card } from "../../data/classes/Card";
 import { Player } from "../../data/classes/Player";
 import { Game } from "../../data/classes/Game";
 import { PlayingCard } from "./PlayingCard";
+import { PlayerDataType } from "../../data/types/ClassTypes";
 
 type ResponseCardProps = {
-  player: Player;
+  player: Player | PlayerDataType;
   card: Card;
   game: Game;
   setGame: (game: Game) => void;

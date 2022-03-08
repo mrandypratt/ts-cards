@@ -1,64 +1,66 @@
-import { RoundProps } from "../types/RoundProps";
+import { NewRoundPropsType, RoundDataType } from "../types/ClassTypes";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
 
+const isExistingRound = (roundData: NewRoundPropsType | RoundDataType): roundData is RoundDataType => {
+  return (roundData as RoundDataType).selectedCardStore !== undefined
+}
+
 export class Round {
   players: Player[];
-  judge: Player;
+  judge: Player | undefined;
   promptCard: PromptCard;
-  selectedCards: {
+  selectedCardStore: {
     [playerSocketId: string]: ResponseCard | null
   };
   winningCard: ResponseCard | null;
   winner: Player | null;
 
-  constructor({ players, judge, promptCard }: RoundProps) {
-    this.players = players;
-    this.judge = judge;
-    this.promptCard = promptCard;
-    this.selectedCards = {};
-    players.forEach(player => {
-      if (player.socketId) {
-        this.selectedCards[player.socketId] = null;
-      }
-    });
-    this.winningCard = null;
-    this.winner = null;
-  }
-
-  selectCard(socketId: string | undefined, card: ResponseCard): void {
-    if (socketId) {
-      this.selectedCards[socketId] = card;
-    }
-  }
-
-  hasPlayerSelected(socketId: string | undefined): boolean {
-    if (socketId) {
-      return !!this.selectedCards[socketId];
+  constructor(roundData: NewRoundPropsType | RoundDataType) {
+    if (isExistingRound(roundData)) {
+      this.players = [];
+      roundData.players.forEach(player => {
+        this.players.push(new Player("", player))
+      });
+      this.judge = new Player("", roundData.judge);
+      this.promptCard = new PromptCard("", roundData.promptCard);
+      this.selectedCardStore = roundData.selectedCardStore;
+      this.winningCard = roundData.winningCard === null ? null : new ResponseCard("", roundData.winningCard);
+      this.winner = roundData.winner === null ? null : new Player("", roundData.winner);
     } else {
-      return false;
+      this.players = roundData.players;
+      this.judge = roundData.judge;
+      this.promptCard = roundData.promptCard;
+      this.selectedCardStore = {};
+      this.players.forEach(player => {
+        if (player.socketId) {
+          this.selectedCardStore[player.socketId] = null;
+        }
+      });
+      this.winningCard = null;
+      this.winner = null;
     }
   }
 
-  getSelection(socketId: string | undefined): ResponseCard | null {
-    if (socketId) {
-      return this.selectedCards[socketId];
-    } else {
-      return null
-    }
+  selectCard(socketId: string, card: ResponseCard): void {
+    this.selectedCardStore[socketId] = card;
   }
 
-  isCardSelected(socketId: string | undefined, card: ResponseCard): boolean {
-    if (socketId) {
-      return this.selectedCards[socketId] === card;
-    } else {
-      return false;
-    }
+  hasPlayerSelected(socketId: string): boolean {
+    return !!this.selectedCardStore[socketId];
+  }
+
+  getSelection(socketId: string): ResponseCard | null {
+    return this.selectedCardStore[socketId];
+  }
+
+  isCardSelected(socketId: string, card: ResponseCard): boolean {
+    return this.selectedCardStore[socketId] === card;
   }
 
   allSelectionsMade(): boolean {
-    return this.players.every(player => player.socketId && (this.selectedCards[player.socketId] !== null));
+    return this.players.every(player => this.selectedCardStore[player.socketId] !== null);
   }
 
   removePlayedCards(): void {

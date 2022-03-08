@@ -8,7 +8,7 @@ import { containsValidCharacters } from "../../data/functions/arePlayerNamesVali
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const JoinLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
+export const JoinLobby = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
   const [ room, setRoom ] = useState("");
   const [ name, setName ] = useState("");
 

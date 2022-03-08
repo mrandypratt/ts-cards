@@ -1,18 +1,15 @@
 import { SubmitButton } from "../../components/Buttons/Submit";
-import { Game } from "../../data/classes/Game";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
 
 export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
   const startGame = () => {
-    game.setView(socket?.id, VIEWS.home);
-    setGame(game.clone());
+    socket?.emit(EVENTS.startRound, game);
   }
 
   const minimumPlayersJoined = (): boolean => {
-    return game.players.length < 3;
+    return game.players.length >= 3;
   }
 
   return (
@@ -40,17 +37,14 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
       )
     })}
 
-
     <SubmitButton
       text={"Start Game"}
       type={"submit"}
-      disabled={minimumPlayersJoined()} 
+      disabled={!minimumPlayersJoined()} 
       onClick={startGame}
     />
 
-
-
-    { minimumPlayersJoined() && 
+    { !minimumPlayersJoined() && 
       <p>
         {MESSAGES.host.inviteParticipants.minimumPlayers}
       </p>
