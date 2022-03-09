@@ -8,7 +8,9 @@ import { VIEWS } from "../../data/types/VIEWS";
 
 export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
   const round = game.round;
-  const player = game.getPlayer(socket?.id);
+  const player = game.getPlayer(socket.id);
+
+  console.log(game);
 
   const submitSelection = (): void => {
     game.setView(socket?.id, VIEWS.player.selectionMade);
@@ -27,16 +29,19 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
   
         <div style={PlayersHandStyle}>
   
-          {player.cards.map((card) => (
+          {player.cards.map((card) => {
   
-            <ResponseCard
-              key={card.id}
-              player={player}
-              card={card}
-              game={game}
-              setGame={setGame}
-            />
-          ))}
+            return (
+              <ResponseCard
+                key={card.id}
+                player={player}
+                card={card}
+                game={game}
+                setGame={setGame}
+                socket={socket}
+              />
+            )
+          })}
   
         </div>
   

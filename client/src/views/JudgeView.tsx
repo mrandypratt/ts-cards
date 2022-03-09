@@ -23,7 +23,7 @@ export const JudgeView = ({ game, setGame }: EnterPlayersViewProps): JSX.Element
   
         <div style={PlayersHandStyle}>
   
-          {round.players.map((player) => (
+          {/* {round.players.map((player) => (
             <ResponseCard
               key={player.id}
               player={player}
@@ -31,7 +31,7 @@ export const JudgeView = ({ game, setGame }: EnterPlayersViewProps): JSX.Element
               game={game}
               setGame={setGame}
             />
-          ))}
+          ))} */}
   
         </div>
   

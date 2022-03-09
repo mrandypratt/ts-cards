@@ -2,10 +2,7 @@ import { PlayerDataType } from "../types/ClassTypes";
 import { VIEWS } from "../types/VIEWS";
 import { ResponseCard } from "./ResponseCard";
 
-let playerIdCounter = 0;
-
 export class Player {
-  id: number;
   name: string;
   cards: ResponseCard[];
   socketId: string;
@@ -13,7 +10,6 @@ export class Player {
 
   constructor(socketId: string, playerData?: PlayerDataType) {
     if (playerData) {
-      this.id = playerData.id;
       this.name = playerData.name;
       this.cards = [];
       playerData.cards.forEach(card => {
@@ -22,8 +18,6 @@ export class Player {
       this.socketId = playerData.socketId;
       this.view = playerData.view;
     } else {
-      this.id = playerIdCounter;
-      playerIdCounter += 1;
       this.name = "";
       this.cards = [];
       this.socketId = socketId;

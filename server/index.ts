@@ -51,8 +51,14 @@ io.on("connection", (socket) => {
 
     console.log("Moving to Judge Round")
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
-
+    
   });
+  
+  socket.on(EVENTS.updateServer, (gameData: GameDataType): void => {
+    gameStore[gameData.lobbyId] = new Game(gameData);
+    console.log("Server Updated");
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+  })
 
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} disconnected`);

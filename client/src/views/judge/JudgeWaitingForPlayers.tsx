@@ -6,6 +6,8 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType)
   const round = game.round;
   const player = game.getPlayer(socket?.id);
 
+  console.log(game);
+
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>
@@ -24,9 +26,10 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType)
   
         <h3><b><u>Submissions:</u></b></h3>
 
-        {round.players.map(player => {
+        {round.playersSocketIds.map(playerSocketId => {
+          let player = game.getPlayer(playerSocketId);
           return (
-            <p key={player.name}>{player.name}: {round.hasPlayerSelected(socket?.id) ? "Yes" : "No"}</p>
+            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSocketId) ? "Yes" : "No"}</p>
           )
         })}
 

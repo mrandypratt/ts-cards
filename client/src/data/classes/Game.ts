@@ -7,7 +7,7 @@ import { Round } from "./Round";
 import ShortUniqueID from "short-unique-id";
 import { shuffle } from "../functions/shuffle";
 import { VIEWS } from "../types/VIEWS";
-import { GameDataType, NewRoundPropsType, PlayerDataType } from "../types/ClassTypes";
+import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
 
 const CARDS_PER_PLAYER = 3;
 const lobbyIdGenerator = new ShortUniqueID({length: 8});
@@ -67,7 +67,7 @@ export class Game {
     return this.players.push(player);
   }
 
-  getPlayer(socketId: string): PlayerDataType | undefined {
+  getPlayer(socketId: string | undefined): Player | undefined {
     return this.players.find(player => player.socketId === socketId);
   }
   
@@ -84,7 +84,7 @@ export class Game {
 
   initializeRound(): void {
     this.dealCardsToPlayers();
-    if (this.rounds.length % this.players.length === 0) {
+    if (this.rounds.length === 0) {
       this.randomizePlayerOrder();
     }
     this.createNewRound();
@@ -92,43 +92,53 @@ export class Game {
   }
 
   dealCardsToPlayers(): void {
-    console.log(this);
     this.players.forEach((player) => {
       while (player.cards.length < CARDS_PER_PLAYER) {
         player.drawCard(this.responseCards.pop() || new ResponseCard("Error: out of Responses"));
       }
     });
   }
+
+  randomizePlayerOrder(): void {
+    this.players = shuffle(this.players)
+  }
   
   createNewRound(): void {
     const props: NewRoundPropsType = {
-      players: this.getNonJudgePlayers(),
-      judge: this.getJudgePlayer(),
+      playersSocketIds: this.players.filter((_, index) => index !== this.rounds.length).map(player => player.socketId),
+      judgeSocketId: this.players[this.rounds.length].socketId,
       promptCard: this.promptCards.pop() || new PromptCard('Oops! Out of Cards.')
     };
     
     this.round = new Round(props);
     this.rounds.push(this.round);
   }
-
-  randomizePlayerOrder(): void {
-    this.players = shuffle(this.players)
-  }
-  
-  getJudgePlayer(): Player {
-    return this.players[this.rounds.length];
-  }
   
   getNonJudgePlayers(): Player[] {
-    return this.players.filter(player => player !== this.players[this.rounds.length])
+    let nonJudgePlayers: Player[] = [];
+    let round = this.round;
+    
+    if (round) {
+      round.playersSocketIds.forEach((id): void => {
+        let currentPlayer = this.getPlayer(id);
+        if (currentPlayer)
+        nonJudgePlayers.push(currentPlayer);
+      })
+    }
+    
+    return nonJudgePlayers;
+  }
+
+  getJudgePlayer(): Player | undefined {
+    return this.getPlayer(this.round?.judgeSocketId)
   }
   
   updateViewsForNewRound(): void {
     this.getNonJudgePlayers().forEach(player => {
-      player.setView(VIEWS.player.turn)
+      player.setView(VIEWS.player.turn);
     })
-
-    this.getJudgePlayer().setView(VIEWS.player.turn)
+    
+    this.getJudgePlayer()?.setView(VIEWS.judge.waitingforSelections)
   }
   
   updateViewsForJudgeRound(): void {
@@ -136,6 +146,6 @@ export class Game {
       player.setView(VIEWS.player.watchingJudge)
     })
   
-    this.getJudgePlayer().setView(VIEWS.judge.turn)
+    this.getJudgePlayer()?.setView(VIEWS.judge.turn)
   }
 }

@@ -34,7 +34,7 @@ export const SelectPlayerButton = ({ player, disabled, onClick}: SelectPlayerBut
       disabled={disabled}
       onClick={ onClick }
       style={ disabled ? styles.unclickable : styles.clickable }
-      key={ player.id }
+      key={ player.name }
     >{ player.name }</Button>
   );
 }

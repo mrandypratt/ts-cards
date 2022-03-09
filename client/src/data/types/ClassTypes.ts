@@ -1,4 +1,3 @@
-import { Player } from "../classes/Player";
 import { PromptCard } from "../classes/PromptCard";
 
 export type CardDataType = {
@@ -8,7 +7,6 @@ export type CardDataType = {
 };
 
 export type PlayerDataType = {
-  id: number;
   name: string;
   cards: CardDataType[];
   socketId: string;
@@ -16,14 +14,14 @@ export type PlayerDataType = {
 }
 
 export type RoundDataType = {
-  players: PlayerDataType[];
-  judge: PlayerDataType;
+  playersSocketIds: string[];
+  judgeSocketId: string;
   promptCard: CardDataType;
   selectedCardStore: {
     [playerSocketId: string]: CardDataType | null
   };
   winningCard: CardDataType | null;
-  winner: PlayerDataType | null;
+  winnerSocketId: string | null;
 }
 
 export type GameDataType = {
@@ -36,8 +34,8 @@ export type GameDataType = {
 }
 
 export type NewRoundPropsType = {
-  players: Player[];
-  judge: Player;
+  playersSocketIds: string[];
+  judgeSocketId: string;
   promptCard: PromptCard;
 }
 
