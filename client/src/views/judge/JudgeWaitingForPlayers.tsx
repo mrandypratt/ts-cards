@@ -6,6 +6,8 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType)
   const round = game.round;
   const player = game.getPlayer(socket?.id);
 
+  console.log(game);
+
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>

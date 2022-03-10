@@ -35,7 +35,7 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
         onClick={ () => {
           if (game.round) {
             game.round?.setWinningCard(card);
-            game.round?.setWinner(player.socketId);
+            game.round?.setWinner(card);
           }
           setGame(game.clone());
         }}

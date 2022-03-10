@@ -155,21 +155,15 @@ export class Game {
   }
 
   getRoundWinner(): Player | undefined {
-    let winner = this.round?.winnerSocketId;
-    return winner ? this.getPlayer(winner) : undefined;
-  }
-
-  getWinningCard(): ResponseCard {
-    let winnerSocketId = this.getRoundWinner()?.socketId
-    if (winnerSocketId) {
-      let winningCard = this.round?.selectedCardStore[winnerSocketId]
-      return winningCard ? winningCard : new ResponseCard("Error: No Winning Card")
-    }
-    return new ResponseCard("Error: No Winning Card");
+    let winnerSocketId = this.round?.winnerSocketId;
+    return winnerSocketId ? this.getPlayer(winnerSocketId) : undefined;
   }
 
   getScore(socketId: string): number {
-    return this.rounds.filter(round => round.winnerSocketId === socketId).length
+    let score = 0;
+    score += this.rounds.filter(round => round.winnerSocketId === socketId).length;
+    score += this.round?.winnerSocketId === socketId ? 1 : 0;
+    return score;
   }
 
   readyForNextRound(): boolean {

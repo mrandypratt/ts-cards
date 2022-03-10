@@ -17,7 +17,7 @@ type RoundResultsViewProps = {
 export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): JSX.Element => {
   const round = game.round;
   const winner = game.getRoundWinner()
-  const winningCard = game.getWinningCard();
+  const winningCard = game.round?.winningCard ? game.round?.winningCard : undefined;
   const player = game.getPlayer(socket.id)
 
   const startNextRound = () => {
@@ -26,7 +26,9 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
     socket.emit(EVENTS.startNextRound, game);
   }
 
-  if (round && winner) {
+  console.log(game)
+
+  if (round && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
 
@@ -53,8 +55,11 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
 
         </div>
   
+        <div style={{textAlign: "center", marginTop: 10}}>
+          
+          <ResultsTable game={game}/>
 
-        <ResultsTable game={game}/>
+        </div>
   
         <SubmitButton
           onClick={() => startNextRound()}

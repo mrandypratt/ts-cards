@@ -6,13 +6,13 @@ export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Elem
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h1><b>{MESSAGES.guest.waitingForHost.success}</b></h1>
+      <h1><b>Success!</b></h1>
 
       <hr></hr>
 
-      <h2>Lobby {game.lobbyId}</h2>
+      <h2>You joined Lobby {game.lobbyId}</h2>
 
-      <h3><b><u>Participants:</u></b></h3>
+      <h3><b><u>Other Participants:</u></b></h3>
 
       {game.players.map(participant => {
         return (

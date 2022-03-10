@@ -15,6 +15,8 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
     socket?.emit(EVENTS.playerSelection, game);
   }
 
+  console.log(game);
+  
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>

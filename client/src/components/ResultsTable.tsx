@@ -11,12 +11,12 @@ import { Game } from '../data/classes/Game';
 
 export const ResultsTable = ({ game } : { game: Game }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="Scoreboard">
+    <TableContainer sx={{ maxWidth: 350, textAlign: "center"}} component={Paper}>
+      <Table sx={{ maxWidth: 350 }} size="small" aria-label="Scoreboard">
         <TableHead>
           <TableRow>
             <TableCell>Player</TableCell>
-            <TableCell align="right">Score</TableCell>
+            <TableCell align="center">Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -28,7 +28,7 @@ export const ResultsTable = ({ game } : { game: Game }) => {
               <TableCell component="th" scope="row">
                 {player.name}
               </TableCell>
-              <TableCell align="right">{game.getScore(player.socketId)}</TableCell>
+              <TableCell align="center">{game.getScore(player.socketId)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

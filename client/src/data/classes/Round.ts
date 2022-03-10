@@ -75,8 +75,12 @@ export class Round {
     this.winningCard = card;
   }
 
-  setWinner(playerSocketId: string): void {
-    this.winnerSocketId = playerSocketId;
+  setWinner(card: ResponseCard): void {
+    this.playersSocketIds.forEach((playerSocketId) => {
+      if (this.selectedCardStore[playerSocketId] === card) {
+        this.winnerSocketId = playerSocketId;
+      }
+    })
   }
 
   isWinningCard(card: ResponseCard): boolean {
