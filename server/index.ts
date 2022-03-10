@@ -44,6 +44,7 @@ io.on("connection", (socket) => {
   
   socket.on(EVENTS.playerSelection, (gameData: GameDataType): void => {
     gameStore[gameData.lobbyId] = new Game(gameData);
+    console.log("Selection Made")
 
     if (gameStore[gameData.lobbyId].round?.allSelectionsMade()) {
       gameStore[gameData.lobbyId].updateViewsForJudgeRound();
@@ -54,9 +55,22 @@ io.on("connection", (socket) => {
     
   });
   
-  socket.on(EVENTS.updateServer, (gameData: GameDataType): void => {
+  socket.on(EVENTS.winnerSelected, (gameData: GameDataType): void => {
     gameStore[gameData.lobbyId] = new Game(gameData);
-    console.log("Server Updated");
+    console.log("Winner Selected: Showing Results");
+
+    gameStore[gameData.lobbyId].updateViewsForRoundResults();
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+  });
+  
+  socket.on(EVENTS.startNextRound, (gameData: GameDataType): void => {
+    gameStore[gameData.lobbyId] = new Game(gameData);
+    console.log(`Client ${socket.id} ready for next round`);
+  
+    if (gameStore[gameData.lobbyId].readyForNextRound()) {
+      gameStore[gameData.lobbyId].initializeRound();
+    }
+
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
   })
 

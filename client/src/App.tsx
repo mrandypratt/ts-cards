@@ -15,6 +15,11 @@ import { Player } from "./data/classes/Player";
 import { PlayerTurn } from "./views/player/PlayerTurn";
 import { JudgeWaitingForPlayers } from "./views/judge/JudgeWaitingForPlayers";
 import { GameDataType } from "./data/types/ClassTypes";
+import { JudgeTurn } from "./views/judge/JudgeTurn";
+import { PlayerSelectionMade } from "./views/player/PlayerSelectionMade";
+import { PlayerWaitingForJudge } from "./views/player/PlayerWaitingForJudge";
+import { RoundResults } from "./views/results/RoundResults";
+import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -102,7 +107,27 @@ export const App = (): JSX.Element => {
       />
     );
   }
+
+  if (game.currentPlayerView(socket.id) === VIEWS.player.selectionMade) {
+    return (
+      <PlayerSelectionMade
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
   
+  if (game.currentPlayerView(socket.id) === VIEWS.player.waitingForJudge) {
+    return (
+      <PlayerWaitingForJudge
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+
   if (game.currentPlayerView(socket.id) === VIEWS.judge.waitingforSelections) {
     return (
       <JudgeWaitingForPlayers
@@ -113,7 +138,37 @@ export const App = (): JSX.Element => {
     );
   }
 
+  if (game.currentPlayerView(socket.id) === VIEWS.judge.turn) {
+    return (
+      <JudgeTurn
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+  
+  if (game.currentPlayerView(socket.id) === VIEWS.results.round) {
+    return (
+      <RoundResults
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+  
+  if (game.currentPlayerView(socket.id) === VIEWS.results.waitingForNextRound) {
+    return (
+      <WaitingForNextRound
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+
   return (
-    <div>Error</div>
+    <div>Error: No View on App</div>
   )
 }

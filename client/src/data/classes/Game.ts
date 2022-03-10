@@ -8,6 +8,7 @@ import ShortUniqueID from "short-unique-id";
 import { shuffle } from "../functions/shuffle";
 import { VIEWS } from "../types/VIEWS";
 import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
+import { ThemeProvider } from "@emotion/react";
 
 const CARDS_PER_PLAYER = 3;
 const lobbyIdGenerator = new ShortUniqueID({length: 8});
@@ -143,9 +144,35 @@ export class Game {
   
   updateViewsForJudgeRound(): void {
     this.getNonJudgePlayers().forEach(player => {
-      player.setView(VIEWS.player.watchingJudge)
+      player.setView(VIEWS.player.waitingForJudge)
     })
   
     this.getJudgePlayer()?.setView(VIEWS.judge.turn)
+  }
+
+  updateViewsForRoundResults(): void {
+    this.players.forEach(player => player.setView(VIEWS.results.round));
+  }
+
+  getRoundWinner(): Player | undefined {
+    let winner = this.round?.winnerSocketId;
+    return winner ? this.getPlayer(winner) : undefined;
+  }
+
+  getWinningCard(): ResponseCard {
+    let winnerSocketId = this.getRoundWinner()?.socketId
+    if (winnerSocketId) {
+      let winningCard = this.round?.selectedCardStore[winnerSocketId]
+      return winningCard ? winningCard : new ResponseCard("Error: No Winning Card")
+    }
+    return new ResponseCard("Error: No Winning Card");
+  }
+
+  getScore(socketId: string): number {
+    return this.rounds.filter(round => round.winnerSocketId === socketId).length
+  }
+
+  readyForNextRound(): boolean {
+    return this.players.every(player => player.view === VIEWS.results.waitingForNextRound)
   }
 }

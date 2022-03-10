@@ -12,7 +12,7 @@ export type ViewsType = {
   player: {
     turn: string,
     selectionMade: string,
-    watchingJudge: string,
+    waitingForJudge: string,
   },
   judge: {
     waitingforSelections: string,
@@ -20,6 +20,7 @@ export type ViewsType = {
   },
   results: {
     round: string,
+    waitingForNextRound: string,
     game: string
   },
 }
@@ -38,7 +39,7 @@ export const VIEWS = {
   player: {
     turn: "playerTurn",
     selectionMade: "playerSelectionMade",
-    watchingJudge: "watchingJudge",
+    waitingForJudge: "watchingJudge",
   },
   judge: {
     waitingforSelections: "judgeWaitingForSelections",
@@ -46,6 +47,7 @@ export const VIEWS = {
   },
   results: {
     round: "roundResults",
+    waitingForNextRound: "wait-for-next-round",
     game: "gameResults"
   },
 }

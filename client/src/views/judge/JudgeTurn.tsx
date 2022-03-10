@@ -4,15 +4,13 @@ import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
 
-export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const JudgeTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
   const round = game.round;
   const player = game.getPlayer(socket.id);
 
-  const submitSelection = (): void => {
-    game.setView(socket?.id, VIEWS.player.selectionMade);
-    socket?.emit(EVENTS.playerSelection, game);
+  const selectWinner = (): void => {
+    socket?.emit(EVENTS.winnerSelected, game);
   }
 
   if (round && player) {
@@ -23,30 +21,39 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
 
         <hr></hr>
   
-        <h2>Select a Card</h2>
+        <h2>Judge's Turn</h2>
+
+        <h2>Select the Winning Card</h2>
   
         <PromptCard text={round.promptCard.text} />
   
         <div style={PlayersHandStyle}>
   
-          {player.cards.map((card) => {
-  
-            return (
-              <ResponseCard
-                key={card.id}
-                player={player}
-                card={card}
-                game={game}
-                setGame={setGame}
-              />
-            )
+          {round.playersSocketIds.map((socketId) => {
+            let card = round.getSelection(socketId);
+
+            if (card !== null) {
+              return (
+                <ResponseCard
+                  key={card.id}
+                  player={player}
+                  card={card}
+                  game={game}
+                  setGame={setGame}
+                />
+                );
+              } else {
+                return (
+                  <div>Error: JudgeTurn ResponseCard</div>
+                )
+              }
           })}
   
         </div>
   
         <SubmitButton
-          onClick={submitSelection}
-          disabled={!round.hasPlayerSelected(player.socketId)}
+          onClick={selectWinner}
+          disabled={!round.isWinningCardSelected()}
           type="button"
           text="Submit Card"
         />
@@ -55,7 +62,7 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
     );
   } else {
     return (
-      <div>Error on PlayerTurn</div>
+      <div>Error on JudgeTurn</div>
     )
   }
 }

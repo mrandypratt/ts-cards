@@ -53,7 +53,7 @@ export class Round {
   }
 
   isCardSelected(socketId: string, card: ResponseCard): boolean {
-    return this.selectedCardStore[socketId] === card;
+    return this.selectedCardStore[socketId]?.text === card.text;
   }
 
   allSelectionsMade(): boolean {

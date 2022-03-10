@@ -33,12 +33,12 @@ export const MESSAGES = {
     turn: "Select a response to submit to ",
     responseSubmitted: {
       success: "Your response is submitted!",
-      pleaseWait: "Please wait...\n\nOnce all players have selected their response, the judge will review and select the winning response"
+      pleaseWait: "Once all players have selected their response, the judge will review and select the winning response"
     }
   },
 
   judge: {
-    waiting: "Please wait...\n\nOnce all players have selected their response, you will have the chance to review and select the winning response.",
+    waiting: "Once all players have selected their response, you will have the chance to review and select the winning response.",
     turn: "Please select the best response card to win this round."
   }
 }
