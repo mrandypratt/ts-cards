@@ -18,8 +18,8 @@ io.on("connection", (socket) => {
 
   console.log(`Client ${socket.id} connected`);
 
-  socket.on(EVENTS.createGame, (gameData: GameDataType): void => {
-    socket.join(gameData.lobbyId);
+  socket.on(EVENTS.createGame, async (gameData: GameDataType): Promise<void> => {
+    await socket.join(gameData.lobbyId);
     console.log(`Client ${socket.id} created Room ${gameData.lobbyId}`);
     gameStore[gameData.lobbyId] = new Game(gameData);
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
@@ -47,10 +47,11 @@ io.on("connection", (socket) => {
     console.log("Selection Made")
 
     if (gameStore[gameData.lobbyId].round?.allSelectionsMade()) {
+      console.log("Index.ts: All Selections Made")
       gameStore[gameData.lobbyId].updateViewsForJudgeRound();
+      console.log("Moving to Judge Round")
     };
 
-    console.log("Moving to Judge Round")
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
     
   });
@@ -59,6 +60,7 @@ io.on("connection", (socket) => {
     gameStore[gameData.lobbyId] = new Game(gameData);
     console.log("Winner Selected: Showing Results");
 
+    gameStore[gameData.lobbyId].addRoundToRounds();
     gameStore[gameData.lobbyId].updateViewsForRoundResults();
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
   });
@@ -68,11 +70,22 @@ io.on("connection", (socket) => {
     console.log(`Client ${socket.id} ready for next round`);
   
     if (gameStore[gameData.lobbyId].readyForNextRound()) {
-      gameStore[gameData.lobbyId].initializeRound();
+      gameStore[gameData.lobbyId].createNextRound();
     }
 
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
-  })
+  });
+
+  socket.on(EVENTS.startNewGame, (gameData: GameDataType): void => {
+    gameStore[gameData.lobbyId] = new Game(gameData);
+    console.log(`Client ${socket.id} ready for next game`);
+  
+    if (gameStore[gameData.lobbyId].readyForNextGame()) {
+      gameStore[gameData.lobbyId].resetGame();
+    }
+
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+  });
 
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} disconnected`);

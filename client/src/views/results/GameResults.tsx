@@ -26,12 +26,6 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
     socket.emit(EVENTS.startNextRound, game);
   }
 
-  const startNewGame = () => {
-    game.setView(socket.id, VIEWS.results.waitingForNextGame);
-    setGame(game.clone());
-    socket.emit(EVENTS.startNewGame, game);
-  }
-
   if (round && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
@@ -40,9 +34,9 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
 
         <hr></hr>
 
-        <h2>Results</h2>
+        <h2>Final Results</h2>
   
-        <h1>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h1>
+        <h1>{ winner.name } is the Winner!</h1>
   
         <div style={RoundResultCardStyle}>
 
@@ -64,20 +58,13 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
           <ResultsTable game={game}/>
 
         </div>
-
-        {!game.isGameWinner() && <SubmitButton
+  
+        <SubmitButton
           onClick={() => startNextRound()}
           type="button"
           text="Next Round"
           disabled={false}
-        />}
-
-        {game.isGameWinner() && <SubmitButton
-          onClick={() => startNewGame()}
-          type="button"
-          text="Start New Game"
-          disabled={false}
-        />}
+        />
       </div>
     )
   } else {

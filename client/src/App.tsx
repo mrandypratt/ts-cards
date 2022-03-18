@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 import { Game } from "./data/classes/Game";
@@ -20,6 +20,7 @@ import { PlayerSelectionMade } from "./views/player/PlayerSelectionMade";
 import { PlayerWaitingForJudge } from "./views/player/PlayerWaitingForJudge";
 import { RoundResults } from "./views/results/RoundResults";
 import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
+import { WaitingForNextGame } from "./views/results/WaitingForNextGame";
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -29,14 +30,18 @@ export const App = (): JSX.Element => {
   
   const [game, setGame] = useState(new Game()); 
   
-  socket.on("connect", () => {
-    game.addPlayer(new Player(socket.id));
-    setGame(game.clone())
-  })
-
-  socket.on(EVENTS.updateClient, (updatedGame: GameDataType) => {
-    setGame(new Game(updatedGame));
-  })
+  useEffect(() => {
+    socket.on("connect", () => {
+      game.addPlayer(new Player(socket.id));
+      setGame(game.clone())
+    })
+  
+    socket.on(EVENTS.updateClient, (updatedGameData: GameDataType) => {
+      if (JSON.stringify(game) !== JSON.stringify(updatedGameData)) {
+        setGame(new Game(updatedGameData));
+      }
+    })
+  }, [])
 
   if (game.currentPlayerView(socket.id) === VIEWS.home) {
     return(
@@ -161,6 +166,16 @@ export const App = (): JSX.Element => {
   if (game.currentPlayerView(socket.id) === VIEWS.results.waitingForNextRound) {
     return (
       <WaitingForNextRound
+        game={game}
+        setGame={setGame}
+        socket={socket}
+      />
+    );
+  }
+
+  if (game.currentPlayerView(socket.id) === VIEWS.results.waitingForNextGame) {
+    return (
+      <WaitingForNextGame
         game={game}
         setGame={setGame}
         socket={socket}

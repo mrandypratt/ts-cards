@@ -6,6 +6,8 @@ export const EVENTS = {
   playerSelection: "player-selection",
   winnerSelected: "winner-selected",
   startNextRound: "start-next-round",
+  startNewGame: "start-new-game",
   updateServer: "update-server",
   updateClient: "update-client",
+
 }

@@ -11,7 +11,7 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket }: ViewPropsType):
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length} | {player.name}</h2>
+        <h2>Round {game.rounds.length + 1} | {player.name}</h2>
 
         <hr></hr>
   

@@ -6,13 +6,11 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType)
   const round = game.round;
   const player = game.getPlayer(socket?.id);
 
-  console.log(game);
-
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length} | {player.name}</h2>
+        <h2>Round {game.rounds.length + 1} | {player.name}</h2>
 
         <hr></hr>
   

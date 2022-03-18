@@ -14,14 +14,12 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
     game.setView(socket?.id, VIEWS.player.selectionMade);
     socket?.emit(EVENTS.playerSelection, game);
   }
-
-  console.log(game);
   
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length} | {player.name}</h2>
+        <h2>Round {game.rounds.length + 1} | {player.name}</h2>
 
         <hr></hr>
   

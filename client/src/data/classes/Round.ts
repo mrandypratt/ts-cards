@@ -60,17 +60,6 @@ export class Round {
     return this.playersSocketIds.every(playerSocketId => this.selectedCardStore[playerSocketId] !== null);
   }
 
-  // STUB: Need to remove cards in game class, keeping all player activity at game level.
-
-  // removePlayedCards(): void {
-  //   this.playersSocketIds.forEach(playerSocketId => {
-  //     const card = this.getSelection(playerSocketId);
-  //     if (card !== null) {
-  //       player.cards.splice(player.cards.indexOf(card), 1);
-  //     }
-  //   })
-  // }
-
   setWinningCard(card: ResponseCard): void {
     this.winningCard = card;
   }

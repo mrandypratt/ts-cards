@@ -8,9 +8,9 @@ import ShortUniqueID from "short-unique-id";
 import { shuffle } from "../functions/shuffle";
 import { VIEWS } from "../types/VIEWS";
 import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
-import { ThemeProvider } from "@emotion/react";
 
 const CARDS_PER_PLAYER = 3;
+const WINNING_SCORE = 3;
 const lobbyIdGenerator = new ShortUniqueID({length: 8});
 
 export class Game {
@@ -106,13 +106,12 @@ export class Game {
   
   createNewRound(): void {
     const props: NewRoundPropsType = {
-      playersSocketIds: this.players.filter((_, index) => index !== this.rounds.length).map(player => player.socketId),
-      judgeSocketId: this.players[this.rounds.length].socketId,
+      playersSocketIds: this.players.filter((_, index) => index !== (this.rounds.length % this.players.length)).map(player => player.socketId),
+      judgeSocketId: this.players[this.rounds.length % this.players.length].socketId,
       promptCard: this.promptCards.pop() || new PromptCard('Oops! Out of Cards.')
     };
     
     this.round = new Round(props);
-    this.rounds.push(this.round);
   }
   
   getNonJudgePlayers(): Player[] {
@@ -153,6 +152,10 @@ export class Game {
   updateViewsForRoundResults(): void {
     this.players.forEach(player => player.setView(VIEWS.results.round));
   }
+  
+  updateViewsForGameResults(): void {
+    this.players.forEach(player => player.setView(VIEWS.results.game));
+  }
 
   getRoundWinner(): Player | undefined {
     let winnerSocketId = this.round?.winnerSocketId;
@@ -160,13 +163,50 @@ export class Game {
   }
 
   getScore(socketId: string): number {
-    let score = 0;
-    score += this.rounds.filter(round => round.winnerSocketId === socketId).length;
-    score += this.round?.winnerSocketId === socketId ? 1 : 0;
-    return score;
+    return this.rounds.filter(round => round.winnerSocketId === socketId).length;
   }
 
   readyForNextRound(): boolean {
     return this.players.every(player => player.view === VIEWS.results.waitingForNextRound)
+  }
+
+  readyForNextGame(): boolean {
+    return this.players.every(player => player.view === VIEWS.results.waitingForNextGame)
+  }
+
+  addRoundToRounds(): void {
+    if (this.round) {
+      this.rounds.push(this.round);
+    }
+  }
+
+  createNextRound(): void {
+    this.discardPlayedCards();
+    this.initializeRound();
+  }
+
+  discardPlayedCards(): void {
+    let selectedCardStore = this.round?.selectedCardStore
+    
+    for (const playerSocketId in selectedCardStore) {
+      let player = this.getPlayer(playerSocketId);
+      let cardId = selectedCardStore[playerSocketId]?.id;
+      let cardToRemove = player?.cards.find(card => card.id === cardId);
+      
+      if (player && cardToRemove) {
+        player.cards.splice(player.cards.indexOf(cardToRemove), 1)
+      }
+    }
+  }
+
+  isGameWinner(): boolean {
+    return this.players.some(player => {
+      return this.getScore(player.socketId) >= WINNING_SCORE;
+    })
+  }
+
+  resetGame(): void {
+    this.rounds.splice(0);
+    this.initializeRound();
   }
 }

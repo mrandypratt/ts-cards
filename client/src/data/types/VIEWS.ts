@@ -21,7 +21,8 @@ export type ViewsType = {
   results: {
     round: string,
     waitingForNextRound: string,
-    game: string
+    game: string,
+    waitingForNextGame: string,
   },
 }
 
@@ -48,6 +49,7 @@ export const VIEWS = {
   results: {
     round: "roundResults",
     waitingForNextRound: "wait-for-next-round",
-    game: "gameResults"
+    game: "gameResults",
+    waitingForNextGame: "wait-for-next-game",
   },
 }

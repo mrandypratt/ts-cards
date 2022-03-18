@@ -10,7 +10,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket }: ViewPropsType): J
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length} | {player.name}</h2>
+        <h2>Round {game.rounds.length + 1} | {player.name}</h2>
 
         <hr></hr>
   
