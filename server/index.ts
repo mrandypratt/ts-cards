@@ -5,7 +5,12 @@ import { Player } from "../client/src/data/classes/Player";
 import { EVENTS } from "../client/src/data/constants/socketEvents";
 import { GameDataType, PlayerDataType } from "../client/src/data/types/ClassTypes";
 
-const httpServer = createServer();
+const httpServer = createServer((req, res) => {
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'text/html')
+  res.end('<h1>Hello, World!</h1>')
+});
+
 const io = new Server(httpServer, {});
 const PORT = process.env.port || 4000;
 
@@ -93,6 +98,8 @@ io.on("connection", (socket) => {
   });
 });
 
+
+
 httpServer.listen(PORT, () => {
-  console.log("Listening on PORT: " + 4000);
+  console.log("Listening on PORT: " + PORT);
 });
