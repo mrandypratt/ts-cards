@@ -12,7 +12,7 @@ const httpServer = createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {});
-const PORT = process.env.port || 4000;
+const PORT = process.env.port || 8080;
 
 type GameStore = {
   [lobbyId: string]: Game;
