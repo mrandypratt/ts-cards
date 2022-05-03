@@ -7,6 +7,7 @@ import { GameDataType, PlayerDataType } from "../client/src/data/types/ClassType
 
 const httpServer = createServer();
 const io = new Server(httpServer, {});
+const PORT = process.env.port || 4000;
 
 type GameStore = {
   [lobbyId: string]: Game;
@@ -92,6 +93,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(4000, () => {
+httpServer.listen(PORT, () => {
   console.log("Listening on PORT: " + 4000);
 });
