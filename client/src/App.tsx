@@ -23,7 +23,13 @@ import { RoundResults } from "./views/results/RoundResults";
 import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
 import { WaitingForNextGame } from "./views/results/WaitingForNextGame";
 
-const socket = io("http://localhost:4000", {
+// Development
+// const socket = io("http://localhost:4000", {
+//   transports: ["websocket"],
+// });
+
+// Production
+const socket = io("52.20.228.225:8787", {
   transports: ["websocket"],
 });
 
