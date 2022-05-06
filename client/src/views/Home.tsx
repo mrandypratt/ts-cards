@@ -28,7 +28,6 @@ export const Home = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
       <hr></hr>
 
       <p>{MESSAGES.home.getStarted1}</p>
-      <p>{MESSAGES.home.getStarted2}</p>
 
       <div>
         

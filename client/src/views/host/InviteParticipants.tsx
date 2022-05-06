@@ -3,11 +3,8 @@ import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { useState, Fragment } from 'react';
-import Button from '@mui/material/Button';
+import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
@@ -58,6 +55,7 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
           onClick={handleCopyClick}
           style={isHovering ? hoverStyle : {}}
         />
+
         <Snackbar
           open={openSnackbar}
           autoHideDuration={2000}
