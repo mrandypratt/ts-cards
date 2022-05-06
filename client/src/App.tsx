@@ -24,7 +24,7 @@ import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
 import { WaitingForNextGame } from "./views/results/WaitingForNextGame";
 
 // Development
-// const socket = io("http://localhost:4000", {
+// const socket = io("http://localhost:8787", {
 //   transports: ["websocket"],
 // });
 
