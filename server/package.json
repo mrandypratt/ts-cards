@@ -9,7 +9,9 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "nodemon index.ts",
+    "prod": "NODE_ENV=prod node index.js",
+    "dev": "NODE_ENV=dev node index.js"
   },
   "keywords": [],
   "author": "",
