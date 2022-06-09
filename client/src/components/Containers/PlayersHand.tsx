@@ -4,7 +4,7 @@ export const PlayersHandStyle = {
   display: "flex",
   flexAlign: "center",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "start",
   paddingTop: 40
 }
 
