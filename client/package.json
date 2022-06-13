@@ -29,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "REACT_APP_STAGE=prod npm run build",
-    "deploy": "aws s3 sync build/ s3://www.cardswithfriendsgame.com"
+    "deploy": "aws s3 sync build/ s3://www.cardswithfriendsgame.com//"
   },
   "eslintConfig": {
     "extends": [

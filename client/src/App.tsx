@@ -24,17 +24,29 @@ import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
 import { WaitingForNextGame } from "./views/results/WaitingForNextGame";
 import socket from "./socket";
 
-socket.connect()
-
 export const App = (): JSX.Element => {
   
   const [game, setGame] = useState(new Game()); 
-
-  console.log(game);
   
   useEffect(() => {
+    const sessionId = localStorage.getItem("sessionId");
+
+    if (sessionId) {
+      socket.auth = { sessionId };
+    }
+
+    socket.connect();
+
+    socket.on(EVENTS.session, (sessionId: string) => {
+      localStorage.setItem("sessionId", sessionId);
+      socket.auth = { sessionId }
+      console.log(`LocalStorage: ${localStorage.getItem("sessionId")}`);
+    })
+
     socket.on("connect", () => {
       game.addPlayer(new Player(socket.id));
+      console.log(`Connected!`)
+      console.log(`Socket ID: ${socket.id}`);
       setGame(game.clone())
     })
   

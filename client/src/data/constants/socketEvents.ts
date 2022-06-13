@@ -9,5 +9,5 @@ export const EVENTS = {
   startNewGame: "start-new-game",
   updateServer: "update-server",
   updateClient: "update-client",
-
+  session: "session",
 }

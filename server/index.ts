@@ -1,7 +1,8 @@
 import { createServer } from "http";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { Game } from "../client/src/data/classes/Game";
 import { Player } from "../client/src/data/classes/Player";
+import { sessionStore } from "../client/src/data/classes/Session";
 import { EVENTS } from "../client/src/data/constants/socketEvents";
 import { GameDataType, PlayerDataType } from "../client/src/data/types/ClassTypes";
 
@@ -21,9 +22,31 @@ type GameStore = {
 
 const gameStore: GameStore = {};
 
+// Middleware setup
+io.use((socket, next) => {
+  const sessionId = socket.handshake.auth.sessionId;
+
+  // Return Visit
+  if (sessionId) {
+    const session = sessionStore.findSession(sessionId);
+    if (session) {
+      session.socketId = socket.id
+      console.log(`Session Updated!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID: ${socket.id}`)
+      return next();
+    }
+  }
+
+  // First Visit
+  sessionStore.createSession(socket.id);
+  console.log(`Session Added!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID ${socket.id}`);
+  next();
+});
+
 io.on("connection", (socket) => {
 
   console.log(`Client ${socket.id} connected`);
+
+  socket.emit(EVENTS.session, sessionStore.findSessionBySocketId(socket.id)?.sessionId);
 
   socket.on(EVENTS.createGame, async (gameData: GameDataType): Promise<void> => {
     await socket.join(gameData.lobbyId);
