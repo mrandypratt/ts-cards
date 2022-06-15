@@ -1,5 +1,6 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
+import { EVENTS } from "../data/constants/socketEvents";
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import { VIEWS } from "../data/types/VIEWS";
 

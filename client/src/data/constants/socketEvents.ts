@@ -1,5 +1,9 @@
 export const EVENTS = {
-  createGame: "create-game",
+  newSession: "new-session",
+  existingSession: "existing-session",
+  addGameToStore: "add-game-to-store",
+  createLobby: "create-lobby",
+  updateGame: "update-game",
   joinRoom: "join-room",
   roomDoesNotExist: "room-does-not-exist",
   startRound: "start-round",
@@ -7,7 +11,7 @@ export const EVENTS = {
   winnerSelected: "winner-selected",
   startNextRound: "start-next-round",
   startNewGame: "start-new-game",
-  updateServer: "update-server",
   updateClient: "update-client",
   session: "session",
+  updateView: "updateView",
 }

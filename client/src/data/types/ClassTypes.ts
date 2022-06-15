@@ -10,6 +10,7 @@ export type PlayerDataType = {
   name: string;
   cards: CardDataType[];
   socketId: string;
+  sessionId: string;
   view: string;
 }
 

@@ -19,7 +19,7 @@ export const CreateLobby = ({game, setGame, socket}: ViewPropsType): JSX.Element
     game.generateLobbyId();
     game.setPlayerName(socket?.id, name);
     game.setView(socket?.id, VIEWS.host.inviteParticipants);
-    socket?.emit(EVENTS.createGame, game);
+    socket?.emit(EVENTS.createLobby, game);
   }
 
   return (

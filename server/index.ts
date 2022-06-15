@@ -1,8 +1,9 @@
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { Game } from "../client/src/data/classes/Game";
 import { Player } from "../client/src/data/classes/Player";
-import { sessionStore } from "../client/src/data/classes/Session";
+import { sessionStore } from "./SessionStore";
+import { gameStore } from "./GameStore";
 import { EVENTS } from "../client/src/data/constants/socketEvents";
 import { GameDataType, PlayerDataType } from "../client/src/data/types/ClassTypes";
 
@@ -16,29 +17,30 @@ const io = new Server(httpServer, {
 
 const PORT = process.env.port || 8787;
 
-type GameStore = {
-  [lobbyId: string]: Game;
-}
-
-const gameStore: GameStore = {};
-
 // Middleware setup
 io.use((socket, next) => {
   const sessionId = socket.handshake.auth.sessionId;
 
   // Return Visit
+  // User's session should be loaded, it's socket ID updated
+  // Use old socket ID in SessionStore to find and update Game
+  // Then replace SessionStore SocketID with new socket
   if (sessionId) {
     const session = sessionStore.findSession(sessionId);
     if (session) {
-      session.socketId = socket.id
+      gameStore.updateSocketId(session.socketId, socket.id);
+      session.socketId = socket.id;
       console.log(`Session Updated!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID: ${socket.id}`)
+      socket.emit(EVENTS.existingSession, gameStore.findGameBySocketId(socket.id))
       return next();
     }
   }
 
   // First Visit
+  // User's Session should be created with socket ID
   sessionStore.createSession(socket.id);
   console.log(`Session Added!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID ${socket.id}`);
+  socket.emit(EVENTS.newSession, sessionStore.findSessionBySocketId(socket.id)?.sessionId)
   next();
 });
 
@@ -46,75 +48,100 @@ io.on("connection", (socket) => {
 
   console.log(`Client ${socket.id} connected`);
 
-  socket.emit(EVENTS.session, sessionStore.findSessionBySocketId(socket.id)?.sessionId);
+  socket.on(EVENTS.addGameToStore, (gameData: GameDataType): void => {
+    gameStore.addGame(new Game(gameData))
+  })
 
-  socket.on(EVENTS.createGame, async (gameData: GameDataType): Promise<void> => {
+
+  socket.on(EVENTS.updateView, (view: string) => {
+    gameStore.findPlayerBySocketId(socket.id)?.setView(view);
+  })
+
+  
+  socket.on(EVENTS.createLobby, async (gameData: GameDataType): Promise<void> => {
     await socket.join(gameData.lobbyId);
     console.log(`Client ${socket.id} created Room ${gameData.lobbyId}`);
-    gameStore[gameData.lobbyId] = new Game(gameData);
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    gameStore.addGame(new Game(gameData));
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore.findGameByLobbyId(gameData.lobbyId));
   });
   
   socket.on(EVENTS.joinRoom, (gameData: GameDataType, playerData: PlayerDataType, socketId: string): void => {
-    if (gameStore[gameData.lobbyId]) {
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    if (currentGame) {
       socket.join(gameData.lobbyId);
       console.log(`Client ${socket.id} joined Room ${gameData.lobbyId}`)
-      gameStore[gameData.lobbyId].addPlayer(new Player("", playerData));
-      io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+      currentGame.addPlayer(new Player("", playerData));
+      io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
     } else {
       socket.emit(EVENTS.roomDoesNotExist, "error");
     }
   });
 
   socket.on(EVENTS.startRound, (gameData: GameDataType): void => {
-    gameStore[gameData.lobbyId].initializeRound();
-    console.log("Round Started")
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    if (currentGame) {
+      currentGame.initializeRound();
+      console.log("Round Started")
+      io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
+    }
   });
   
   socket.on(EVENTS.playerSelection, (gameData: GameDataType): void => {
-    gameStore[gameData.lobbyId] = new Game(gameData);
+    gameStore.overwriteGame(new Game(gameData));
     console.log("Selection Made")
 
-    if (gameStore[gameData.lobbyId].round?.allSelectionsMade()) {
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    if (currentGame && currentGame.round?.allSelectionsMade()) {
       console.log("Index.ts: All Selections Made")
-      gameStore[gameData.lobbyId].updateViewsForJudgeRound();
+      currentGame.updateViewsForJudgeRound();
       console.log("Moving to Judge Round")
     };
 
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
     
   });
   
   socket.on(EVENTS.winnerSelected, (gameData: GameDataType): void => {
-    gameStore[gameData.lobbyId] = new Game(gameData);
+    gameStore.overwriteGame(new Game(gameData));
     console.log("Winner Selected: Showing Results");
 
-    gameStore[gameData.lobbyId].addRoundToRounds();
-    gameStore[gameData.lobbyId].updateViewsForRoundResults();
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    if (currentGame) {
+      currentGame.addRoundToRounds();
+      currentGame.updateViewsForRoundResults();
+    }
+
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
   });
   
   socket.on(EVENTS.startNextRound, (gameData: GameDataType): void => {
-    gameStore[gameData.lobbyId] = new Game(gameData);
+    gameStore.overwriteGame(new Game(gameData));
     console.log(`Client ${socket.id} ready for next round`);
+
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
   
-    if (gameStore[gameData.lobbyId].readyForNextRound()) {
-      gameStore[gameData.lobbyId].createNextRound();
+    if (currentGame && currentGame.readyForNextRound()) {
+      currentGame.createNextRound();
     }
 
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
   });
 
   socket.on(EVENTS.startNewGame, (gameData: GameDataType): void => {
-    gameStore[gameData.lobbyId] = new Game(gameData);
+    gameStore.overwriteGame(new Game(gameData));
     console.log(`Client ${socket.id} ready for next game`);
   
-    if (gameStore[gameData.lobbyId].readyForNextGame()) {
-      gameStore[gameData.lobbyId].resetGame();
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    if (currentGame && currentGame.readyForNextGame()) {
+      currentGame.resetGame();
     }
 
-    io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore[gameData.lobbyId]);
+    io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
   });
 
   socket.on("disconnect", () => {
