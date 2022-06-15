@@ -1,5 +1,6 @@
 import { Game } from "../client/src/data/classes/Game";
 import { Player } from "../client/src/data/classes/Player";
+import { GameDataType } from "../client/src/data/types/ClassTypes";
 
 class GameStore {
   games: Game[];
@@ -12,19 +13,35 @@ class GameStore {
     this.games.push(game);
   }
 
+
+  setLobbyId(lobbyId: string, socketId: string): void {
+    this.findGameBySocketId(socketId)?.setLobby(lobbyId);
+  }
+
+  updatePlayer(gameData: GameDataType, socketId: string): void {
+    let newGame = new Game(gameData);
+
+    this.games.find((game, gameIndex): void => {
+      if (game.getPlayer(socketId)) {
+        game.players.find((player, playerIndex) => {
+          if (player.socketId === socketId) {
+            let newPlayer = newGame.getPlayer(socketId);
+            if (newPlayer) {
+              this.games[gameIndex].players[playerIndex] = newPlayer;
+            }
+            return;
+          }
+        })
+      }
+    });
+  }
+
   findGameByLobbyId(lobbyId: string): Game | null {
     let game = this.games.find(game => game.lobbyId === lobbyId);
     if (game) return game;
     return null;
   }
 
-  overwriteGame(newGame: Game): void {
-    let game = this.games.forEach((game, index) => {
-      if (game.lobbyId === newGame.lobbyId) {
-        this.games[index] = newGame;
-      }
-    })
-  }
 
   findGameBySocketId(socketId: string): Game | null {
     let game = this.games.find(game => game.getPlayer(socketId));

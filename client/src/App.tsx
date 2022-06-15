@@ -28,7 +28,7 @@ export const App = (): JSX.Element => {
   const [game, setGame] = useState(new Game()); 
   
   useEffect(() => {
-    const sessionId = localStorage.getItem("sessionId");
+    const sessionId = sessionStorage.getItem("sessionId");
 
     if (sessionId) {
       socket.auth = { sessionId };
@@ -42,16 +42,14 @@ export const App = (): JSX.Element => {
     })
 
     socket.on(EVENTS.newSession, (sessionId: string) => {
-      localStorage.setItem("sessionId", sessionId);
+      sessionStorage.setItem("sessionId", sessionId);
       game.addPlayer(new Player(socket.id));
       socket.emit(EVENTS.addGameToStore, game);
       setGame(game.clone())
     })
   
-    socket.on(EVENTS.updateClient, (updatedGameData: GameDataType) => {
-      if (JSON.stringify(game) !== JSON.stringify(updatedGameData)) {
-        setGame(new Game(updatedGameData));
-      }
+    socket.on(EVENTS.updateClient, (gameData: GameDataType) => {
+      setGame(new Game(gameData));
     })
   }, [])
 

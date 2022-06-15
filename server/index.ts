@@ -17,14 +17,9 @@ const io = new Server(httpServer, {
 
 const PORT = process.env.port || 8787;
 
-// Middleware setup
 io.use((socket, next) => {
   const sessionId = socket.handshake.auth.sessionId;
 
-  // Return Visit
-  // User's session should be loaded, it's socket ID updated
-  // Use old socket ID in SessionStore to find and update Game
-  // Then replace SessionStore SocketID with new socket
   if (sessionId) {
     const session = sessionStore.findSession(sessionId);
     if (session) {
@@ -36,8 +31,6 @@ io.use((socket, next) => {
     }
   }
 
-  // First Visit
-  // User's Session should be created with socket ID
   sessionStore.createSession(socket.id);
   console.log(`Session Added!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID ${socket.id}`);
   socket.emit(EVENTS.newSession, sessionStore.findSessionBySocketId(socket.id)?.sessionId)
@@ -58,20 +51,22 @@ io.on("connection", (socket) => {
   })
 
   
-  socket.on(EVENTS.createLobby, async (gameData: GameDataType): Promise<void> => {
-    await socket.join(gameData.lobbyId);
+  socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
+    socket.join(gameData.lobbyId);
     console.log(`Client ${socket.id} created Room ${gameData.lobbyId}`);
-    gameStore.addGame(new Game(gameData));
+    gameStore.setLobbyId(gameData.lobbyId, socket.id);
+    gameStore.updatePlayer(gameData, socket.id);
     io.to(gameData.lobbyId).emit(EVENTS.updateClient, gameStore.findGameByLobbyId(gameData.lobbyId));
   });
   
-  socket.on(EVENTS.joinRoom, (gameData: GameDataType, playerData: PlayerDataType, socketId: string): void => {
+  socket.on(EVENTS.joinLobby, (gameData: GameDataType, playerData: PlayerDataType): void => {
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
 
     if (currentGame) {
       socket.join(gameData.lobbyId);
       console.log(`Client ${socket.id} joined Room ${gameData.lobbyId}`)
       currentGame.addPlayer(new Player("", playerData));
+
       io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
     } else {
       socket.emit(EVENTS.roomDoesNotExist, "error");
@@ -89,7 +84,7 @@ io.on("connection", (socket) => {
   });
   
   socket.on(EVENTS.playerSelection, (gameData: GameDataType): void => {
-    gameStore.overwriteGame(new Game(gameData));
+    gameStore.updatePlayer(gameData, socket.id);
     console.log("Selection Made")
 
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
@@ -105,7 +100,7 @@ io.on("connection", (socket) => {
   });
   
   socket.on(EVENTS.winnerSelected, (gameData: GameDataType): void => {
-    gameStore.overwriteGame(new Game(gameData));
+    gameStore.updatePlayer(gameData, socket.id);
     console.log("Winner Selected: Showing Results");
 
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
@@ -119,7 +114,7 @@ io.on("connection", (socket) => {
   });
   
   socket.on(EVENTS.startNextRound, (gameData: GameDataType): void => {
-    gameStore.overwriteGame(new Game(gameData));
+    gameStore.updatePlayer(gameData, socket.id);
     console.log(`Client ${socket.id} ready for next round`);
 
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
@@ -132,7 +127,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on(EVENTS.startNewGame, (gameData: GameDataType): void => {
-    gameStore.overwriteGame(new Game(gameData));
+    gameStore.updatePlayer(gameData, socket.id);
     console.log(`Client ${socket.id} ready for next game`);
   
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)

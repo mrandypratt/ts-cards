@@ -4,7 +4,7 @@ export const EVENTS = {
   addGameToStore: "add-game-to-store",
   createLobby: "create-lobby",
   updateGame: "update-game",
-  joinRoom: "join-room",
+  joinLobby: "join-lobby",
   roomDoesNotExist: "room-does-not-exist",
   startRound: "start-round",
   playerSelection: "player-selection",
