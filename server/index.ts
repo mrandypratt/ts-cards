@@ -19,13 +19,26 @@ const PORT = process.env.port || 8787;
 
 io.use((socket, next) => {
   const sessionId = socket.handshake.auth.sessionId;
-
+  
+  // New Socket, Existing Session
   if (sessionId) {
     const session = sessionStore.findSession(sessionId);
+    console.log("Session Value")
+    console.log(session)
+
     if (session) {
+      // Join lobby if session was in lobby
+      let lobbyId = gameStore.findGameBySocketId(session.socketId)?.lobbyId;
+      if (lobbyId) {
+        socket.join(lobbyId)
+      };
+
       gameStore.updateSocketId(session.socketId, socket.id);
       session.socketId = socket.id;
+
+
       console.log(`Session Updated!\n--Session: ${sessionStore.findSessionBySocketId(socket.id)?.sessionId}\n--SocketID: ${socket.id}`)
+      console.log(`--Re-joined Room ${gameStore.findGameBySocketId(socket.id)?.lobbyId}`);
       socket.emit(EVENTS.existingSession, gameStore.findGameBySocketId(socket.id))
       return next();
     }
@@ -66,7 +79,7 @@ io.on("connection", (socket) => {
       socket.join(gameData.lobbyId);
       console.log(`Client ${socket.id} joined Room ${gameData.lobbyId}`)
       currentGame.addPlayer(new Player("", playerData));
-
+      console.log(currentGame);
       io.to(gameData.lobbyId).emit(EVENTS.updateClient, currentGame);
     } else {
       socket.emit(EVENTS.roomDoesNotExist, "error");
@@ -90,7 +103,7 @@ io.on("connection", (socket) => {
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
 
     if (currentGame && currentGame.round?.allSelectionsMade()) {
-      console.log("Index.ts: All Selections Made")
+      console.log("All Selections Made")
       currentGame.updateViewsForJudgeRound();
       console.log("Moving to Judge Round")
     };
