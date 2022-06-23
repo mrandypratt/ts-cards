@@ -5,22 +5,22 @@ import { ResponseCard } from "./ResponseCard";
 export class Player {
   name: string;
   cards: ResponseCard[];
-  socketId: string;
+  sessionId: string;
   view: string;
 
-  constructor(socketId: string, playerData?: PlayerDataType) {
+  constructor(sessionId: string, playerData?: PlayerDataType) {
     if (playerData) {
       this.name = playerData.name;
       this.cards = [];
       playerData.cards.forEach(card => {
         this.cards.push(new ResponseCard("" ,card));
       })
-      this.socketId = playerData.socketId;
+      this.sessionId = playerData.sessionId;
       this.view = playerData.view;
     } else {
       this.name = "";
       this.cards = [];
-      this.socketId = socketId;
+      this.sessionId = sessionId;
       this.view = VIEWS.home;
     }
   }

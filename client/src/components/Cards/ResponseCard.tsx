@@ -10,29 +10,32 @@ type ResponseCardProps = {
   card: Card;
   game: Game;
   setGame: (game: Game) => void;
+  sessionId: string;
 }
 
-export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps): JSX.Element => {
-
-  if (game.currentPlayerView(player.socketId) === VIEWS.player.turn) {
+export const ResponseCard = ({ player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
+  console.log(game.currentPlayerView(sessionId))
+  if (game.currentPlayerView(sessionId) === VIEWS.player.turn) {
     return (
       <PlayingCard 
-        type={ game.round?.isCardSelected(player.socketId, card) ? "selected" : "response" }  
+        type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
         text={ card.text } 
         onClick={ () => {
-          game.round?.selectCard(player.socketId, card);
+          game.round?.selectCard(sessionId, card);
           setGame(game.clone())
         }}
       />
     );
   }
   
-  if (game.currentPlayerView(player.socketId) === VIEWS.judge.turn) {
+  if (game.currentPlayerView(sessionId) === VIEWS.judge.turn) {
+    console.log("ResponseCard.tsx Line 33")
     return (
       <PlayingCard 
         type={game.round?.isWinningCard(card) ? "selected" : "response"}
         text={ card.text } 
         onClick={ () => {
+          console.log("Card Clicked")
           if (game.round) {
             game.round?.setWinningCard(card);
             game.round?.setWinner(card);
@@ -43,8 +46,8 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
     );
   }
   
-  if (game.currentPlayerView(player.socketId) === VIEWS.results.round ||
-      game.currentPlayerView(player.socketId) === VIEWS.player.waitingForJudge) {
+  if (game.currentPlayerView(sessionId) === VIEWS.results.round ||
+      game.currentPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
     return (
       <PlayingCard 
         type="response" 

@@ -6,12 +6,13 @@ import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
-  const player = game.getPlayer(socket.id);
+  const player = game.getPlayer(sessionId);
 
   const submitSelection = (): void => {
-    game.setView(socket?.id, VIEWS.player.selectionMade);
+    game.setView(sessionId, VIEWS.player.selectionMade);
+    console.log(game)
     socket?.emit(EVENTS.playerSelection, game);
   }
   
@@ -38,6 +39,7 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
                 card={card}
                 game={game}
                 setGame={setGame}
+                sessionId={sessionId}
               />
             )
           })}
@@ -46,7 +48,7 @@ export const PlayerTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Elemen
   
         <SubmitButton
           onClick={submitSelection}
-          disabled={!round.hasPlayerSelected(player.socketId)}
+          disabled={!round.hasPlayerSelected(player.sessionId)}
           type="button"
           text="Submit Card"
         />

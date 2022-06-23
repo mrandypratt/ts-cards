@@ -3,9 +3,9 @@ import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-export const PlayerWaitingForJudge = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
-  const player = game.getPlayer(socket.id);
+  const player = game.getPlayer(sessionId);
 
   if (round && player) {
     return (
@@ -23,8 +23,8 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket }: ViewPropsType):
   
         <div style={PlayersHandStyle}>
   
-          {round.playersSocketIds.map((socketId) => {
-            let card = round.getSelection(socketId);
+          {round.playersSessionIds.map((sessionId) => {
+            let card = round.getSelection(sessionId);
 
             if (card !== null) {
               return (
@@ -34,6 +34,7 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket }: ViewPropsType):
                   card={card}
                   game={game}
                   setGame={setGame}
+                  sessionId={sessionId}
                 />
                 );
               } else {

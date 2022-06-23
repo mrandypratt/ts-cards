@@ -37,13 +37,12 @@ export const App = (): JSX.Element => {
     socket.connect();
 
     socket.on(EVENTS.existingSession, (game: GameDataType) => {
-      console.log(game)
       setGame(new Game(game));
     })
 
     socket.on(EVENTS.newSession, (sessionId: string) => {
       sessionStorage.setItem("sessionId", sessionId);
-      game.addPlayer(new Player(socket.id));
+      game.addPlayer(new Player(sessionId));
       socket.emit(EVENTS.addGameToStore, game);
       setGame(game.clone())
     })
@@ -53,175 +52,194 @@ export const App = (): JSX.Element => {
     })
   }, [])
 
-  if (game.currentPlayerView(socket.id) === VIEWS.home) {
-    socket.emit(EVENTS.updateView, VIEWS.home);
-    
-    return (
-      <Home
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-      )
-    }
-    
-    if (game.currentPlayerView(socket.id) === VIEWS.gettingStarted) {
-      socket.emit(EVENTS.updateView, VIEWS.gettingStarted);
-      
-      return(
-        <GettingStarted
-          game={game}
-          setGame={setGame}
-          socket={socket}
-        />
-      )
-    }
-      
-    if (game.currentPlayerView(socket.id) === VIEWS.host.createLobby) {
-      socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
+  const sessionId = sessionStorage.getItem("sessionId");
 
+  if (sessionId) {
+    if (game.currentPlayerView(sessionId) === VIEWS.home) {
+      socket.emit(EVENTS.updateView, VIEWS.home);
+      
       return (
-        <CreateLobby
+        <Home
           game={game}
           setGame={setGame}
           socket={socket}
+          sessionId={sessionId}
+        />
+        )
+      }
+      
+      if (game.currentPlayerView(sessionId) === VIEWS.gettingStarted) {
+        socket.emit(EVENTS.updateView, VIEWS.gettingStarted);
+        
+        return(
+          <GettingStarted
+            game={game}
+            setGame={setGame}
+            socket={socket}
+            sessionId={sessionId}
+          />
+        )
+      }
+        
+      if (game.currentPlayerView(sessionId) === VIEWS.host.createLobby) {
+        socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
+  
+        return (
+          <CreateLobby
+            game={game}
+            setGame={setGame}
+            socket={socket}
+            sessionId={sessionId}
+          />
+        );
+      }
+  
+    if (game.currentPlayerView(sessionId) === VIEWS.host.inviteParticipants) {
+      socket.emit(EVENTS.updateView, VIEWS.host.inviteParticipants);
+  
+      return (
+        <InviteParticipants
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
         />
       );
     }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.host.inviteParticipants) {
-    socket.emit(EVENTS.updateView, VIEWS.host.inviteParticipants);
-
-    return (
-      <InviteParticipants
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
+    
+    if (game.currentPlayerView(sessionId) === VIEWS.guest.joinLobby) {
+      socket.emit(EVENTS.updateView, VIEWS.guest.joinLobby);
   
-  if (game.currentPlayerView(socket.id) === VIEWS.guest.joinLobby) {
-    socket.emit(EVENTS.updateView, VIEWS.guest.joinLobby);
-
-    return (
-      <JoinLobby
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.guest.waitingForHost) {
-    socket.emit(EVENTS.updateView, VIEWS.guest.waitingForHost)
-
-    return (
-      <WaitingForHost
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.player.turn) {
-    socket.emit(EVENTS.updateView, VIEWS.player.turn)
-
-    return (
-      <PlayerTurn
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.player.selectionMade) {
-    socket.emit(EVENTS.updateView, VIEWS.player.selectionMade)
-
-    return (
-      <PlayerSelectionMade
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
+      return (
+        <JoinLobby
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
   
-  if (game.currentPlayerView(socket.id) === VIEWS.player.waitingForJudge) {
-    socket.emit(EVENTS.updateView, VIEWS.player.waitingForJudge)
-
-    return (
-      <PlayerWaitingForJudge
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.judge.waitingforSelections) {
-    socket.emit(EVENTS.updateView, VIEWS.judge.waitingforSelections)
-
-    return (
-      <JudgeWaitingForPlayers
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
-
-  if (game.currentPlayerView(socket.id) === VIEWS.judge.turn) {
-    socket.emit(EVENTS.updateView, VIEWS.judge.turn)
-
-    return (
-      <JudgeTurn
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
+    if (game.currentPlayerView(sessionId) === VIEWS.guest.waitingForHost) {
+      socket.emit(EVENTS.updateView, VIEWS.guest.waitingForHost)
   
-  if (game.currentPlayerView(socket.id) === VIEWS.results.round) {
-    socket.emit(EVENTS.updateView, VIEWS.results.round)
-
-    return (
-      <RoundResults
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
+      return (
+        <WaitingForHost
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
   
-  if (game.currentPlayerView(socket.id) === VIEWS.results.waitingForNextRound) {
-    socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextRound)
-
-    return (
-      <WaitingForNextRound
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
+    if (game.currentPlayerView(sessionId) === VIEWS.player.turn) {
+      socket.emit(EVENTS.updateView, VIEWS.player.turn)
+  
+      return (
+        <PlayerTurn
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+  
+    if (game.currentPlayerView(sessionId) === VIEWS.player.selectionMade) {
+      socket.emit(EVENTS.updateView, VIEWS.player.selectionMade)
+  
+      return (
+        <PlayerSelectionMade
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+    
+    if (game.currentPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
+      socket.emit(EVENTS.updateView, VIEWS.player.waitingForJudge)
+  
+      return (
+        <PlayerWaitingForJudge
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+  
+    if (game.currentPlayerView(sessionId) === VIEWS.judge.waitingforSelections) {
+      socket.emit(EVENTS.updateView, VIEWS.judge.waitingforSelections)
+  
+      return (
+        <JudgeWaitingForPlayers
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+  
+    if (game.currentPlayerView(sessionId) === VIEWS.judge.turn) {
+      socket.emit(EVENTS.updateView, VIEWS.judge.turn)
+  
+      return (
+        <JudgeTurn
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+    
+    if (game.currentPlayerView(sessionId) === VIEWS.results.round) {
+      socket.emit(EVENTS.updateView, VIEWS.results.round)
+  
+      return (
+        <RoundResults
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+    
+    if (game.currentPlayerView(sessionId) === VIEWS.results.waitingForNextRound) {
+      socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextRound)
+  
+      return (
+        <WaitingForNextRound
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+  
+    if (game.currentPlayerView(sessionId) === VIEWS.results.waitingForNextGame) {
+      socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextGame)
+  
+      return (
+        <WaitingForNextGame
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
   }
 
-  if (game.currentPlayerView(socket.id) === VIEWS.results.waitingForNextGame) {
-    socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextGame)
-
-    return (
-      <WaitingForNextGame
-        game={game}
-        setGame={setGame}
-        socket={socket}
-      />
-    );
-  }
 
   return (
-    <div>Error: No View on App</div>
+    <div>Loading...</div>
   )
 }

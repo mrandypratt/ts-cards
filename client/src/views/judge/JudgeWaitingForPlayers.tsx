@@ -2,9 +2,9 @@ import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
-  const player = game.getPlayer(socket?.id);
+  const player = game.getPlayer(sessionId);
 
   if (round && player) {
     return (
@@ -26,10 +26,10 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket }: ViewPropsType)
   
         <h3><b><u>Submissions:</u></b></h3>
 
-        {round.playersSocketIds.map(playerSocketId => {
-          let player = game.getPlayer(playerSocketId);
+        {round.playersSessionIds.map(playerSessionId => {
+          let player = game.getPlayer(playerSessionId);
           return (
-            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSocketId) ? "Yes" : "No"}</p>
+            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSessionId) ? "Yes" : "No"}</p>
           )
         })}
 

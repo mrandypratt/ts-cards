@@ -6,7 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 
-export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
+export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -19,8 +19,11 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
   }
 
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(game.lobbyId);
-    setOpenSnackbar(true)
+    let lobbyId = game.lobbyId
+    if (lobbyId) {
+      navigator.clipboard.writeText(lobbyId);
+      setOpenSnackbar(true)
+    }
   }
 
   const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -73,7 +76,7 @@ export const InviteParticipants = ({game, setGame, socket}: ViewPropsType): JSX.
 
     {game.players.map(participant => {
       return (
-        <p key={participant.socketId}>{participant.name}</p>
+        <p key={participant.sessionId}>{participant.name}</p>
       )
     })}
 

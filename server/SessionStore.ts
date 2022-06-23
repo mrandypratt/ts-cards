@@ -7,8 +7,10 @@ class SessionStore {
     this.sessions = [];
   }
 
-  createSession(socketId: string): void {
-    this.sessions.push(new Session(socketId));
+  createSession(socketId: string): Session {
+    const session = new Session(socketId);
+    this.sessions.push(session);
+    return session;
   }
 
   findSession(sessionId: string): Session | null {
@@ -22,8 +24,6 @@ class SessionStore {
     if (session) return session;
     return null;
   }
-
 }
-
 
 export const sessionStore = new SessionStore();

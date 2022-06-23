@@ -5,4 +5,5 @@ export type ViewPropsType = {
   game: Game;
   setGame: (game: Game) => void;
   socket: Socket;
+  sessionId: string
 }

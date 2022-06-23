@@ -1,23 +1,22 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
-import { EVENTS } from "../data/constants/socketEvents";
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import { VIEWS } from "../data/types/VIEWS";
 
-export const Home = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
-    game.setView(socket.id, VIEWS.host.createLobby);
+    game.setView(sessionId, VIEWS.host.createLobby);
     setGame(game.clone());
   }
   
   const joinLobby = () => {
-    game.setView(socket?.id, VIEWS.guest.joinLobby);
+    game.setView(sessionId, VIEWS.guest.joinLobby);
     setGame(game.clone());
   }
   
   const gettingStarted = () => {
-    game.setView(socket?.id, VIEWS.gettingStarted);
+    game.setView(sessionId, VIEWS.gettingStarted);
     setGame(game.clone());
   }
 

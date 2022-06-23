@@ -7,57 +7,57 @@ const isExistingRound = (roundData: NewRoundPropsType | RoundDataType): roundDat
 }
 
 export class Round {
-  playersSocketIds: string[];
-  judgeSocketId: string ;
+  playersSessionIds: string[];
+  judgeSessionId: string ;
   promptCard: PromptCard;
   selectedCardStore: {
-    [playerSocketId: string]: ResponseCard | null
+    [playerSessionId: string]: ResponseCard | null
   };
   winningCard: ResponseCard | null;
-  winnerSocketId: string | null;
+  winnerSessionId: string | null;
 
   constructor(roundData: NewRoundPropsType | RoundDataType) {
     if (isExistingRound(roundData)) {
-      this.playersSocketIds = [];
-      roundData.playersSocketIds.forEach(socketId => {
-        this.playersSocketIds.push(socketId);
+      this.playersSessionIds = [];
+      roundData.playersSessionIds.forEach(sessionId => {
+        this.playersSessionIds.push(sessionId);
       });
-      this.judgeSocketId = roundData.judgeSocketId;
+      this.judgeSessionId = roundData.judgeSessionId;
       this.promptCard = new PromptCard("", roundData.promptCard);
       this.selectedCardStore = roundData.selectedCardStore;
       this.winningCard = roundData.winningCard === null ? null : new ResponseCard("", roundData.winningCard);
-      this.winnerSocketId = roundData.winnerSocketId === null ? null : roundData.winnerSocketId;
+      this.winnerSessionId = roundData.winnerSessionId === null ? null : roundData.winnerSessionId;
     } else {
-      this.playersSocketIds = roundData.playersSocketIds;
-      this.judgeSocketId = roundData.judgeSocketId;
+      this.playersSessionIds = roundData.playersSessionIds;
+      this.judgeSessionId = roundData.judgeSessionId;
       this.promptCard = roundData.promptCard;
       this.selectedCardStore = {};
-      this.playersSocketIds.forEach(socketId => {
-        this.selectedCardStore[socketId] = null;
+      this.playersSessionIds.forEach(sessionId => {
+        this.selectedCardStore[sessionId] = null;
       });
       this.winningCard = null;
-      this.winnerSocketId = null;
+      this.winnerSessionId = null;
     }
   }
 
-  selectCard(socketId: string, card: ResponseCard): void {
-    this.selectedCardStore[socketId] = card;
+  selectCard(sessionId: string, card: ResponseCard): void {
+    this.selectedCardStore[sessionId] = card;
   }
 
-  hasPlayerSelected(socketId: string): boolean {
-    return !!this.selectedCardStore[socketId];
+  hasPlayerSelected(sessionId: string): boolean {
+    return !!this.selectedCardStore[sessionId];
   }
 
-  getSelection(socketId: string): ResponseCard | null {
-    return this.selectedCardStore[socketId];
+  getSelection(sessionId: string): ResponseCard | null {
+    return this.selectedCardStore[sessionId];
   }
 
-  isCardSelected(socketId: string, card: ResponseCard): boolean {
-    return this.selectedCardStore[socketId]?.text === card.text;
+  isCardSelected(sessionId: string, card: ResponseCard): boolean {
+    return this.selectedCardStore[sessionId]?.text === card.text;
   }
 
   allSelectionsMade(): boolean {
-    return this.playersSocketIds.every(playerSocketId => this.selectedCardStore[playerSocketId] !== null);
+    return this.playersSessionIds.every(playerSessionId => this.selectedCardStore[playerSessionId] !== null);
   }
 
   setWinningCard(card: ResponseCard): void {
@@ -65,9 +65,9 @@ export class Round {
   }
 
   setWinner(card: ResponseCard): void {
-    this.playersSocketIds.forEach((playerSocketId) => {
-      if (this.selectedCardStore[playerSocketId] === card) {
-        this.winnerSocketId = playerSocketId;
+    this.playersSessionIds.forEach((playerSessionId) => {
+      if (this.selectedCardStore[playerSessionId] === card) {
+        this.winnerSessionId = playerSessionId;
       }
     })
   }

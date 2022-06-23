@@ -9,34 +9,34 @@ export type CardDataType = {
 export type PlayerDataType = {
   name: string;
   cards: CardDataType[];
-  socketId: string;
   sessionId: string;
   view: string;
 }
 
 export type RoundDataType = {
-  playersSocketIds: string[];
-  judgeSocketId: string;
+  playersSessionIds: string[];
+  judgeSessionId: string;
   promptCard: CardDataType;
   selectedCardStore: {
-    [playerSocketId: string]: CardDataType | null
+    [playerSessionId: string]: CardDataType | null
   };
   winningCard: CardDataType | null;
-  winnerSocketId: string | null;
+  winnerSessionId: string | null;
 }
 
 export type GameDataType = {
+  id: string;
   round: RoundDataType | null;
   rounds: RoundDataType[];
   players: PlayerDataType[];
   promptCards: CardDataType[];
   responseCards: CardDataType[];
-  lobbyId: string;
+  lobbyId: string | null;
 }
 
 export type NewRoundPropsType = {
-  playersSocketIds: string[];
-  judgeSocketId: string;
+  playersSessionIds: string[];
+  judgeSessionId: string;
   promptCard: PromptCard;
 }
 

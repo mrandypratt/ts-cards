@@ -8,7 +8,7 @@ import { containsValidCharacters } from "../../data/functions/arePlayerNamesVali
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const JoinLobby = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [ room, setRoom ] = useState("");
   const [ name, setName ] = useState("");
 
@@ -21,10 +21,10 @@ export const JoinLobby = ({ game, setGame, socket }: ViewPropsType): JSX.Element
   }
   
   const joinLobby = () => {
-    game.setPlayerName(socket?.id, name);
+    game.setPlayerName(sessionId, name);
     game.setLobby(room);
-    game.setView(socket?.id, VIEWS.guest.waitingForHost);
-    socket?.emit(EVENTS.joinLobby, game, game.getPlayer(socket?.id));
+    game.setView(sessionId, VIEWS.guest.waitingForHost);
+    socket?.emit(EVENTS.joinLobby, game, game.getPlayer(sessionId));
   }
 
   return (

@@ -10,5 +10,9 @@ export class Session {
     this.sessionId = sessionIdGenerator();
     this.socketId = socketId
   }
+
+  updateSocketId(socketId: string): void {
+    this.socketId = socketId;
+  }
 };
 

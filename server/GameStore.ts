@@ -14,18 +14,18 @@ class GameStore {
   }
 
 
-  setLobbyId(lobbyId: string, socketId: string): void {
-    this.findGameBySocketId(socketId)?.setLobby(lobbyId);
+  setLobbyId(lobbyId: string, sessionId: string): void {
+    this.findGameBySessionId(sessionId)?.setLobby(lobbyId);
   }
 
-  updatePlayer(gameData: GameDataType, socketId: string): void {
+  updatePlayer(gameData: GameDataType, sessionId: string): void {
     let newGame = new Game(gameData);
 
     this.games.find((game, gameIndex): void => {
-      if (game.getPlayer(socketId)) {
+      if (game.getPlayer(sessionId)) {
         game.players.find((player, playerIndex) => {
-          if (player.socketId === socketId) {
-            let newPlayer = newGame.getPlayer(socketId);
+          if (player.sessionId === sessionId) {
+            let newPlayer = newGame.getPlayer(sessionId);
             if (newPlayer) {
               this.games[gameIndex].players[playerIndex] = newPlayer;
             }
@@ -36,34 +36,42 @@ class GameStore {
     });
   }
 
-  findGameByLobbyId(lobbyId: string): Game | null {
-    let game = this.games.find(game => game.lobbyId === lobbyId);
+  updateGame(gameData: GameDataType | Game): void {
+    let newGame = new Game(gameData);
+
+    this.games.find((game, gameIndex): void => {
+      if (game.id === newGame.id) {
+        this.games[gameIndex] = newGame;
+        return;
+      }
+    })
+  }
+
+  findGame(gameId: string): Game | null {
+    let game = this.games.find(game => game.id === gameId);
     if (game) return game;
-    return null;
+    return null
   }
 
-
-  findGameBySocketId(socketId: string): Game | null {
-    let game = this.games.find(game => game.getPlayer(socketId));
-    if (game) return game;
-    return null;
-  }
-
-  findPlayerBySocketId(socketId: string): Player | null {
-    let game = this.games.find(game => game.getPlayer(socketId));
-    let player = game?.getPlayer(socketId);
-    if (player) return player;
-    return null;
-  }
-
-  updateSocketId(oldSocketId: string, newSocketId: string): Game | null {
-    let game = this.findGameBySocketId(oldSocketId);
-    let player = game?.getPlayer(oldSocketId);
-
-    if (player && game) {
-      player.socketId = newSocketId;
-      return game
+  findGameByLobbyId(lobbyId: string | null): Game | null {
+    let game;
+    if (lobbyId) {
+      game = this.games.find(game => game.lobbyId === lobbyId);
     }
+    if (game) return game;
+    return null
+  }
+
+  findGameBySessionId(socketId: string): Game | null {
+    let game = this.games.find(game => game.getPlayer(socketId));
+    if (game) return game;
+    return null;
+  }
+
+  findPlayerBySessionId(sessionId: string): Player | null {
+    let game = this.games.find(game => game.getPlayer(sessionId));
+    let player = game?.getPlayer(sessionId);
+    if (player) return player;
     return null;
   }
 

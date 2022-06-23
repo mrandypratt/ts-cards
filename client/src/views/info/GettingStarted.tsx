@@ -2,9 +2,9 @@ import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const GettingStarted = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
+export const GettingStarted = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const returnHome = () => {
-    game.setView(socket?.id, VIEWS.home)
+    game.setView(sessionId, VIEWS.home)
     setGame(game.clone());
   }
 
