@@ -21,13 +21,13 @@ export const ResultsTable = ({ game, setGame, socket, sessionId }: ViewPropsType
         <TableBody>
           {game.players.map((player: Player) => (
             <TableRow
-              key={sessionId}
+              key={player.sessionId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {player.name}
               </TableCell>
-              <TableCell align="center">{game.getScore(sessionId)}</TableCell>
+              <TableCell align="center">{game.getScore(player.sessionId)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

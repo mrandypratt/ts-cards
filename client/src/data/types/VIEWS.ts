@@ -28,7 +28,7 @@ export type ViewsType = {
 
 export const VIEWS = {
   home: "home",
-  gettingStarted: "gettngStarted",
+  gettingStarted: "gettingStarted",
   host: {
     createLobby: "hostCreateLobby",
     inviteParticipants: "hostInviteParticipants"
@@ -40,16 +40,16 @@ export const VIEWS = {
   player: {
     turn: "playerTurn",
     selectionMade: "playerSelectionMade",
-    waitingForJudge: "watchingJudge",
+    waitingForJudge: "playerWaitingForJudge",
   },
   judge: {
     waitingforSelections: "judgeWaitingForSelections",
     turn: "judgeTurn",
   },
   results: {
-    round: "roundResults",
-    waitingForNextRound: "wait-for-next-round",
-    game: "gameResults",
-    waitingForNextGame: "wait-for-next-game",
+    round: "resultsRound",
+    waitingForNextRound: "resultsWaitingForNextRound",
+    game: "resultsGame",
+    waitingForNextGame: "resultsWaitingForNextGame",
   },
 }

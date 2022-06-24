@@ -14,8 +14,12 @@ type ResponseCardProps = {
 }
 
 export const ResponseCard = ({ player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
-  console.log(game.currentPlayerView(sessionId))
-  if (game.currentPlayerView(sessionId) === VIEWS.player.turn) {
+
+  console.log(`Current View: ${game.getPlayerView(sessionId)}`);
+  console.log(game);
+  console.log(`SessionID: ${sessionId}`);
+
+  if (game.getPlayerView(sessionId) === VIEWS.player.turn) {
     return (
       <PlayingCard 
         type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
@@ -28,7 +32,7 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
     );
   }
   
-  if (game.currentPlayerView(sessionId) === VIEWS.judge.turn) {
+  if (game.getPlayerView(sessionId) === VIEWS.judge.turn) {
     console.log("ResponseCard.tsx Line 33")
     return (
       <PlayingCard 
@@ -46,8 +50,8 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
     );
   }
   
-  if (game.currentPlayerView(sessionId) === VIEWS.results.round ||
-      game.currentPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
+  if (game.getPlayerView(sessionId) === VIEWS.results.round ||
+      game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
     return (
       <PlayingCard 
         type="response" 
@@ -57,6 +61,6 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
   }
 
   return (
-    <div>Error :)</div>
+    <div>Error: No Card</div>
   )
 }

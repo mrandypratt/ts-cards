@@ -55,7 +55,7 @@ export class Game {
     return Object.assign(new Game(), this)
   }
 
-  currentPlayerView(sessionId: string): string | null {
+  getPlayerView(sessionId: string): string | null {
     let currentView = this.getPlayer(sessionId)?.view
     if (currentView) return currentView;
     return null;

@@ -9,6 +9,10 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   const round = game.round;
   const player = game.getPlayer(sessionId);
 
+  console.log(`Current View: ${game.getPlayerView(sessionId)}`);
+  console.log(game);
+  console.log(`SessionID: ${sessionId}`);
+
   const selectWinner = (): void => {
     socket?.emit(EVENTS.winnerSelected, game);
   }
@@ -29,8 +33,8 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   
         <div style={PlayersHandStyle}>
   
-          {round.playersSessionIds.map((sessionId) => {
-            let card = round.getSelection(sessionId);
+          {round.playersSessionIds.map((playerSessionId) => {
+            let card = round.getSelection(playerSessionId);
 
             if (card !== null) {
               return (

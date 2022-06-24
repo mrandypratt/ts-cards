@@ -55,7 +55,7 @@ export const App = (): JSX.Element => {
   const sessionId = sessionStorage.getItem("sessionId");
 
   if (sessionId) {
-    if (game.currentPlayerView(sessionId) === VIEWS.home) {
+    if (game.getPlayerView(sessionId) === VIEWS.home) {
       socket.emit(EVENTS.updateView, VIEWS.home);
       
       return (
@@ -68,7 +68,7 @@ export const App = (): JSX.Element => {
         )
       }
       
-      if (game.currentPlayerView(sessionId) === VIEWS.gettingStarted) {
+      if (game.getPlayerView(sessionId) === VIEWS.gettingStarted) {
         socket.emit(EVENTS.updateView, VIEWS.gettingStarted);
         
         return(
@@ -81,7 +81,7 @@ export const App = (): JSX.Element => {
         )
       }
         
-      if (game.currentPlayerView(sessionId) === VIEWS.host.createLobby) {
+      if (game.getPlayerView(sessionId) === VIEWS.host.createLobby) {
         socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
   
         return (
@@ -94,7 +94,7 @@ export const App = (): JSX.Element => {
         );
       }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.host.inviteParticipants) {
+    if (game.getPlayerView(sessionId) === VIEWS.host.inviteParticipants) {
       socket.emit(EVENTS.updateView, VIEWS.host.inviteParticipants);
   
       return (
@@ -107,7 +107,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (game.currentPlayerView(sessionId) === VIEWS.guest.joinLobby) {
+    if (game.getPlayerView(sessionId) === VIEWS.guest.joinLobby) {
       socket.emit(EVENTS.updateView, VIEWS.guest.joinLobby);
   
       return (
@@ -120,7 +120,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.guest.waitingForHost) {
+    if (game.getPlayerView(sessionId) === VIEWS.guest.waitingForHost) {
       socket.emit(EVENTS.updateView, VIEWS.guest.waitingForHost)
   
       return (
@@ -133,7 +133,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.player.turn) {
+    if (game.getPlayerView(sessionId) === VIEWS.player.turn) {
       socket.emit(EVENTS.updateView, VIEWS.player.turn)
   
       return (
@@ -146,7 +146,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.player.selectionMade) {
+    if (game.getPlayerView(sessionId) === VIEWS.player.selectionMade) {
       socket.emit(EVENTS.updateView, VIEWS.player.selectionMade)
   
       return (
@@ -159,7 +159,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (game.currentPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
+    if (game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
       socket.emit(EVENTS.updateView, VIEWS.player.waitingForJudge)
   
       return (
@@ -172,7 +172,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.judge.waitingforSelections) {
+    if (game.getPlayerView(sessionId) === VIEWS.judge.waitingforSelections) {
       socket.emit(EVENTS.updateView, VIEWS.judge.waitingforSelections)
   
       return (
@@ -185,7 +185,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.judge.turn) {
+    if (game.getPlayerView(sessionId) === VIEWS.judge.turn) {
       socket.emit(EVENTS.updateView, VIEWS.judge.turn)
   
       return (
@@ -198,7 +198,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (game.currentPlayerView(sessionId) === VIEWS.results.round) {
+    if (game.getPlayerView(sessionId) === VIEWS.results.round) {
       socket.emit(EVENTS.updateView, VIEWS.results.round)
   
       return (
@@ -211,7 +211,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (game.currentPlayerView(sessionId) === VIEWS.results.waitingForNextRound) {
+    if (game.getPlayerView(sessionId) === VIEWS.results.waitingForNextRound) {
       socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextRound)
   
       return (
@@ -224,7 +224,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (game.currentPlayerView(sessionId) === VIEWS.results.waitingForNextGame) {
+    if (game.getPlayerView(sessionId) === VIEWS.results.waitingForNextGame) {
       socket.emit(EVENTS.updateView, VIEWS.results.waitingForNextGame)
   
       return (

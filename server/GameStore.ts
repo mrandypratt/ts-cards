@@ -41,7 +41,12 @@ class GameStore {
 
     this.games.find((game, gameIndex): void => {
       if (game.id === newGame.id) {
-        this.games[gameIndex] = newGame;
+        if (game instanceof Game) {
+          this.games[gameIndex] = newGame;
+        } else {
+          this.games[gameIndex] = new Game(newGame);
+        }
+        
         return;
       }
     })
