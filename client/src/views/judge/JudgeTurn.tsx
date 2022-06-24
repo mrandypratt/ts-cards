@@ -5,9 +5,13 @@ import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-export const JudgeTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
+export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
-  const player = game.getPlayer(socket.id);
+  const player = game.getPlayer(sessionId);
+
+  console.log(`Current View: ${game.getPlayerView(sessionId)}`);
+  console.log(game);
+  console.log(`SessionID: ${sessionId}`);
 
   const selectWinner = (): void => {
     socket?.emit(EVENTS.winnerSelected, game);
@@ -29,8 +33,8 @@ export const JudgeTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element
   
         <div style={PlayersHandStyle}>
   
-          {round.playersSocketIds.map((socketId) => {
-            let card = round.getSelection(socketId);
+          {round.playersSessionIds.map((playerSessionId) => {
+            let card = round.getSelection(playerSessionId);
 
             if (card !== null) {
               return (
@@ -40,6 +44,7 @@ export const JudgeTurn = ({ game, setGame, socket }: ViewPropsType): JSX.Element
                   card={card}
                   game={game}
                   setGame={setGame}
+                  sessionId={sessionId}
                 />
                 );
               } else {

@@ -12,17 +12,20 @@ import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
 const CARDS_PER_PLAYER = 3;
 const WINNING_SCORE = 3;
 const lobbyIdGenerator = new ShortUniqueID({length: 8});
+const gameIdGenerator = new ShortUniqueID({length: 8});
 
 export class Game {
+  id: string;
   round: Round | null;
   rounds: Round[];
   players: Player[];
   promptCards: PromptCard[];
   responseCards: ResponseCard[];
-  lobbyId: string;
+  lobbyId: string | null;
   
   constructor(gameData?: GameDataType) {
     if (gameData) {
+      this.id = gameData.id
       this.round = gameData.round ? new Round(gameData.round) : null;
       this.rounds = [];
       gameData.rounds.forEach(round => this.rounds.push(new Round(round)))
@@ -38,12 +41,13 @@ export class Game {
       });
       this.lobbyId = gameData.lobbyId;
     } else {
+      this.id = gameIdGenerator();
       this.round = null;
       this.rounds = [];
       this.players = [];
       this.promptCards = [...promptCards];
       this.responseCards = [...responseCards];
-      this.lobbyId = "";
+      this.lobbyId = null;
     }
   }
   
@@ -51,12 +55,14 @@ export class Game {
     return Object.assign(new Game(), this)
   }
 
-  currentPlayerView(socketId: string): string | undefined {
-    return this.getPlayer(socketId)?.view;
+  getPlayerView(sessionId: string): string | null {
+    let currentView = this.getPlayer(sessionId)?.view
+    if (currentView) return currentView;
+    return null;
   }
   
-  setView(socketId: string | undefined, view: string): void {
-    let player = this.players.find(player => player.socketId === socketId)
+  setView(sessionId: string | undefined, view: string): void {
+    let player = this.players.find(player => player.sessionId === sessionId)
     player?.setView(view);
   }
 
@@ -68,12 +74,12 @@ export class Game {
     return this.players.push(player);
   }
 
-  getPlayer(socketId: string | undefined): Player | undefined {
-    return this.players.find(player => player.socketId === socketId);
+  getPlayer(sessionId: string | undefined): Player | undefined {
+    return this.players.find(player => player.sessionId === sessionId);
   }
   
-  setPlayerName(socketId: string, name: string): void {
-    let player = this.getPlayer(socketId);
+  setPlayerName(sessionId: string, name: string): void {
+    let player = this.getPlayer(sessionId);
     if (player) {
       player.name = name;
     };
@@ -106,8 +112,8 @@ export class Game {
   
   createNewRound(): void {
     const props: NewRoundPropsType = {
-      playersSocketIds: this.players.filter((_, index) => index !== (this.rounds.length % this.players.length)).map(player => player.socketId),
-      judgeSocketId: this.players[this.rounds.length % this.players.length].socketId,
+      playersSessionIds: this.players.filter((_, index) => index !== (this.rounds.length % this.players.length)).map(player => player.sessionId),
+      judgeSessionId: this.players[this.rounds.length % this.players.length].sessionId,
       promptCard: this.promptCards.pop() || new PromptCard('Oops! Out of Cards.')
     };
     
@@ -119,8 +125,8 @@ export class Game {
     let round = this.round;
     
     if (round) {
-      round.playersSocketIds.forEach((id): void => {
-        let currentPlayer = this.getPlayer(id);
+      round.playersSessionIds.forEach((sessionId: string): void => {
+        let currentPlayer = this.getPlayer(sessionId);
         if (currentPlayer)
         nonJudgePlayers.push(currentPlayer);
       })
@@ -130,7 +136,7 @@ export class Game {
   }
 
   getJudgePlayer(): Player | undefined {
-    return this.getPlayer(this.round?.judgeSocketId)
+    return this.getPlayer(this.round?.judgeSessionId)
   }
   
   updateViewsForNewRound(): void {
@@ -158,12 +164,12 @@ export class Game {
   }
 
   getRoundWinner(): Player | undefined {
-    let winnerSocketId = this.round?.winnerSocketId;
-    return winnerSocketId ? this.getPlayer(winnerSocketId) : undefined;
+    let winnerSessionId = this.round?.winnerSessionId;
+    return winnerSessionId ? this.getPlayer(winnerSessionId) : undefined;
   }
 
-  getScore(socketId: string): number {
-    return this.rounds.filter(round => round.winnerSocketId === socketId).length;
+  getScore(sessionId: string): number {
+    return this.rounds.filter(round => round.winnerSessionId === sessionId).length;
   }
 
   readyForNextRound(): boolean {
@@ -188,9 +194,9 @@ export class Game {
   discardPlayedCards(): void {
     let selectedCardStore = this.round?.selectedCardStore
     
-    for (const playerSocketId in selectedCardStore) {
-      let player = this.getPlayer(playerSocketId);
-      let cardId = selectedCardStore[playerSocketId]?.id;
+    for (const playerSessionId in selectedCardStore) {
+      let player = this.getPlayer(playerSessionId);
+      let cardId = selectedCardStore[playerSessionId]?.id;
       let cardToRemove = player?.cards.find(card => card.id === cardId);
       
       if (player && cardToRemove) {
@@ -201,7 +207,7 @@ export class Game {
 
   isGameWinner(): boolean {
     return this.players.some(player => {
-      return this.getScore(player.socketId) >= WINNING_SCORE;
+      return this.getScore(player.sessionId) >= WINNING_SCORE;
     })
   }
 

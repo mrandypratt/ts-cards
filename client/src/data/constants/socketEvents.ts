@@ -1,13 +1,17 @@
 export const EVENTS = {
-  createGame: "create-game",
-  joinRoom: "join-room",
+  newSession: "new-session",
+  existingSession: "existing-session",
+  addGameToStore: "add-game-to-store",
+  createLobby: "create-lobby",
+  updateGame: "update-game",
+  joinLobby: "join-lobby",
   roomDoesNotExist: "room-does-not-exist",
   startRound: "start-round",
   playerSelection: "player-selection",
   winnerSelected: "winner-selected",
   startNextRound: "start-next-round",
   startNewGame: "start-new-game",
-  updateServer: "update-server",
   updateClient: "update-client",
-
+  session: "session",
+  updateView: "updateView",
 }

@@ -10,29 +10,36 @@ type ResponseCardProps = {
   card: Card;
   game: Game;
   setGame: (game: Game) => void;
+  sessionId: string;
 }
 
-export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps): JSX.Element => {
+export const ResponseCard = ({ player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
 
-  if (game.currentPlayerView(player.socketId) === VIEWS.player.turn) {
+  console.log(`Current View: ${game.getPlayerView(sessionId)}`);
+  console.log(game);
+  console.log(`SessionID: ${sessionId}`);
+
+  if (game.getPlayerView(sessionId) === VIEWS.player.turn) {
     return (
       <PlayingCard 
-        type={ game.round?.isCardSelected(player.socketId, card) ? "selected" : "response" }  
+        type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
         text={ card.text } 
         onClick={ () => {
-          game.round?.selectCard(player.socketId, card);
+          game.round?.selectCard(sessionId, card);
           setGame(game.clone())
         }}
       />
     );
   }
   
-  if (game.currentPlayerView(player.socketId) === VIEWS.judge.turn) {
+  if (game.getPlayerView(sessionId) === VIEWS.judge.turn) {
+    console.log("ResponseCard.tsx Line 33")
     return (
       <PlayingCard 
         type={game.round?.isWinningCard(card) ? "selected" : "response"}
         text={ card.text } 
         onClick={ () => {
+          console.log("Card Clicked")
           if (game.round) {
             game.round?.setWinningCard(card);
             game.round?.setWinner(card);
@@ -43,8 +50,8 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
     );
   }
   
-  if (game.currentPlayerView(player.socketId) === VIEWS.results.round ||
-      game.currentPlayerView(player.socketId) === VIEWS.player.waitingForJudge) {
+  if (game.getPlayerView(sessionId) === VIEWS.results.round ||
+      game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
     return (
       <PlayingCard 
         type="response" 
@@ -54,6 +61,6 @@ export const ResponseCard = ({ player, card, game, setGame}: ResponseCardProps):
   }
 
   return (
-    <div>Error :)</div>
+    <div>Error: No Card</div>
   )
 }

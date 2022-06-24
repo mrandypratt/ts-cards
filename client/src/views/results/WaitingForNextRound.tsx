@@ -2,8 +2,8 @@ import { PromptCard } from "../../components/Cards/PromptCard";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const WaitingForNextRound = ({ game, setGame, socket }: ViewPropsType): JSX.Element => {
-  const player = game.getPlayer(socket.id);
+export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+  const player = game.getPlayer(sessionId);
 
   return (
     <div style={{ textAlign: "center" }}>

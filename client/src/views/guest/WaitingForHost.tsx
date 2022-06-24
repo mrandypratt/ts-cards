@@ -1,7 +1,7 @@
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Element => {
+export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -16,7 +16,7 @@ export const WaitingForHost = ({game, setGame, socket}: ViewPropsType): JSX.Elem
 
       {game.players.map(participant => {
         return (
-          <p key={participant.name}>{participant.name}</p>
+          <p key={participant.sessionId}>{participant.name}</p>
         )
       })}
 

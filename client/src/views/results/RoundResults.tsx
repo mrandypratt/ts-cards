@@ -1,33 +1,26 @@
 import { SubmitButton } from "../../components/Buttons/Submit";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
-import { Game } from "../../data/classes/Game";
-import { Socket } from "socket.io-client";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { RoundResultCardStyle } from "../../components/Containers/PlayersHand";
 import { ResultsTable } from "../../components/ResultsTable";
 import { VIEWS } from "../../data/types/VIEWS";
 import { EVENTS } from "../../data/constants/socketEvents";
+import { ViewPropsType } from "../../data/types/ViewPropsType";
 
-type RoundResultsViewProps = {
-  game: Game;
-  setGame: (game: Game) => void;
-  socket: Socket;
-}
-
-export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): JSX.Element => {
+export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
   const winner = game.getRoundWinner()
   const winningCard = game.round?.winningCard ? game.round?.winningCard : undefined;
-  const player = game.getPlayer(socket.id)
+  const player = game.getPlayer(sessionId)
 
   const startNextRound = () => {
-    game.setView(socket.id, VIEWS.results.waitingForNextRound);
+    game.setView(sessionId, VIEWS.results.waitingForNextRound);
     setGame(game.clone());
     socket.emit(EVENTS.startNextRound, game);
   }
 
   const startNewGame = () => {
-    game.setView(socket.id, VIEWS.results.waitingForNextGame);
+    game.setView(sessionId, VIEWS.results.waitingForNextGame);
     setGame(game.clone());
     socket.emit(EVENTS.startNewGame, game);
   }
@@ -55,13 +48,19 @@ export const RoundResults = ({ game, setGame, socket }: RoundResultsViewProps): 
             card={winningCard}
             game={game}
             setGame={setGame}
+            sessionId={sessionId}
           />
 
         </div>
   
         <div style={{textAlign: "center", marginTop: 10}}>
           
-          <ResultsTable game={game}/>
+          <ResultsTable
+            game={game}
+            setGame={setGame}
+            socket={socket}
+            sessionId={sessionId}
+          />
 
         </div>
 
