@@ -22,6 +22,16 @@ const styles = {
   },
 };
 
+const returnHomeStyles = {
+  width: "40%%",
+  height: 40,
+  margin: 10,
+  marginTop: 25,
+  fontSize: 18,
+  maxWidth: 200,
+  backgroundColor: "black",
+}
+
 type SubmitButtonProps = {
   text: string;
   type: "submit" | "button";
@@ -36,6 +46,18 @@ export const SubmitButton = ({ text, type, onClick, disabled }: SubmitButtonProp
       variant="contained"
       type={type}
       style={ disabled ? styles.unclickable : styles.clickable }
+      onClick={onClick}
+    >{ text }</Button>
+  );
+}
+
+export const ReturnHomeButton = ({ text, type, onClick, disabled }: SubmitButtonProps): JSX.Element => {
+  return (
+    <Button
+      disabled={disabled}
+      variant="contained"
+      type={type}
+      style={ returnHomeStyles }
       onClick={onClick}
     >{ text }</Button>
   );

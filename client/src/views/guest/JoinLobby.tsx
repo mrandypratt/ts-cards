@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import { SubmitButton } from "../../components/Buttons/Submit";
+import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
@@ -25,6 +25,12 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
     game.setLobby(room);
     game.setView(sessionId, VIEWS.guest.waitingForHost);
     socket?.emit(EVENTS.joinLobby, game, game.getPlayer(sessionId));
+  }
+
+  const returnHome = () => {
+    game.setView(sessionId, VIEWS.home);
+    socket?.emit(EVENTS.updateView, VIEWS.home);
+    setGame(game.clone());
   }
 
   return (
@@ -61,6 +67,13 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
         type={"submit"}
         disabled={!containsValidCharacters([name])} 
         onClick={joinLobby}
+      />
+
+      <ReturnHomeButton
+        text={"Return Home"}
+        type={"submit"}
+        disabled={false} 
+        onClick={returnHome}
       />
 
     </div>
