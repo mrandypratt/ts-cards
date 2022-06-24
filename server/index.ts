@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
-    const currentGame = gameStore.findGame(gameData.id)
+    const currentGame = new Game(gameData);
 
     if (lobbyId && sessionId && currentGame) {
       socket.join(lobbyId);
@@ -87,14 +87,12 @@ io.on("connection", (socket) => {
       gameStore.updateGame(currentGame);
       log(`Created Room`, sessionId, socket.id, lobbyId);
     }
-
-
   });
   
   socket.on(EVENTS.joinLobby, (gameData: GameDataType, playerData: PlayerDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
-    const currentGame = gameStore.findGame(gameData.id)
+    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
 
     if (currentGame && lobbyId && sessionId) {
       socket.join(lobbyId);
@@ -122,8 +120,8 @@ io.on("connection", (socket) => {
   
   socket.on(EVENTS.playerSelection, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
-    const currentGame = gameStore.findGameByLobbyId(lobbyId)
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+    const currentGame = new Game(gameData);
     
     if (lobbyId && sessionId && currentGame) {
       let selectedCardText = currentGame.round?.getSelection(sessionId)?.text;
@@ -147,7 +145,7 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.winnerSelected, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
-    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+    const currentGame = new Game(gameData);
     
     if (currentGame && sessionId && lobbyId) {
       currentGame.addRoundToRounds();
@@ -163,7 +161,7 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.startNextRound, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
-    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+    const currentGame = new Game(gameData);
     
     if (sessionId && lobbyId && currentGame) {
       log("Player Ready for Next Round", sessionId, socket.id, lobbyId);
@@ -181,7 +179,7 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.startNewGame, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
-    const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+    const currentGame = new Game(gameData);
 
     if (lobbyId && sessionId && currentGame) {
       log(`Player Ready for Next Round`, sessionId, socket.id, lobbyId);
