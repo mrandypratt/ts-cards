@@ -84,7 +84,7 @@ const responses = [
   "Sitting in Santa's lap.",
   "Slapping a stranger's ass.",
   "Getting hit on by a 17 year old.",
-  "Spending quality time with a known pedofile.",
+  "Spending quality time with a known pedophile.",
   "Accepting Purgatory as a forever-home.",
   "Going straight to Hell.",
   "Wetting the bed.",
@@ -99,8 +99,7 @@ const responses = [
   "A gynecologist.",
   "Sucking a homeless person's toe clean.",
   "Genocide.",
-  "Two humpback whales getting it on.",
-  ".",
+  "Two humpback whales getting it on."
 ];
 
 responses.forEach((response) => {
