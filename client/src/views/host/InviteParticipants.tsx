@@ -5,7 +5,6 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import { VIEWS } from "../../data/types/VIEWS";
 
 export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
@@ -35,7 +34,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
     setOpenSnackbar(false);
   };
 
-  const exitLobby = () => {
+  const deleteLobby = () => {
     socket?.emit(EVENTS.deleteGameFromStore, game.id)
     socket?.emit(EVENTS.exitLobby, game);
   }
@@ -94,10 +93,10 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
     />
 
     <ExitLobbyButton
-      text={"Exit Lobby"}
+      text={"Delete Lobby"}
       type={"submit"}
       disabled={false} 
-      onClick={exitLobby}
+      onClick={deleteLobby}
     />
 
     { !minimumPlayersJoined() && 

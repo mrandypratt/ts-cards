@@ -15,7 +15,9 @@ export const EVENTS = {
   session: "session",
   updateView: "updateView",
   exitLobby: "exitLobby",
+  deleteLobby: "deleteLobby",
   resetAllClients: "resetAllClients",
+  resetClient: "resetClient",
   leaveRoom: "leaveRoom",
   deleteGameFromStore: "deleteGameFromStore",
 }

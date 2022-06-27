@@ -61,6 +61,18 @@ class GameStore {
     });
   }
 
+  removePlayerFromGame(sessionId: string): void {
+    this.games.find((game): void => {
+      if (game.getPlayer(sessionId)) {
+        game.players.forEach((player, playerIndex) => {
+          if (player.sessionId === sessionId) {
+            game.players.splice(playerIndex, 1);
+          }
+        })
+      };
+    });
+  }
+  
   findGame(gameId: string): Game | null {
     let game = this.games.find(game => game.id === gameId);
     if (game) return game;

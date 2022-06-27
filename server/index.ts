@@ -73,8 +73,8 @@ io.on("connection", (socket) => {
     }
   })
 
-  
-  socket.on(EVENTS.exitLobby, (gameData: GameDataType) => {
+  // Host destroys Lobby
+  socket.on(EVENTS.deleteLobby, (gameData: GameDataType) => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
 
@@ -86,13 +86,35 @@ io.on("connection", (socket) => {
     }
 
     // Remove Sockets from Lobby
-
     if (lobbyId) {
-      io.to(lobbyId).emit(EVENTS.resetAllClients);
+      io.to(lobbyId).emit(EVENTS.resetClient);
       io.socketsLeave(lobbyId)
       if (sessionId) {
-        log("Lobby Exit", sessionId, socket.id, lobbyId)
+        log("Deleted Room", sessionId, socket.id, lobbyId)
       }
+    }
+  });
+
+  // Guest Leaves Lobby
+  socket.on(EVENTS.exitLobby, (gameData: GameDataType) => {
+    const lobbyId = gameData.lobbyId;
+    const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+
+    // Update Game from Store
+    if (sessionId) {
+      gameStore.removePlayerFromGame(sessionId);
+      log(`Player Removed from Game`, sessionId, socket.id);
+    }
+
+    // Remove Socket from Lobby
+    if (lobbyId) {
+      socket.emit(EVENTS.resetClient);
+      socket.leave(lobbyId)
+      if (sessionId) {
+        log("Socket Removed from Room", sessionId, socket.id, lobbyId)
+      }
+
+      io.to(lobbyId).emit(EVENTS.updateClient, gameStore.findGameByLobbyId(lobbyId))
     }
   });
 

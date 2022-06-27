@@ -1,7 +1,13 @@
+import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
+import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+
+  const exitLobby = () => {
+    socket?.emit(EVENTS.exitLobby, game);
+  }
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -25,6 +31,13 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
       <p>Please wait...</p>
 
       <p>{MESSAGES.guest.waitingForHost.pleaseWait}</p>
+
+      <ExitLobbyButton
+        text={"Exit Lobby"}
+        type={"submit"}
+        disabled={false} 
+        onClick={exitLobby}
+      />
 
     </div>
   );

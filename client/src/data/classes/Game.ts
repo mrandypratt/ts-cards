@@ -77,6 +77,15 @@ export class Game {
   getPlayer(sessionId: string | undefined): Player | undefined {
     return this.players.find(player => player.sessionId === sessionId);
   }
+
+  removePlayer(sessionId: string | undefined): void {
+    this.players.forEach((player, playerIndex) => {
+      if (player.sessionId === sessionId) {
+        this.players.splice(playerIndex, 1);
+        return;
+      };
+    })
+  }
   
   setPlayerName(sessionId: string, name: string): void {
     let player = this.getPlayer(sessionId);

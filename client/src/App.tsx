@@ -51,7 +51,7 @@ export const App = (): JSX.Element => {
       setGame(new Game(gameData));
     })
 
-    socket.on(EVENTS.resetAllClients, () => {
+    socket.on(EVENTS.resetClient, () => {
       const sessionId = sessionStorage.getItem("sessionId");
       const newGame = new Game();
 
@@ -62,6 +62,8 @@ export const App = (): JSX.Element => {
       socket.emit(EVENTS.addGameToStore, newGame)
       setGame(newGame);
     })
+
+
   }, [])
 
   const sessionId = sessionStorage.getItem("sessionId");
