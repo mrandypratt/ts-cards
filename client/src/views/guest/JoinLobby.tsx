@@ -24,6 +24,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
     game.setPlayerName(sessionId, name);
     game.setLobby(room);
     game.setView(sessionId, VIEWS.guest.waitingForHost);
+    socket?.emit(EVENTS.deleteGameFromStore, game.id)
     socket?.emit(EVENTS.joinLobby, game, game.getPlayer(sessionId));
   }
 

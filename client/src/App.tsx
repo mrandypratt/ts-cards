@@ -50,6 +50,18 @@ export const App = (): JSX.Element => {
     socket.on(EVENTS.updateClient, (gameData: GameDataType) => {
       setGame(new Game(gameData));
     })
+
+    socket.on(EVENTS.resetAllClients, () => {
+      const sessionId = sessionStorage.getItem("sessionId");
+      const newGame = new Game();
+
+      if (sessionId) {
+        newGame.addPlayer(new Player(sessionId));
+      }
+
+      socket.emit(EVENTS.addGameToStore, newGame)
+      setGame(newGame);
+    })
   }, [])
 
   const sessionId = sessionStorage.getItem("sessionId");
@@ -65,34 +77,34 @@ export const App = (): JSX.Element => {
           socket={socket}
           sessionId={sessionId}
         />
-        )
-      }
+      )
+    }
       
-      if (game.getPlayerView(sessionId) === VIEWS.gettingStarted) {
-        socket.emit(EVENTS.updateView, VIEWS.gettingStarted);
+    if (game.getPlayerView(sessionId) === VIEWS.gettingStarted) {
+      socket.emit(EVENTS.updateView, VIEWS.gettingStarted);
+      
+      return (
+        <GettingStarted
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      )
+    }
         
-        return(
-          <GettingStarted
-            game={game}
-            setGame={setGame}
-            socket={socket}
-            sessionId={sessionId}
-          />
-        )
-      }
-        
-      if (game.getPlayerView(sessionId) === VIEWS.host.createLobby) {
-        socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
-  
-        return (
-          <CreateLobby
-            game={game}
-            setGame={setGame}
-            socket={socket}
-            sessionId={sessionId}
-          />
-        );
-      }
+    if (game.getPlayerView(sessionId) === VIEWS.host.createLobby) {
+      socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
+
+      return (
+        <CreateLobby
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
   
     if (game.getPlayerView(sessionId) === VIEWS.host.inviteParticipants) {
       socket.emit(EVENTS.updateView, VIEWS.host.inviteParticipants);

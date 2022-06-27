@@ -64,7 +64,6 @@ io.on("connection", (socket) => {
     }
   })
 
-
   socket.on(EVENTS.updateView, (view: string) => {
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
     
@@ -75,6 +74,28 @@ io.on("connection", (socket) => {
   })
 
   
+  socket.on(EVENTS.exitLobby, (gameData: GameDataType) => {
+    const lobbyId = gameData.lobbyId;
+    const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+
+    // Delete Game from Store
+    gameStore.deleteGame(gameData.id);
+
+    if (sessionId) {
+      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    }
+
+    // Remove Sockets from Lobby
+
+    if (lobbyId) {
+      io.to(lobbyId).emit(EVENTS.resetAllClients);
+      io.socketsLeave(lobbyId)
+      if (sessionId) {
+        log("Lobby Exit", sessionId, socket.id, lobbyId)
+      }
+    }
+  });
+
   socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
@@ -93,6 +114,15 @@ io.on("connection", (socket) => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
+
+    // Delete Prior Game
+    gameStore.deleteGame(gameData.id)
+
+    if (sessionId) {
+      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    }
+
+    // Create New Game
 
     if (currentGame && lobbyId && sessionId) {
       socket.join(lobbyId);

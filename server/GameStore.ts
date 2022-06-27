@@ -52,6 +52,15 @@ class GameStore {
     })
   }
 
+  deleteGame(gameId: string): void {
+    this.games.find((game, gameIndex): void => {
+      if (game.id === gameId) {
+        this.games.splice(gameIndex, 1);
+        return;
+      }
+    });
+  }
+
   findGame(gameId: string): Game | null {
     let game = this.games.find(game => game.id === gameId);
     if (game) return game;

@@ -1,10 +1,11 @@
-import { SubmitButton } from "../../components/Buttons/Submit";
+import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
+import { VIEWS } from "../../data/types/VIEWS";
 
 export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
@@ -33,6 +34,11 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
     setOpenSnackbar(false);
   };
+
+  const exitLobby = () => {
+    socket?.emit(EVENTS.deleteGameFromStore, game.id)
+    socket?.emit(EVENTS.exitLobby, game);
+  }
 
   const hoverStyle = {
     color: "blue",
@@ -85,6 +91,13 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
       type={"submit"}
       disabled={!minimumPlayersJoined()} 
       onClick={startGame}
+    />
+
+    <ExitLobbyButton
+      text={"Exit Lobby"}
+      type={"submit"}
+      disabled={false} 
+      onClick={exitLobby}
     />
 
     { !minimumPlayersJoined() && 
