@@ -13,7 +13,6 @@ class GameStore {
     this.games.push(game);
   }
 
-
   setLobbyId(lobbyId: string, sessionId: string): void {
     this.findGameBySessionId(sessionId)?.setLobby(lobbyId);
   }
@@ -53,23 +52,12 @@ class GameStore {
   }
 
   deleteGame(gameId: string): void {
-    this.games.find((game, gameIndex): void => {
-      if (game.id === gameId) {
-        this.games.splice(gameIndex, 1);
-        return;
-      }
-    });
+    this.games = this.games.filter(game => game.id !== gameId)
   }
 
   removePlayerFromGame(sessionId: string): void {
-    this.games.find((game): void => {
-      if (game.getPlayer(sessionId)) {
-        game.players.forEach((player, playerIndex) => {
-          if (player.sessionId === sessionId) {
-            game.players.splice(playerIndex, 1);
-          }
-        })
-      };
+    this.games.forEach((game) => {
+      game.players = game.players.filter(player => player.sessionId !== sessionId)
     });
   }
   
@@ -99,6 +87,19 @@ class GameStore {
     let player = game?.getPlayer(sessionId);
     if (player) return player;
     return null;
+  }
+
+  logGames(): void {
+    this.games.forEach((game, gameIndex) => {
+
+      console.log("Game Store")
+      console.log(`-- Game ${gameIndex + 1}: ${game.id}`)
+      console.log(`-- Lobby: ${game.lobbyId}`)
+      console.log("-- Players")
+      game.players.forEach((player, playerIndex) => {
+        console.log(`-- -- P${playerIndex + 1}: ${player.name}`)
+      });
+    })
   }
 
 }

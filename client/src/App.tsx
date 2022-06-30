@@ -54,6 +54,7 @@ export const App = (): JSX.Element => {
     socket.on(EVENTS.resetClient, () => {
       const sessionId = sessionStorage.getItem("sessionId");
       const newGame = new Game();
+      console.log("Game Reset");
 
       if (sessionId) {
         newGame.addPlayer(new Player(sessionId));

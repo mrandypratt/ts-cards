@@ -17,12 +17,14 @@ const io = new Server(httpServer, {
 
 const log = (event: string, sessionId: string, socketId: string, lobbyId?: string, ...messages: string[]): void => {
   console.log(event);
-  console.log(`--SessionID: ${sessionId}`)
-  console.log(`--SocketID: ${socketId}`);
+  console.log(`-- SessionID: ${sessionId}`)
+  console.log(`-- SocketID: ${socketId}`);
   if (lobbyId && (lobbyId !== "")) {
     console.log(`--LobbyId: ${lobbyId}`)
   }
   messages.forEach(message => console.log(`--${message}`));
+  console.log("")
+  gameStore.logGames();
   console.log("")
 }
 
@@ -77,6 +79,8 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.deleteLobby, (gameData: GameDataType) => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+    console.log(gameData);
+    gameStore.logGames();
 
     // Delete Game from Store
     gameStore.deleteGame(gameData.id);
@@ -85,10 +89,14 @@ io.on("connection", (socket) => {
       log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
     }
 
+    gameStore.logGames()
+
     // Remove Sockets from Lobby
     if (lobbyId) {
       io.to(lobbyId).emit(EVENTS.resetClient);
+      console.log("Clients Reset")
       io.socketsLeave(lobbyId)
+      console.log("Clients Exited Lobby")
       if (sessionId) {
         log("Deleted Room", sessionId, socket.id, lobbyId)
       }
@@ -145,7 +153,6 @@ io.on("connection", (socket) => {
     }
 
     // Create New Game
-
     if (currentGame && lobbyId && sessionId) {
       socket.join(lobbyId);
       currentGame.addPlayer(new Player("", playerData));
