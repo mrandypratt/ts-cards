@@ -27,11 +27,13 @@ class SessionStore {
 
   logSessions(): void {
     console.log("Session Store")
+    console.log("--------------")
     this.sessions.forEach((session, sessionIndex) => {
       console.log(`-- Session ${sessionIndex + 1}`);
       console.log(`-- -- Session ID: ${session.sessionId}`);
       console.log(`-- -- Socket ID: ${session.socketId}`);
     })
+    console.log("")
   }
 }
 

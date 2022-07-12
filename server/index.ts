@@ -39,18 +39,18 @@ io.use((socket, next) => {
 
     if (lobbyId) {
       socket.join(lobbyId)
-      log("Session Restored", sessionId, socket.id, lobbyId)
-    } else (
-      log("Session Restored", sessionId, socket.id)
-    )
+      // log("Session Restored", sessionId, socket.id, lobbyId)
+    } 
 
     session.updateSocketId(socket.id);
+    sessionStore.logSessions();
     socket.emit(EVENTS.existingSession, gameStore.findGameBySessionId(sessionId))
     return next();
   }
 
   session = sessionStore.createSession(socket.id);
-  log("Session Created", session.sessionId, socket.id);
+  // log("Session Created", session.sessionId, socket.id);
+  sessionStore.logSessions();
   socket.emit(EVENTS.newSession, sessionStore.findSessionBySocketId(socket.id)?.sessionId)
   next();
 });
@@ -60,10 +60,11 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.addGameToStore, (gameData: GameDataType): void => {
     let sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
     gameStore.addGame(new Game(gameData))
+    gameStore.logGames();
 
-    if (sessionId) {
-      log("Game Added to Store", sessionId, socket.id)
-    }
+    // if (sessionId) {
+    //   log("Game Added to Store", sessionId, socket.id)
+    // }
   })
 
   socket.on(EVENTS.updateView, (view: string) => {
@@ -71,7 +72,7 @@ io.on("connection", (socket) => {
     
     if (sessionId) {
       gameStore.findPlayerBySessionId(sessionId)?.setView(view)
-      log("View Updated", sessionId, socket.id)
+      // log("View Updated", sessionId, socket.id)
     }
   })
 
@@ -79,15 +80,13 @@ io.on("connection", (socket) => {
   socket.on(EVENTS.deleteLobby, (gameData: GameDataType) => {
     const lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
-    console.log(gameData);
-    gameStore.logGames();
 
     // Delete Game from Store
     gameStore.deleteGame(gameData.id);
 
-    if (sessionId) {
-      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
-    }
+    // if (sessionId) {
+    //   log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    // }
 
     gameStore.logGames()
 
@@ -111,7 +110,7 @@ io.on("connection", (socket) => {
     // Update Game from Store
     if (sessionId) {
       gameStore.removePlayerFromGame(sessionId);
-      log(`Player Removed from Game`, sessionId, socket.id);
+      // log(`Player Removed from Game`, sessionId, socket.id);
     }
 
     // Remove Socket from Lobby
@@ -119,8 +118,10 @@ io.on("connection", (socket) => {
       socket.emit(EVENTS.resetClient);
       socket.leave(lobbyId)
       if (sessionId) {
-        log("Socket Removed from Room", sessionId, socket.id, lobbyId)
+        // log("Socket Removed from Room", sessionId, socket.id, lobbyId)
       }
+
+      gameStore.logGames();
 
       io.to(lobbyId).emit(EVENTS.updateClient, gameStore.findGameByLobbyId(lobbyId))
     }
@@ -138,7 +139,8 @@ io.on("connection", (socket) => {
       currentGame.setLobby(lobbyId);
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
       gameStore.updateGame(currentGame);
-      log(`Created Room`, sessionId, socket.id, lobbyId);
+      // log(`Created Room`, sessionId, socket.id, lobbyId);
+      gameStore.logGames();
     }
   });
   
@@ -150,9 +152,9 @@ io.on("connection", (socket) => {
     // Delete Prior Game
     gameStore.deleteGame(gameData.id)
 
-    if (sessionId) {
-      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
-    }
+    // if (sessionId) {
+    //   log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    // }
 
     // Create New Game
     if (currentGame && lobbyId && sessionId) {
@@ -160,7 +162,8 @@ io.on("connection", (socket) => {
       currentGame.addPlayer(new Player("", playerData));
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
       gameStore.updateGame(currentGame);
-      log(`Joined Room`, sessionId, socket.id,lobbyId)
+      // log(`Joined Room`, sessionId, socket.id,lobbyId)
+      gameStore.logGames();
     } else {
       socket.emit(EVENTS.roomDoesNotExist, "error");
     }
@@ -175,7 +178,8 @@ io.on("connection", (socket) => {
       currentGame.initializeRound();
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
       gameStore.updateGame(currentGame);
-      log(`Started Round ${currentGame.rounds.length}`, sessionId, socket.id, lobbyId)
+      // log(`Started Round ${currentGame.rounds.length}`, sessionId, socket.id, lobbyId)
+      gameStore.logGames();
     }
   });
   
@@ -194,7 +198,8 @@ io.on("connection", (socket) => {
       if (currentGame.round?.allSelectionsMade()) {
         currentGame.updateViewsForJudgeRound();
         gameStore.updateGame(currentGame)
-        log("Judge Round", sessionId, socket.id, lobbyId, `Current View: ${currentGame.getPlayerView(sessionId)}`)
+        // log("Judge Round", sessionId, socket.id, lobbyId, `Current View: ${currentGame.getPlayerView(sessionId)}`)
+        gameStore.logGames();
       };
     
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
@@ -213,7 +218,8 @@ io.on("connection", (socket) => {
       currentGame.updateViewsForRoundResults();
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
       gameStore.updateGame(gameData);
-      log("Judge Selected Winner", sessionId, socket.id, lobbyId);
+      // log("Judge Selected Winner", sessionId, socket.id, lobbyId);
+      gameStore.logGames();
     }
 
 
@@ -225,11 +231,14 @@ io.on("connection", (socket) => {
     const currentGame = new Game(gameData);
     
     if (sessionId && lobbyId && currentGame) {
-      log("Player Ready for Next Round", sessionId, socket.id, lobbyId);
+      // log("Player Ready for Next Round", sessionId, socket.id, lobbyId);
       
       if (currentGame.readyForNextRound()) {
         currentGame.createNextRound();
-        log("All Players Ready for Next Round", sessionId, socket.id, lobbyId)
+        // log("All Players Ready for Next Round", sessionId, socket.id, lobbyId)
+        gameStore.logGames();
+      } else {
+        gameStore.logGames();
       }
       
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);
@@ -243,11 +252,14 @@ io.on("connection", (socket) => {
     const currentGame = new Game(gameData);
 
     if (lobbyId && sessionId && currentGame) {
-      log(`Player Ready for Next Round`, sessionId, socket.id, lobbyId);
+      // log(`Player Ready for Next Round`, sessionId, socket.id, lobbyId);
       
       if (currentGame.readyForNextGame()) {
         currentGame.resetGame();
-        log(`All Players Ready for Next Round`, sessionId, socket.id, lobbyId);
+        // log(`All Players Ready for Next Round`, sessionId, socket.id, lobbyId);
+        gameStore.logGames();
+      } else {
+        gameStore.logGames();
       }
 
       io.to(lobbyId).emit(EVENTS.updateClient, currentGame);

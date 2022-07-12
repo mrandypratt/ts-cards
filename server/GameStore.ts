@@ -90,16 +90,18 @@ class GameStore {
   }
 
   logGames(): void {
+    console.log("Game Store")
+    console.log("--------------")
     this.games.forEach((game, gameIndex) => {
-
-      console.log("Game Store")
       console.log(`-- Game ${gameIndex + 1}: ${game.id}`)
-      console.log(`-- Lobby: ${game.lobbyId}`)
-      console.log("-- Players")
+      console.log(`-- -- Lobby: ${game.lobbyId}`)
+      console.log("-- -- Players")
       game.players.forEach((player, playerIndex) => {
-        console.log(`-- -- P${playerIndex + 1}: ${player.name}`)
+        console.log(`-- -- -- P${playerIndex + 1}: ${player.name}`)
       });
+      console.log("")
     })
+    console.log("");
   }
 
 }
