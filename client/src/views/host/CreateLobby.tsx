@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import NSFWToggle from "../../components/Buttons/NSFWToggle";
 import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
@@ -46,6 +47,11 @@ export const CreateLobby = ({game, setGame, socket, sessionId}: ViewPropsType): 
           onChange={updateName}
         />
       </Box>
+
+      <NSFWToggle
+        game={game}
+        setGame={setGame}
+      />
 
       <SubmitButton
         text={"Create Lobby"}

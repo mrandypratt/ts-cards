@@ -1,5 +1,4 @@
-import { promptCards } from "../cards/promptCards";
-import { responseCards } from "../cards/responseCards";
+import { cardStore } from "../cards/CardStore"
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
@@ -16,6 +15,7 @@ const gameIdGenerator = new ShortUniqueID({length: 8});
 
 export class Game {
   id: string;
+  NSFW: boolean;
   round: Round | null;
   rounds: Round[];
   players: Player[];
@@ -26,6 +26,7 @@ export class Game {
   constructor(gameData?: GameDataType) {
     if (gameData) {
       this.id = gameData.id
+      this.NSFW = gameData.NSFW
       this.round = gameData.round ? new Round(gameData.round) : null;
       this.rounds = [];
       gameData.rounds.forEach(round => this.rounds.push(new Round(round)))
@@ -37,16 +38,17 @@ export class Game {
       });
       this.responseCards = [];
       gameData.responseCards.forEach(responseCard => {
-        this.responseCards.push(new PromptCard("", responseCard));
+        this.responseCards.push(new ResponseCard("", responseCard));
       });
       this.lobbyId = gameData.lobbyId;
     } else {
       this.id = gameIdGenerator();
+      this.NSFW = false;
       this.round = null;
       this.rounds = [];
       this.players = [];
-      this.promptCards = [...promptCards];
-      this.responseCards = [...responseCards];
+      this.promptCards = [];
+      this.responseCards = [];
       this.lobbyId = null;
     }
   }
@@ -94,17 +96,32 @@ export class Game {
     };
   }
 
+  toggleNSFW(): void {
+    this.NSFW = !this.NSFW
+  }
+
   setLobby(room: string): void {
     this.lobbyId = room;
   }
 
   initializeRound(): void {
+    this.loadDeckIntoGame();
     this.dealCardsToPlayers();
     if (this.rounds.length === 0) {
       this.randomizePlayerOrder();
     }
     this.createNewRound();
     this.updateViewsForNewRound();
+  }
+
+  loadDeckIntoGame(): void {
+    if (this.NSFW) {
+      this.promptCards = cardStore.dealNSFWPromptCards();
+      this.responseCards = cardStore.dealNSFWResponseCards();
+    } else {
+      this.promptCards = cardStore.dealCleanPromptCards();
+      this.responseCards = cardStore.dealCleanResponseCards();
+    }
   }
 
   dealCardsToPlayers(): void {
