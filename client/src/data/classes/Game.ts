@@ -116,11 +116,11 @@ export class Game {
 
   loadDeckIntoGame(): void {
     if (this.NSFW) {
-      this.promptCards = cardStore.dealNSFWPromptCards();
-      this.responseCards = cardStore.dealNSFWResponseCards();
+      this.promptCards = shuffle(cardStore.dealNSFWPromptCards());
+      this.responseCards = shuffle(cardStore.dealNSFWResponseCards());
     } else {
-      this.promptCards = cardStore.dealCleanPromptCards();
-      this.responseCards = cardStore.dealCleanResponseCards();
+      this.promptCards = shuffle(cardStore.dealCleanPromptCards());
+      this.responseCards = shuffle(cardStore.dealCleanResponseCards());
     }
   }
 
