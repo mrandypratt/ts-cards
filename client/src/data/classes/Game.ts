@@ -11,7 +11,7 @@ import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
 
 const CARDS_PER_PLAYER = 3;
 const WINNING_SCORE = 3;
-const lobbyIdGenerator = new ShortUniqueID({length: 8});
+const lobbyIdGenerator = new ShortUniqueID({length: 4});
 const gameIdGenerator = new ShortUniqueID({length: 8});
 
 export class Game {

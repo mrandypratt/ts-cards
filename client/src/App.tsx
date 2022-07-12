@@ -54,6 +54,7 @@ export const App = (): JSX.Element => {
     socket.on(EVENTS.resetClient, () => {
       const sessionId = sessionStorage.getItem("sessionId");
       const newGame = new Game();
+      
       console.log("Game Reset");
 
       if (sessionId) {
@@ -63,7 +64,6 @@ export const App = (): JSX.Element => {
       socket.emit(EVENTS.addGameToStore, newGame)
       setGame(newGame);
     })
-
 
   }, [])
 
@@ -252,7 +252,6 @@ export const App = (): JSX.Element => {
       );
     }
   }
-
 
   return (
     <div>Loading...</div>

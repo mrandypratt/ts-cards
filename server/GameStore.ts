@@ -76,8 +76,8 @@ class GameStore {
     return null
   }
 
-  findGameBySessionId(socketId: string): Game | null {
-    let game = this.games.find(game => game.getPlayer(socketId));
+  findGameBySessionId(sessionId: string): Game | null {
+    let game = this.games.find(game => game.getPlayer(sessionId));
     if (game) return game;
     return null;
   }

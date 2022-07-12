@@ -1,9 +1,15 @@
+import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
+import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
 export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const player = game.getPlayer(sessionId);
+
+  const quitGame = () => {
+    socket.emit(EVENTS.deleteLobby, game);
+  }
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -24,6 +30,12 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
         )
       })}
 
+      <ExitLobbyButton
+        text={"Quit Game"}
+        type={"submit"}
+        disabled={false} 
+        onClick={quitGame}
+      />
     </div>
   );
 } 

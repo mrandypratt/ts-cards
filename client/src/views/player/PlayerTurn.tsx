@@ -1,4 +1,4 @@
-import { SubmitButton } from "../../components/Buttons/Submit";
+import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
@@ -14,6 +14,10 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
     game.setView(sessionId, VIEWS.player.selectionMade);
     console.log(game)
     socket?.emit(EVENTS.playerSelection, game);
+  }
+
+  const quitGame = () => {
+    socket.emit(EVENTS.deleteLobby, game);
   }
   
   if (round && player) {
@@ -51,6 +55,13 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
           disabled={!round.hasPlayerSelected(player.sessionId)}
           type="button"
           text="Submit Card"
+        />
+
+        <ExitLobbyButton
+          text={"Quit Game"}
+          type={"submit"}
+          disabled={false} 
+          onClick={quitGame}
         />
   
       </div>

@@ -35,7 +35,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   };
 
   const deleteLobby = () => {
-    socket?.emit(EVENTS.deleteLobby, game)
+    socket.emit(EVENTS.deleteLobby, game)
   }
 
   const hoverStyle = {

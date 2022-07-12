@@ -127,9 +127,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
-    const lobbyId = gameData.lobbyId;
+    let lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
     const currentGame = new Game(gameData);
+
+    
 
     if (lobbyId && sessionId && currentGame) {
       socket.join(lobbyId);

@@ -1,4 +1,4 @@
-import { SubmitButton } from "../../components/Buttons/Submit";
+import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { RoundResultCardStyle } from "../../components/Containers/PlayersHand";
@@ -17,6 +17,10 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
     game.setView(sessionId, VIEWS.results.waitingForNextRound);
     setGame(game.clone());
     socket.emit(EVENTS.startNextRound, game);
+  }
+
+  const quitGame = () => {
+    socket.emit(EVENTS.deleteLobby, game);
   }
 
   if (round && winner && winningCard) {
@@ -63,6 +67,13 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           type="button"
           text="Next Round"
           disabled={false}
+        />
+
+        <ExitLobbyButton
+          text={"Quit Game"}
+          type={"submit"}
+          disabled={false} 
+          onClick={quitGame}
         />
       </div>
     )
