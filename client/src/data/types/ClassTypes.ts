@@ -26,6 +26,7 @@ export type RoundDataType = {
 
 export type GameDataType = {
   id: string;
+  NSFW: boolean;
   round: RoundDataType | null;
   rounds: RoundDataType[];
   players: PlayerDataType[];
