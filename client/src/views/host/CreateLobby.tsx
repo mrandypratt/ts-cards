@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NSFWToggle from "../../components/Buttons/NSFWToggle";
 import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
