@@ -11,7 +11,7 @@ import { GameDataType, NewRoundPropsType } from "../types/ClassTypes";
 
 const CARDS_PER_PLAYER = 3;
 const WINNING_SCORE = 3;
-const lobbyIdGenerator = new ShortUniqueID({length: 8});
+const lobbyIdGenerator = new ShortUniqueID({length: 4});
 const gameIdGenerator = new ShortUniqueID({length: 8});
 
 export class Game {
@@ -76,6 +76,15 @@ export class Game {
 
   getPlayer(sessionId: string | undefined): Player | undefined {
     return this.players.find(player => player.sessionId === sessionId);
+  }
+
+  removePlayer(sessionId: string | undefined): void {
+    this.players.forEach((player, playerIndex) => {
+      if (player.sessionId === sessionId) {
+        this.players.splice(playerIndex, 1);
+        return;
+      };
+    })
   }
   
   setPlayerName(sessionId: string, name: string): void {

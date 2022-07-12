@@ -1,4 +1,4 @@
-import { SubmitButton } from "../../components/Buttons/Submit";
+import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
@@ -33,6 +33,10 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
     setOpenSnackbar(false);
   };
+
+  const deleteLobby = () => {
+    socket.emit(EVENTS.deleteLobby, game)
+  }
 
   const hoverStyle = {
     color: "blue",
@@ -85,6 +89,13 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
       type={"submit"}
       disabled={!minimumPlayersJoined()} 
       onClick={startGame}
+    />
+
+    <ExitLobbyButton
+      text={"Delete Lobby"}
+      type={"submit"}
+      disabled={false} 
+      onClick={deleteLobby}
     />
 
     { !minimumPlayersJoined() && 

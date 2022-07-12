@@ -13,7 +13,6 @@ class GameStore {
     this.games.push(game);
   }
 
-
   setLobbyId(lobbyId: string, sessionId: string): void {
     this.findGameBySessionId(sessionId)?.setLobby(lobbyId);
   }
@@ -52,6 +51,16 @@ class GameStore {
     })
   }
 
+  deleteGame(gameId: string): void {
+    this.games = this.games.filter(game => game.id !== gameId)
+  }
+
+  removePlayerFromGame(sessionId: string): void {
+    this.games.forEach((game) => {
+      game.players = game.players.filter(player => player.sessionId !== sessionId)
+    });
+  }
+  
   findGame(gameId: string): Game | null {
     let game = this.games.find(game => game.id === gameId);
     if (game) return game;
@@ -67,8 +76,8 @@ class GameStore {
     return null
   }
 
-  findGameBySessionId(socketId: string): Game | null {
-    let game = this.games.find(game => game.getPlayer(socketId));
+  findGameBySessionId(sessionId: string): Game | null {
+    let game = this.games.find(game => game.getPlayer(sessionId));
     if (game) return game;
     return null;
   }
@@ -78,6 +87,19 @@ class GameStore {
     let player = game?.getPlayer(sessionId);
     if (player) return player;
     return null;
+  }
+
+  logGames(): void {
+    this.games.forEach((game, gameIndex) => {
+
+      console.log("Game Store")
+      console.log(`-- Game ${gameIndex + 1}: ${game.id}`)
+      console.log(`-- Lobby: ${game.lobbyId}`)
+      console.log("-- Players")
+      game.players.forEach((player, playerIndex) => {
+        console.log(`-- -- P${playerIndex + 1}: ${player.name}`)
+      });
+    })
   }
 
 }

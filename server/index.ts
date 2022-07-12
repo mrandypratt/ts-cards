@@ -17,12 +17,14 @@ const io = new Server(httpServer, {
 
 const log = (event: string, sessionId: string, socketId: string, lobbyId?: string, ...messages: string[]): void => {
   console.log(event);
-  console.log(`--SessionID: ${sessionId}`)
-  console.log(`--SocketID: ${socketId}`);
+  console.log(`-- SessionID: ${sessionId}`)
+  console.log(`-- SocketID: ${socketId}`);
   if (lobbyId && (lobbyId !== "")) {
     console.log(`--LobbyId: ${lobbyId}`)
   }
   messages.forEach(message => console.log(`--${message}`));
+  console.log("")
+  gameStore.logGames();
   console.log("")
 }
 
@@ -64,7 +66,6 @@ io.on("connection", (socket) => {
     }
   })
 
-
   socket.on(EVENTS.updateView, (view: string) => {
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
     
@@ -74,11 +75,63 @@ io.on("connection", (socket) => {
     }
   })
 
-  
-  socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
+  // Host destroys Lobby
+  socket.on(EVENTS.deleteLobby, (gameData: GameDataType) => {
     const lobbyId = gameData.lobbyId;
+    const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+    console.log(gameData);
+    gameStore.logGames();
+
+    // Delete Game from Store
+    gameStore.deleteGame(gameData.id);
+
+    if (sessionId) {
+      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    }
+
+    gameStore.logGames()
+
+    // Remove Sockets from Lobby
+    if (lobbyId) {
+      io.to(lobbyId).emit(EVENTS.resetClient);
+      console.log("Clients Reset")
+      io.socketsLeave(lobbyId)
+      console.log("Clients Exited Lobby")
+      if (sessionId) {
+        log("Deleted Room", sessionId, socket.id, lobbyId)
+      }
+    }
+  });
+
+  // Guest Leaves Lobby
+  socket.on(EVENTS.exitLobby, (gameData: GameDataType) => {
+    const lobbyId = gameData.lobbyId;
+    const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId;
+
+    // Update Game from Store
+    if (sessionId) {
+      gameStore.removePlayerFromGame(sessionId);
+      log(`Player Removed from Game`, sessionId, socket.id);
+    }
+
+    // Remove Socket from Lobby
+    if (lobbyId) {
+      socket.emit(EVENTS.resetClient);
+      socket.leave(lobbyId)
+      if (sessionId) {
+        log("Socket Removed from Room", sessionId, socket.id, lobbyId)
+      }
+
+      io.to(lobbyId).emit(EVENTS.updateClient, gameStore.findGameByLobbyId(lobbyId))
+    }
+  });
+
+  socket.on(EVENTS.createLobby, (gameData: GameDataType): void => {
+    let lobbyId = gameData.lobbyId;
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
     const currentGame = new Game(gameData);
+
+    
 
     if (lobbyId && sessionId && currentGame) {
       socket.join(lobbyId);
@@ -94,6 +147,14 @@ io.on("connection", (socket) => {
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.sessionId
     const currentGame = gameStore.findGameByLobbyId(gameData.lobbyId)
 
+    // Delete Prior Game
+    gameStore.deleteGame(gameData.id)
+
+    if (sessionId) {
+      log(`Game ${gameData.id} Deleted`, sessionId, socket.id);
+    }
+
+    // Create New Game
     if (currentGame && lobbyId && sessionId) {
       socket.join(lobbyId);
       currentGame.addPlayer(new Player("", playerData));

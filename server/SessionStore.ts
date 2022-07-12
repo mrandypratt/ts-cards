@@ -24,6 +24,15 @@ class SessionStore {
     if (session) return session;
     return null;
   }
+
+  logSessions(): void {
+    console.log("Session Store")
+    this.sessions.forEach((session, sessionIndex) => {
+      console.log(`-- Session ${sessionIndex + 1}`);
+      console.log(`-- -- Session ID: ${session.sessionId}`);
+      console.log(`-- -- Socket ID: ${session.socketId}`);
+    })
+  }
 }
 
 export const sessionStore = new SessionStore();

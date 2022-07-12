@@ -1,10 +1,16 @@
+import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
+import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const round = game.round;
   const player = game.getPlayer(sessionId);
+
+  const quitGame = () => {
+    socket.emit(EVENTS.deleteLobby, game);
+  }
 
   if (round && player) {
     return (
@@ -33,6 +39,13 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
           )
         })}
 
+        <ExitLobbyButton
+          text={"Quit Game"}
+          type={"submit"}
+          disabled={false} 
+          onClick={quitGame}
+        />
+        
       </div>
     );
   } else {

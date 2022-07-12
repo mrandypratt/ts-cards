@@ -29,7 +29,15 @@ const returnHomeStyles = {
   marginTop: 25,
   fontSize: 18,
   maxWidth: 200,
-  backgroundColor: "black",
+}
+
+const exitLobbyStyles = {
+  width: "40%%",
+  height: 40,
+  margin: 10,
+  marginTop: 25,
+  fontSize: 18,
+  maxWidth: 200,
 }
 
 type SubmitButtonProps = {
@@ -45,6 +53,7 @@ export const SubmitButton = ({ text, type, onClick, disabled }: SubmitButtonProp
       disabled={disabled}
       variant="contained"
       type={type}
+      color={'warning'}
       style={ disabled ? styles.unclickable : styles.clickable }
       onClick={onClick}
     >{ text }</Button>
@@ -55,10 +64,23 @@ export const ReturnHomeButton = ({ text, type, onClick, disabled }: SubmitButton
   return (
     <Button
       disabled={disabled}
-      variant="contained"
+      variant="outlined"
       type={type}
       style={ returnHomeStyles }
+      color={'info'}
       onClick={onClick}
+    >{ text }</Button>
+  );
+}
+
+export const ExitLobbyButton = ({ text, type, onClick }: SubmitButtonProps): JSX.Element => {
+  return (
+    <Button
+      variant="contained"
+      type={type}
+      style={ exitLobbyStyles }
+      onClick={onClick}
+      color={'error'}
     >{ text }</Button>
   );
 }
