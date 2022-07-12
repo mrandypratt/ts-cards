@@ -57,7 +57,7 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
 
         </div>
   
-        <div style={{textAlign: "center", marginTop: 10}}>
+        <div style={{textAlign: "center", marginTop: 10, display: "flex", width: "100%", justifyContent: "center"}}>
           
           <ResultsTable
             game={game}
