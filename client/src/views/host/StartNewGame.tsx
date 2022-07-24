@@ -9,7 +9,7 @@ import { containsValidCharacters } from "../../data/functions/arePlayerNamesVali
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const CreateLobby = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+export const StartNewGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
 
   const updateName = (event: any) => {
@@ -32,11 +32,11 @@ export const CreateLobby = ({game, setGame, socket, sessionId}: ViewPropsType): 
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h1><b>Create Lobby</b></h1>
+      <h1><b>Create New Game</b></h1>
 
       <hr></hr>
 
-      <p>{MESSAGES.host.createLobby}</p>
+      <p>{MESSAGES.host.startNewGame}</p>
 
       <Box>
         <TextField 
@@ -54,7 +54,7 @@ export const CreateLobby = ({game, setGame, socket, sessionId}: ViewPropsType): 
       />
 
       <SubmitButton
-        text={"Create Lobby"}
+        text={"Create Game"}
         type={"submit"}
         disabled={!containsValidCharacters([name])} 
         onClick={startLobby}

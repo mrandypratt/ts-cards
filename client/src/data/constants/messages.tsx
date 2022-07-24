@@ -2,7 +2,6 @@ export const MESSAGES = {
   home: {
     welcomeBanner: "Welcome to Cards with Friends!",
     getStarted1: "This game is inspired by Cards Against Humanity and the fun of playing games online with friends!",
-    getStarted2: "Click \"New Game\" to start a lobby and invite friends or click \"Join Lobby\" if you already have a Lobby ID from a friend.",
   },
 
   gettingStarted: {
@@ -12,7 +11,7 @@ export const MESSAGES = {
   },
 
   host: {
-    createLobby: "To start a new game, you first need to create a lobby. Pease enter your name and select \"Create Lobby\" to begin inviting friends.",
+    startNewGame: "Enter your name and select game type before inviting friends.",
   
     inviteParticipants: {
       shareLobbyID: "Share the Lobby ID with your friends so they can join",

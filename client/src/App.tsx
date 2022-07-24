@@ -6,7 +6,7 @@ import { VIEWS } from "./data/types/VIEWS";
 
 import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
-import { CreateLobby } from "./views/host/CreateLobby";
+import { StartNewGame } from "./views/host/StartNewGame";
 import { InviteParticipants } from "./views/host/InviteParticipants";
 import { JoinLobby } from "./views/guest/JoinLobby";
 import { WaitingForHost } from "./views/guest/WaitingForHost";
@@ -100,7 +100,7 @@ export const App = (): JSX.Element => {
       socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
 
       return (
-        <CreateLobby
+        <StartNewGame
           game={game}
           setGame={setGame}
           socket={socket}
