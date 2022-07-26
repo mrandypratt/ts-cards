@@ -12,3 +12,82 @@ p {
   padding-right: 10%;
   padding-left: 10%;
 }
+
+
+
+.confirm-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+  opacity: 0.85;
+  overflow: hidden; /* disable scrolling*/
+  z-index: 2; /* higher than all other items, but lower than 
+    the confirm box*/
+}
+
+.container {
+  flex-direction: column;
+  position: fixed;
+  background-color: rgb(207, 207, 204);
+  width: 230px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -75%);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  z-index: 5; /* Higher than the z-index of the background */
+}
+
+.confirmation-text {
+  display: flex;
+  color: rgb(20, 19, 19);
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+  line-height: 2rem;
+  font-size: 1.1rem;
+}
+
+.button-container {
+  display: flex;
+  margin-top: auto;
+  justify-content: space-between;
+}
+
+.end-game {
+  display: flex;
+  background-color: #cc0000;
+  color: white;
+  min-height: 2.6rem;
+  width: 45%;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.resume-game {
+  display: flex;
+  background-color: #777d86;
+  color: rgb(255, 255, 255);
+  height: 2.6rem;
+  width: 45%;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.end-game:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+.resume-game:hover {
+  background-color: #b2b2b2;
+  cursor: pointer;
+}

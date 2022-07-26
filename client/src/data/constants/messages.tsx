@@ -14,7 +14,7 @@ export const MESSAGES = {
     startNewGame: "Enter your name and select game type before inviting friends.",
   
     inviteParticipants: {
-      shareLobbyID: "Share the Lobby ID with your friends so they can join",
+      shareLobbyID: "Share the code above with your friends so they can join.",
       minimumPlayers: "A lobby must have at least 3 participants to start the game."
     },
   },
