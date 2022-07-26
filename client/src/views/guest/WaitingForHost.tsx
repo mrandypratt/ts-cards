@@ -1,43 +1,58 @@
+import { useState } from "react";
+import { ConfirmExitLobbyDialogue } from "../../components/Buttons/ConfirmExitLobbyDialogue";
 import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+  const [showDialogue, setShowDialogue] = useState(false);
 
-  const exitLobby = () => {
-    socket?.emit(EVENTS.exitLobby, game);
+  const showConfirmDeleteDialogue = () => {
+    setShowDialogue(true);
   }
 
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h1><b>Success!</b></h1>
+      <h1><b>Waiting for Host</b></h1>
 
       <hr></hr>
 
-      <h2>You joined Lobby {game.lobbyId}</h2>
-
-      <h3><b><u>Other Participants:</u></b></h3>
-
-      {game.players.map(participant => {
-        return (
-          <p key={participant.sessionId}>{participant.name}</p>
-        )
-      })}
+      <h3>You are in the lobby.</h3>
 
       <hr></hr>
 
-      <p>Please wait...</p>
+      <div>
 
-      <p>{MESSAGES.guest.waitingForHost.pleaseWait}</p>
+        <h3><b><u>Players in Lobby:</u></b></h3>
+
+        {game.players.map(participant => {
+          return (
+            <p key={participant.sessionId}>{participant.name}</p>
+            )
+          })}
+
+      </div>
+
+      <hr></hr>
+
+      <p>Please wait for the host to begin the game...</p>
 
       <ExitLobbyButton
         text={"Exit Lobby"}
         type={"submit"}
         disabled={false} 
-        onClick={exitLobby}
+        onClick={showConfirmDeleteDialogue}
       />
+
+      { showDialogue && 
+        <ConfirmExitLobbyDialogue
+          game={game}
+          socket={socket}
+          setShowDialogue={setShowDialogue}
+          messages={[MESSAGES.dialogue.guestExitLobby1, MESSAGES.dialogue.guestExitLobby2]}
+        />
+      }
 
     </div>
   );

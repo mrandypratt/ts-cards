@@ -36,11 +36,11 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   return (
     <div style={{ textAlign: "center" }}>
 
-    <h1><b>Join a Lobby</b></h1>
+    <h1><b>Join a Game</b></h1>
 
     <hr></hr>
 
-      <p>{MESSAGES.guest.joinLobby}</p>
+      <p>Enter the <b>Lobby ID</b> provided by the game host.</p>
 
       <Box style={{marginBottom: 10}}>
         <TextField 
@@ -63,7 +63,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
       </Box>
 
       <SubmitButton
-        text={"Join Lobby"}
+        text={"Join Game"}
         type={"submit"}
         disabled={!containsValidCharacters([name])} 
         onClick={joinLobby}

@@ -9,13 +9,13 @@ type DialoguePropsType = {
   messages: string[];
 }
 
-export const ConfirmDeleteDialogue = ({game, socket, setShowDialogue, messages}: DialoguePropsType): JSX.Element => {
+export const ConfirmExitLobbyDialogue = ({game, socket, setShowDialogue, messages}: DialoguePropsType): JSX.Element => {
   const hideDialogue = () => {
     setShowDialogue(false)
   }
 
-  const deleteLobby = () => {
-    socket.emit(EVENTS.deleteLobby, game)
+  const exitLobby = () => {
+    socket?.emit(EVENTS.exitLobby, game);
   }
 
   return (
@@ -41,8 +41,8 @@ export const ConfirmDeleteDialogue = ({game, socket, setShowDialogue, messages}:
 
           <button 
             className="end-game"
-            onClick={() => deleteLobby()}>
-              End Game
+            onClick={() => exitLobby()}>
+              Exit Lobby
           </button>
 
         </div>

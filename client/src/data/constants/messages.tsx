@@ -11,16 +11,16 @@ export const MESSAGES = {
   },
 
   host: {
-    startNewGame: "Enter your name and select game type before inviting friends.",
+    startNewGame: "Before you invite friends, let's get some information first.",
   
     inviteParticipants: {
-      shareLobbyID: "Share the code above with your friends so they can join.",
-      minimumPlayers: "A lobby must have at least 3 participants to start the game."
+      shareLobbyID: "Share the above Lobby ID with your friends so they can join.",
+      minimumPlayers: "The lobby must have at least 3 players to begin play."
     },
   },
 
   guest: {
-    joinLobby: "To join a lobby, please enter the Lobby ID provided by the lobby host along with your name as it will appear in the game.",
+    joinLobby: "Please enter the Code provided by the game host.",
 
     waitingForHost: {
       success: "Success, you joined the lobby!",
@@ -39,5 +39,12 @@ export const MESSAGES = {
   judge: {
     waiting: "Once all players have selected their response, you will have the chance to review and select the winning response.",
     turn: "Please select the best response card to win this round."
+  },
+
+  dialogue: {
+    hostAbandonLobby1: "Leaving now will delete the lobby for all participants.",
+    hostAbandonLobby2: "Are you sure you want to quit?",
+    guestExitLobby1: "If you leave the lobby, you will need the Lobby ID to join again.",
+    guestExitLobby2: "Are you sure you would like to exit the lobby?",
   }
 }

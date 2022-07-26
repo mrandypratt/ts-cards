@@ -3,6 +3,7 @@ import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Game } from '../../data/classes/Game';
+import { FormHelperText } from '@mui/material';
 
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
@@ -54,10 +55,13 @@ export default function NSFWToggle({game, setGame}: {game: Game, setGame: (game:
   }
   
   return (
+    <div id="nsfw-toggle">
+      <FormHelperText style={{textAlign: "left"}}>Toggle Deck Selection</FormHelperText>
       <Stack id={"ThisStack"} direction="row" spacing={1} display={"flex"} flexDirection="row" alignItems="center" justifyContent="center">
         <Typography style={{color: "black", padding: 0, fontSize: "1.2rem"}}>Clean</Typography>
           <AntSwitch onClick={(toggleNSFW)} inputProps={{ 'aria-label': 'ant design' }} />
         <Typography style={{color: "red", padding: 0, fontSize: "1.2rem"}}>NSFW</Typography>
       </Stack>
+    </div>
   );
 }

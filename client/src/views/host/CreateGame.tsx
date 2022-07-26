@@ -9,14 +9,14 @@ import { containsValidCharacters } from "../../data/functions/arePlayerNamesVali
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
-export const StartNewGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
 
   const updateName = (event: any) => {
     setName(event.target.value);
   }
 
-  const startLobby = () => {
+  const createGame = () => {
     game.generateLobbyId();
     game.setPlayerName(sessionId, name);
     game.setView(sessionId, VIEWS.host.inviteParticipants);
@@ -32,7 +32,7 @@ export const StartNewGame = ({game, setGame, socket, sessionId}: ViewPropsType):
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h1><b>Create New Game</b></h1>
+      <h1><b>Create Game</b></h1>
 
       <hr></hr>
 
@@ -40,10 +40,9 @@ export const StartNewGame = ({game, setGame, socket, sessionId}: ViewPropsType):
 
       <Box>
         <TextField 
-          id="standard-basic"
+          id="enter-name"
           label="Player Name"
           variant="outlined"
-          helperText="Enter your name here."
           onChange={updateName}
         />
       </Box>
@@ -57,7 +56,7 @@ export const StartNewGame = ({game, setGame, socket, sessionId}: ViewPropsType):
         text={"Create Game"}
         type={"submit"}
         disabled={!containsValidCharacters([name])} 
-        onClick={startLobby}
+        onClick={createGame}
       />
 
       <ReturnHomeButton

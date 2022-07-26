@@ -50,7 +50,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       <hr></hr>
 
-      <p>Your Code is:</p>
+      <h3>Congrats, You created a lobby!</h3>
       
       <div style={{border: "2px", borderStyle: "solid"}}>
 
@@ -79,7 +79,9 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       <p>{MESSAGES.host.inviteParticipants.shareLobbyID}</p>
 
-      <h3><b><u>Participants:</u></b></h3>
+      <hr></hr>
+
+      <h3><b><u>Players in Lobby:</u></b></h3>
 
       {game.players.map(participant => {
         return (
@@ -102,7 +104,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
       }
 
       <ExitLobbyButton
-        text={"Delete Lobby"}
+        text={"Leave Game"}
         type={"submit"}
         disabled={false} 
         onClick={showConfirmDeleteDialogue}
@@ -113,6 +115,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
           game={game}
           socket={socket}
           setShowDialogue={setShowDialogue}
+          messages={[MESSAGES.dialogue.hostAbandonLobby1, MESSAGES.dialogue.hostAbandonLobby2]}
         />
       }
     </div>
