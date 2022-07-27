@@ -50,7 +50,6 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function NSFWToggle({game, setGame}: {game: Game, setGame: (game: Game) => void}): JSX.Element {
   const toggleNSFW = () => {
     game.toggleNSFW()
-    console.log(game.NSFW);
     setGame(game);
   }
   

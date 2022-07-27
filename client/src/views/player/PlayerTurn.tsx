@@ -17,7 +17,6 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
 
   const submitSelection = (): void => {
     game.setView(sessionId, VIEWS.player.selectionMade);
-    console.log(game)
     socket?.emit(EVENTS.playerSelection, game);
   }
   
