@@ -23,30 +23,33 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   if (round && player) {
     return (
       <div style={{ textAlign: "center" }}>
-
-        <h2>Round {game.rounds.length + 1} | {player.name}</h2>
+        
+        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1} - Submit Card</h2>
 
         <hr></hr>
-  
-        <h2>Select a Card</h2>
+        
+        <h3 style={{margin: "auto"}}>{game.getJudgePlayer()?.name} is Judge</h3>
+
+        <hr></hr>
+
   
         <PromptCard text={round.promptCard.text} />
   
         <div style={PlayersHandStyle}>
   
           {player.cards.map((card) => {
-  
+            
             return (
               <ResponseCard
-                key={card.id}
-                player={player}
-                card={card}
-                game={game}
-                setGame={setGame}
-                sessionId={sessionId}
+              key={card.id}
+              player={player}
+              card={card}
+              game={game}
+              setGame={setGame}
+              sessionId={sessionId}
               />
-            )
-          })}
+              )
+            })}
   
         </div>
   
@@ -55,15 +58,18 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
           disabled={!round.hasPlayerSelected(player.sessionId)}
           type="button"
           text="Submit Card"
-        />
+          />
 
         <ExitLobbyButton
           text={"Quit Game"}
           type={"submit"}
           disabled={false} 
           onClick={quitGame}
-        />
+          />
   
+          { process.env.REACT_APP_STAGE === "dev" &&
+            <p>Current Player: {player.name}</p>
+          } 
       </div>
     );
   } else {

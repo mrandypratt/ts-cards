@@ -43,6 +43,10 @@ export class Round {
   selectCard(sessionId: string, card: ResponseCard): void {
     this.selectedCardStore[sessionId] = card;
   }
+  
+  deselectCard(sessionId: string): void {
+    this.selectedCardStore[sessionId] = null;
+  }
 
   hasPlayerSelected(sessionId: string): boolean {
     return !!this.selectedCardStore[sessionId];
