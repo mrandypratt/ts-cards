@@ -50,9 +50,13 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       <hr></hr>
 
-      <h3>Congrats, You created a lobby!</h3>
+      <h3 style={{margin: "auto"}}>You created a lobby!</h3>
       
-      <div style={{border: "2px", borderStyle: "solid"}}>
+      <hr></hr>
+
+      <h3 style={{margin: "auto", marginTop: "1rem"}}>Lobby ID:</h3>
+
+      <div style={{border: "2px", borderStyle: "solid", marginTop: ".5rem"}}>
 
         <h3>
           <b>{game.lobbyId} </b> 

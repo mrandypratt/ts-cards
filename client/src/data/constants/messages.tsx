@@ -14,7 +14,7 @@ export const MESSAGES = {
     startNewGame: "Before you invite friends, let's get some information first.",
   
     inviteParticipants: {
-      shareLobbyID: "Share the above Lobby ID with your friends so they can join.",
+      shareLobbyID: "Share your Lobby ID with friends so they can join.",
       minimumPlayers: "The lobby must have at least 3 players to begin play."
     },
   },
@@ -37,7 +37,7 @@ export const MESSAGES = {
   },
 
   judge: {
-    waiting: "Once all players have selected their response, you will have the chance to review and select the winning response.",
+    waiting: "The players are submitting their funniest cards.",
     turn: "Please select the best response card to win this round."
   },
 
@@ -46,5 +46,7 @@ export const MESSAGES = {
     hostAbandonLobby2: "Are you sure you want to quit?",
     guestExitLobby1: "If you leave the lobby, you will need the Lobby ID to join again.",
     guestExitLobby2: "Are you sure you would like to exit the lobby?",
+    playerEndGame1: "WARNING: Exiting now will end the game for all players.",
+    playerEndGame2: "Are you sure you would like to exit?",
   }
 }

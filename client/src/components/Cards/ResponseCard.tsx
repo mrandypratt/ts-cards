@@ -35,15 +35,16 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
   }
   
   if (game.getPlayerView(sessionId) === VIEWS.judge.turn) {
-    console.log("ResponseCard.tsx Line 33")
     return (
       <div className="clickable">
         <PlayingCard 
           type={game.round?.isWinningCard(card) ? "selected" : "response"}
           text={ card.text } 
           onClick={ () => {
-            console.log("Card Clicked")
-            if (game.round) {
+            if (game.round?.winningCard?.id === card.id) {
+              game.round?.setWinningCard(null)
+              game.round?.setWinner(null);
+            } else {
               game.round?.setWinningCard(card);
               game.round?.setWinner(card);
             }

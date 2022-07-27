@@ -18,7 +18,7 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
 
       <hr></hr>
 
-      <h3>You are in the lobby.</h3>
+      <h3 style={{margin: "auto"}}>You joined the lobby!</h3>
 
       <hr></hr>
 

@@ -64,11 +64,11 @@ export class Round {
     return this.playersSessionIds.every(playerSessionId => this.selectedCardStore[playerSessionId] !== null);
   }
 
-  setWinningCard(card: ResponseCard): void {
+  setWinningCard(card: ResponseCard | null): void {
     this.winningCard = card;
   }
 
-  setWinner(card: ResponseCard): void {
+  setWinner(card: ResponseCard | null): void {
     this.playersSessionIds.forEach((playerSessionId) => {
       if (this.selectedCardStore[playerSessionId] === card) {
         this.winnerSessionId = playerSessionId;

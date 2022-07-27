@@ -1,28 +1,35 @@
+import { useState } from "react";
+import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
+import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 
 export const WaitingForNextGame = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+  const [showDialogue, setShowDialogue] = useState(false);
+  
   const player = game.getPlayer(sessionId);
 
-  const quitGame = () => {
-    socket.emit(EVENTS.deleteLobby, game);
+  const showConfirmDeleteDialogue = () => {
+    setShowDialogue(true);
   }
 
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h2>New Game | {player?.name}</h2>
+      <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+      
+      <hr></hr>
+      
+      <h3 style={{margin: "auto"}}>Moving to Next Round</h3>
 
       <hr></hr>
 
-      <PromptCard text="Waiting for all players to join the next game..." />
+      <PromptCard text="Waiting for all players to move to next round..." />
 
-      <hr></hr>
-
-      <h3><b><u>Joined Lobby:</u></b></h3>
+      <h3><b><u>Ready for Next Round:</u></b></h3>
 
       {game.players.map(player => {
         return (
@@ -34,8 +41,21 @@ export const WaitingForNextGame = ({ game, setGame, socket, sessionId }: ViewPro
         text={"Quit Game"}
         type={"submit"}
         disabled={false} 
-        onClick={quitGame}
+        onClick={showConfirmDeleteDialogue}
       />
+
+      { showDialogue && 
+        <ConfirmDeleteDialogue
+          game={game}
+          socket={socket}
+          setShowDialogue={setShowDialogue}
+          messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}
+        />
+        }
+
+        { process.env.REACT_APP_STAGE === "dev" &&
+          <p>Current Player: {player?.name}</p>
+        } 
 
     </div>
   );
