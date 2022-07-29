@@ -38,6 +38,8 @@ const exitLobbyStyles = {
   marginTop: 25,
   fontSize: 18,
   maxWidth: 200,
+  color: "red",
+  backgroundColor: "white"
 }
 
 type SubmitButtonProps = {
@@ -76,11 +78,12 @@ export const ReturnHomeButton = ({ text, type, onClick, disabled }: SubmitButton
 export const ExitLobbyButton = ({ text, type, onClick }: SubmitButtonProps): JSX.Element => {
   return (
     <Button
-      variant="contained"
+      variant="outlined"
       type={type}
       style={ exitLobbyStyles }
       onClick={onClick}
-      color={'error'}
+      color="error"
+      // color={'error'}
     >{ text }</Button>
   );
 }

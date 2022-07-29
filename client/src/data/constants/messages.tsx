@@ -2,7 +2,6 @@ export const MESSAGES = {
   home: {
     welcomeBanner: "Welcome to Cards with Friends!",
     getStarted1: "This game is inspired by Cards Against Humanity and the fun of playing games online with friends!",
-    getStarted2: "Click \"New Game\" to start a lobby and invite friends or click \"Join Lobby\" if you already have a Lobby ID from a friend.",
   },
 
   gettingStarted: {
@@ -12,16 +11,16 @@ export const MESSAGES = {
   },
 
   host: {
-    createLobby: "To start a new game, you first need to create a lobby. Pease enter your name and select \"Create Lobby\" to begin inviting friends.",
+    startNewGame: "Before you invite friends, let's get some information first.",
   
     inviteParticipants: {
-      shareLobbyID: "Share the Lobby ID with your friends so they can join",
-      minimumPlayers: "A lobby must have at least 3 participants to start the game."
+      shareLobbyID: "Share your Lobby ID with friends so they can join.",
+      minimumPlayers: "The lobby must have at least 3 players to begin play."
     },
   },
 
   guest: {
-    joinLobby: "To join a lobby, please enter the Lobby ID provided by the lobby host along with your name as it will appear in the game.",
+    joinLobby: "Please enter the Code provided by the game host.",
 
     waitingForHost: {
       success: "Success, you joined the lobby!",
@@ -38,7 +37,16 @@ export const MESSAGES = {
   },
 
   judge: {
-    waiting: "Once all players have selected their response, you will have the chance to review and select the winning response.",
+    waiting: "The players are submitting their funniest cards.",
     turn: "Please select the best response card to win this round."
+  },
+
+  dialogue: {
+    hostAbandonLobby1: "Leaving now will delete the lobby for all participants.",
+    hostAbandonLobby2: "Are you sure you want to quit?",
+    guestExitLobby1: "If you leave the lobby, you will need the Lobby ID to join again.",
+    guestExitLobby2: "Are you sure you would like to exit the lobby?",
+    playerEndGame1: "WARNING: Exiting now will end the game for all players.",
+    playerEndGame2: "Are you sure you would like to exit?",
   }
 }

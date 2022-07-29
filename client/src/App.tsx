@@ -6,7 +6,7 @@ import { VIEWS } from "./data/types/VIEWS";
 
 import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
-import { CreateLobby } from "./views/host/CreateLobby";
+import { CreateGame } from "./views/host/CreateGame";
 import { InviteParticipants } from "./views/host/InviteParticipants";
 import { JoinLobby } from "./views/guest/JoinLobby";
 import { WaitingForHost } from "./views/guest/WaitingForHost";
@@ -54,8 +54,6 @@ export const App = (): JSX.Element => {
     socket.on(EVENTS.resetClient, () => {
       const sessionId = sessionStorage.getItem("sessionId");
       const newGame = new Game();
-      
-      console.log("Game Reset");
 
       if (sessionId) {
         newGame.addPlayer(new Player(sessionId));
@@ -100,7 +98,7 @@ export const App = (): JSX.Element => {
       socket.emit(EVENTS.updateView, VIEWS.host.createLobby);
 
       return (
-        <CreateLobby
+        <CreateGame
           game={game}
           setGame={setGame}
           socket={socket}

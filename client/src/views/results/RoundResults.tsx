@@ -1,13 +1,17 @@
 import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PromptCard } from "../../components/Cards/PromptCard";
-import { RoundResultCardStyle } from "../../components/Containers/PlayersHand";
 import { ResultsTable } from "../../components/ResultsTable";
 import { VIEWS } from "../../data/types/VIEWS";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { useState } from "react";
+import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
+import { MESSAGES } from "../../data/constants/messages";
 
 export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+  const [showDialogue, setShowDialogue] = useState(false);
+  
   const round = game.round;
   const winner = game.getRoundWinner()
   const winningCard = game.round?.winningCard ? game.round?.winningCard : undefined;
@@ -25,23 +29,24 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
     socket.emit(EVENTS.startNewGame, game);
   }
 
-  const quitGame = () => {
-    socket.emit(EVENTS.deleteLobby, game);
+  const showConfirmDeleteDialogue = () => {
+    setShowDialogue(true);
   }
 
   if (round && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length} | {player?.name}</h2>
+       <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+        
+        <hr></hr>
+        
+        <h2 style={{margin: "auto"}}>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h2>
 
         <hr></hr>
-
-        <h2>Results</h2>
   
-        <h1>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h1>
-  
-        <div style={RoundResultCardStyle}>
+        <></>
+        <div className="winning-card-container">
 
           <PromptCard
             text={round.promptCard.text}
@@ -86,8 +91,21 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           text={"Quit Game"}
           type={"submit"}
           disabled={false} 
-          onClick={quitGame}
+          onClick={showConfirmDeleteDialogue}
         />
+
+        { showDialogue && 
+          <ConfirmDeleteDialogue
+            game={game}
+            socket={socket}
+            setShowDialogue={setShowDialogue}
+            messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}
+          />
+        }
+
+        { process.env.REACT_APP_STAGE === "dev" &&
+          <p>Current Player: {player?.name}</p>
+        } 
       </div>
     )
   } else {

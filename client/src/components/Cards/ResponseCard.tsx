@@ -15,38 +15,43 @@ type ResponseCardProps = {
 
 export const ResponseCard = ({ player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
 
-  console.log(`Current View: ${game.getPlayerView(sessionId)}`);
-  console.log(game);
-  console.log(`SessionID: ${sessionId}`);
-
   if (game.getPlayerView(sessionId) === VIEWS.player.turn) {
     return (
-      <PlayingCard 
-        type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
-        text={ card.text } 
-        onClick={ () => {
-          game.round?.selectCard(sessionId, card);
-          setGame(game.clone())
-        }}
-      />
+      <div className="clickable">
+        <PlayingCard 
+          type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
+          text={ card.text } 
+          onClick={ () => {
+            if (game.round?.getSelection(sessionId)?.id === card.id) {
+              game.round?.deselectCard(sessionId);
+            } else {
+              game.round?.selectCard(sessionId, card);
+            }
+            setGame(game.clone())
+          }}
+        />
+      </div>
     );
   }
   
   if (game.getPlayerView(sessionId) === VIEWS.judge.turn) {
-    console.log("ResponseCard.tsx Line 33")
     return (
-      <PlayingCard 
-        type={game.round?.isWinningCard(card) ? "selected" : "response"}
-        text={ card.text } 
-        onClick={ () => {
-          console.log("Card Clicked")
-          if (game.round) {
-            game.round?.setWinningCard(card);
-            game.round?.setWinner(card);
-          }
-          setGame(game.clone());
-        }}
-      />
+      <div className="clickable">
+        <PlayingCard 
+          type={game.round?.isWinningCard(card) ? "selected" : "response"}
+          text={ card.text } 
+          onClick={ () => {
+            if (game.round?.winningCard?.id === card.id) {
+              game.round?.setWinningCard(null)
+              game.round?.setWinner(null);
+            } else {
+              game.round?.setWinningCard(card);
+              game.round?.setWinner(card);
+            }
+            setGame(game.clone());
+          }}
+        />
+      </div>
     );
   }
   

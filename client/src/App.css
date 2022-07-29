@@ -12,3 +12,144 @@ p {
   padding-right: 10%;
   padding-left: 10%;
 }
+
+
+
+.confirm-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+  opacity: 0.85;
+  overflow: hidden; /* disable scrolling*/
+  z-index: 2; /* higher than all other items, but lower than 
+    the confirm box*/
+}
+
+.container {
+  flex-direction: column;
+  position: fixed;
+  background-color: rgb(207, 207, 204);
+  min-width: 230px;
+  width: 70%;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -75%);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  z-index: 5; /* Higher than the z-index of the background */
+}
+
+.confirmation-text {
+  display: flex;
+  color: rgb(20, 19, 19);
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+  align-items: center;
+  line-height: 1.4rem;
+  font-size: 1.1rem;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-evenly;
+}
+
+.end-game {
+  display: flex;
+  background-color: #cc0000;
+  color: white;
+  min-height: 2.6rem;
+  width: 45%;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  max-width: 125px;
+  margin-left: 15px;
+}
+
+.resume-game {
+  display: flex;
+  background-color: #777d86;
+  color: rgb(255, 255, 255);
+  height: 2.6rem;
+  width: 45%;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  max-width: 125px;
+  margin-right: 15px;
+}
+
+.end-game:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+.resume-game:hover {
+  background-color: #b2b2b2;
+  cursor: pointer;
+}
+
+#nsfw-toggle {
+  border: solid 1px;
+  border-color: darkgrey;
+  border-radius: 4px;
+  max-width: 192px;
+  display: flex;
+  flex-direction: column;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:1.25rem;
+  margin-bottom:1rem;
+  padding-bottom: .5rem;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.submitted-icon {
+  color: green;
+  vertical-align: bottom;
+}
+
+.waiting-icon {
+  color: yellow;
+  vertical-align: bottom;
+}
+
+.no-action-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+  opacity: 0.55;
+  overflow: hidden; /* disable scrolling*/
+  z-index: 2; /* higher than all other items, but lower than 
+    the confirm box*/
+}
+
+/* Media Query smaller than 425 */
+
+/* for 2 cards in hand, media query at 420. Greater justify center less justify start */
+
+/* .winning-card-container {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+
+} */
+
