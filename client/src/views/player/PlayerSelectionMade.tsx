@@ -3,8 +3,9 @@ import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { SuccessIcon } from "../../components/Icons/SuccessIcon";
+import { WaitingIcon } from "../../components/Icons/WaitingIcon";
 
 export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -20,7 +21,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2>Round {game.rounds.length + 1}</h2>
+        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
 
         <hr></hr>
                 
@@ -37,7 +38,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
         {round.playersSessionIds.map(playerSessionId => {
           let player = game.getPlayer(playerSessionId);
           return (
-            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSessionId) ? "Yes" : "No"}</p>
+            <p key={player?.name}>{player?.name} {round.hasPlayerSelected(playerSessionId) ? <SuccessIcon/> : <WaitingIcon/>}</p>
           )
         })}
 

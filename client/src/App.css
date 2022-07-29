@@ -116,3 +116,13 @@ p {
 .clickable:hover {
   cursor: pointer;
 }
+
+.submitted-icon {
+  color: "green";
+  vertical-align: "bottom";
+}
+
+.waiting-icon {
+  color: "yellow";
+  vertical-align: "bottom";
+}

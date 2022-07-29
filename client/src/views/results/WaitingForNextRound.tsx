@@ -3,9 +3,10 @@ import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDia
 import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
+import { SuccessIcon } from "../../components/Icons/SuccessIcon";
+import { WaitingIcon } from "../../components/Icons/WaitingIcon";
 
 export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -35,7 +36,7 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
 
       {game.players.map(player => {
         return (
-          <p key={player?.name}>{player?.name}: {player?.view === VIEWS.results.waitingForNextRound ? "Yes" : "No"}</p>
+          <p key={player?.name}>{player?.name}: {player?.view === VIEWS.results.waitingForNextRound ? <SuccessIcon/> : <WaitingIcon/>}</p>
         )
       })}
 

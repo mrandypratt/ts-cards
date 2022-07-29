@@ -4,7 +4,9 @@ import { ExitLobbyButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
+import { SuccessIcon } from "../../components/Icons/SuccessIcon";
+import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+
 
 export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -43,7 +45,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
         {round.playersSessionIds.map(playerSessionId => {
           let player = game.getPlayer(playerSessionId);
           return (
-            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSessionId) ? "yes" : "No"}</p>
+            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSessionId) ? <SuccessIcon/> : <WaitingIcon/>}</p>
           )
         })}
 
