@@ -1,7 +1,6 @@
 import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PromptCard } from "../../components/Cards/PromptCard";
-import { RoundResultCardStyle } from "../../components/Containers/PlayersHand";
 import { ResultsTable } from "../../components/ResultsTable";
 import { VIEWS } from "../../data/types/VIEWS";
 import { EVENTS } from "../../data/constants/socketEvents";
@@ -42,13 +41,12 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
         
         <hr></hr>
         
-        <h3 style={{margin: "auto"}}>Results</h3>
+        <h2 style={{margin: "auto"}}>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h2>
 
         <hr></hr>
   
-        <h1>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h1>
-  
-        <div style={RoundResultCardStyle}>
+        <></>
+        <div className="winning-card-container">
 
           <PromptCard
             text={round.promptCard.text}

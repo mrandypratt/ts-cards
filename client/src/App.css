@@ -118,11 +118,38 @@ p {
 }
 
 .submitted-icon {
-  color: "green";
-  vertical-align: "bottom";
+  color: green;
+  vertical-align: bottom;
 }
 
 .waiting-icon {
-  color: "yellow";
-  vertical-align: "bottom";
+  color: yellow;
+  vertical-align: bottom;
 }
+
+.no-action-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+  opacity: 0.55;
+  overflow: hidden; /* disable scrolling*/
+  z-index: 2; /* higher than all other items, but lower than 
+    the confirm box*/
+}
+
+/* Media Query smaller than 425 */
+
+/* for 2 cards in hand, media query at 420. Greater justify center less justify start */
+
+/* .winning-card-container {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+
+} */
+

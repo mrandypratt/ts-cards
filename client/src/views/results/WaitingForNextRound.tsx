@@ -28,7 +28,7 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
 
       <hr></hr>
 
-      <PromptCard text="Waiting for all players to move to next round..." />
+      <PromptCard text="Waiting for all players to move to next round..."/>
 
       <hr></hr>
 
@@ -55,6 +55,10 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
           messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}
         />
       }
+
+      <div 
+        className="no-action-bg">
+      </div>
 
       { process.env.REACT_APP_STAGE === "dev" &&
         <p>Current Player: {player?.name}</p>

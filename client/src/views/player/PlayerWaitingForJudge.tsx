@@ -5,7 +5,6 @@ import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
@@ -75,6 +74,10 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
             messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}
           />
         }
+
+      <div 
+        className="no-action-bg">
+      </div>
 
         { process.env.REACT_APP_STAGE === "dev" &&
           <p>Current Player: {player.name}</p>
