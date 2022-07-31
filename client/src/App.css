@@ -13,8 +13,6 @@ p {
   padding-left: 10%;
 }
 
-
-
 .confirm-bg {
   position: fixed;
   left: 0;
@@ -144,12 +142,45 @@ p {
 
 /* for 2 cards in hand, media query at 420. Greater justify center less justify start */
 
-/* .winning-card-container {
-  width: 90%;
+
+/* Card Styles */
+
+.solo-prompt-card {
+
+}
+
+.response-card-in-hand {
+
+}
+
+.players-hand {
+  overflow-x: scroll;
+  overflow-y: visible;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: start;
+  padding-top: 40px;
+}
+
+.winning-card-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
   align-items: center;
   margin: 0;
+}
 
-} */
+/* Playing Cards are 2.5in x 3.5in. That is 0.71 x */
+.playing-card {
+  height: 200px;
+  width: 143px;
+  margin: auto;
+}
 
+.card-text {
+  font-size: 1rem;
+}
+
+.solo-prompt-card {
+  margin: auto;
+}

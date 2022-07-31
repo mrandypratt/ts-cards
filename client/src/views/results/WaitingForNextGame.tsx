@@ -26,7 +26,7 @@ export const WaitingForNextGame = ({ game, setGame, socket, sessionId }: ViewPro
 
       <hr></hr>
 
-      <PromptCard text="Waiting for all players to move to next round..." />
+      <PromptCard className="solo-prompt-card" text="Waiting for all players to move to next round..." />
 
       <h3><b><u>Ready for Next Round:</u></b></h3>
 

@@ -3,7 +3,6 @@ import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDia
 import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
-import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
@@ -36,14 +35,15 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
 
         <hr></hr>
   
-        <PromptCard text={round.promptCard.text} />
+        <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
-        <div style={PlayersHandStyle}>
+        <div className="players-hand">
   
           {player.cards.map((card) => {
             
             return (
               <ResponseCard
+                className="response-card-in-hand"
                 key={card.id}
                 player={player}
                 card={card}
