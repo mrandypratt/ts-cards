@@ -1,3 +1,4 @@
+// Use HTTPS for prod, HTTP for dev
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { Game } from "../client/src/data/classes/Game";

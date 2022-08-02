@@ -3,14 +3,12 @@ import Paper from "@mui/material/Paper";
 import { CSSProperties } from "react"
 
 const cardStyles = {
-  height: 200,
-  width: 143,
+  height: "100%",
+  width: "100%",
   textAlign: "left",
-  padding: 20,
   margin: "auto",
-  paddingBottom: 30,
   fontFamily: "Helvetica",
-  fontSize: 18,
+  fontSize: "1rem",
   borderStyle: "solid",
   borderWidth: 1,
   borderRadius: 8,
@@ -46,17 +44,18 @@ type PlayingCardProps = {
   style?: CSSProperties | undefined;
   onClick?: () => void;
   text: string;
+  className: string;
 }
 
-export const PlayingCard = ({ type, style, onClick, text}: PlayingCardProps): JSX.Element =>  {
+export const PlayingCard = ({ type, className, style, onClick, text}: PlayingCardProps): JSX.Element =>  {
   return (
-    <Grid>
+    <Grid className="playing-card">
       <Paper
         onClick={onClick}
         elevation={15}
         style={ Object.assign(styles[type], style) }
       >
-        {text}
+        <p className="card-text">{text}</p>
       </Paper>
     </Grid>
   );

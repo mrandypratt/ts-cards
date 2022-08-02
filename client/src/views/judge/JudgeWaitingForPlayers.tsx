@@ -30,7 +30,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
 
         <hr></hr>
   
-        <PromptCard text={round.promptCard.text} />
+        <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
         <hr></hr>
 

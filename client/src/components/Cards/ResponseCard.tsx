@@ -11,14 +11,16 @@ type ResponseCardProps = {
   game: Game;
   setGame: (game: Game) => void;
   sessionId: string;
+  className: string;
 }
 
-export const ResponseCard = ({ player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
+export const ResponseCard = ({ className, player, card, game, setGame, sessionId}: ResponseCardProps): JSX.Element => {
 
   if (game.getPlayerView(sessionId) === VIEWS.player.turn) {
     return (
       <div className="clickable">
         <PlayingCard 
+          className={ className }
           type={ game.round?.isCardSelected(sessionId, card) ? "selected" : "response" }  
           text={ card.text } 
           onClick={ () => {
@@ -38,6 +40,7 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
     return (
       <div className="clickable">
         <PlayingCard 
+          className={ className }
           type={game.round?.isWinningCard(card) ? "selected" : "response"}
           text={ card.text } 
           onClick={ () => {
@@ -58,10 +61,13 @@ export const ResponseCard = ({ player, card, game, setGame, sessionId}: Response
   if (game.getPlayerView(sessionId) === VIEWS.results.round ||
       game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
     return (
-      <PlayingCard 
-        type="response" 
-        text={ card.text }
-      />
+      <div className="playing-card">
+        <PlayingCard 
+          className={ className }
+          type="response" 
+          text={ card.text }
+        />
+      </div>
     );
   }
 

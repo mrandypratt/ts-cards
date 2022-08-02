@@ -3,7 +3,6 @@ import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDia
 import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
-import { PlayersHandStyle } from "../../components/Containers/PlayersHand";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
@@ -31,9 +30,9 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
 
         <h2>{game.getJudgePlayer()?.name} is selecting...</h2>
   
-        <PromptCard text={round.promptCard.text} />
+        <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
-        <div style={PlayersHandStyle}>
+        <div className="players-hand">
   
           {round.playersSessionIds.map((sessionId) => {
             let card = round.getSelection(sessionId);
@@ -41,6 +40,7 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
             if (card !== null) {
               return (
                 <ResponseCard
+                  className={"response-card-in-hand-judge-round"}
                   key={card.id}
                   player={player}
                   card={card}

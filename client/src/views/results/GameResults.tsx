@@ -45,10 +45,12 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
         <div style={RoundResultCardStyle}>
 
           <PromptCard
+            className="prompt-card-results"
             text={round.promptCard.text}
           />
 
           <ResponseCard
+            className="response-card-results"
             player={winner}
             card={winningCard}
             game={game}

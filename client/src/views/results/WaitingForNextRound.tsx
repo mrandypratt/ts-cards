@@ -20,7 +20,7 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
   return (
     <div style={{ textAlign: "center" }}>
 
-      <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+      <h2 style={{margin: "auto"}}>Round {game.rounds.length}</h2>
       
       <hr></hr>
       
@@ -28,7 +28,7 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
 
       <hr></hr>
 
-      <PromptCard text="Waiting for all players to move to next round..."/>
+      <PromptCard className="solo-prompt-card" text="Waiting for all players to move to next round..."/>
 
       <hr></hr>
 
