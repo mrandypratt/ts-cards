@@ -13,7 +13,7 @@ p {
   padding-left: 10%;
 }
 
-
+/* Quit and End Game Dialogue styles*/
 
 .confirm-bg {
   position: fixed;
@@ -24,7 +24,7 @@ p {
   background-color: #141414;
   opacity: 0.85;
   overflow: hidden; /* disable scrolling*/
-  z-index: 2; /* higher than all other items, but lower than 
+  z-index: 3; /* higher than all other items, but lower than 
     the confirm box*/
 }
 
@@ -140,9 +140,12 @@ p {
     the confirm box*/
 }
 
+
 /* Media Query smaller than 425 */
 
 /* for 2 cards in hand, media query at 420. Greater justify center less justify start */
+
+
 
 /* .winning-card-container {
   width: 90%;

@@ -25,7 +25,9 @@ export const ConfirmExitLobbyDialogue = ({game, socket, setShowDialogue, message
 
           { messages.map(message => {
             return (
-              <div className="confirmation-text">
+              <div 
+                className="confirmation-text"
+                key={message}>
                 {message}
               </div>
             )

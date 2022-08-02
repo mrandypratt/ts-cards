@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton } from "../../components/Buttons/Submit";
+import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
@@ -42,7 +42,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
           )
         })}
 
-        <ExitLobbyButton
+        <ExitLobbyShadedButton
           text={"Quit Game"}
           type={"submit"}
           disabled={false} 
@@ -61,6 +61,10 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
         { process.env.REACT_APP_STAGE === "dev" &&
           <p>Current Player: {player?.name}</p>
         } 
+
+        <div 
+          className="no-action-bg">
+        </div>
       </div>
     );
   } else {

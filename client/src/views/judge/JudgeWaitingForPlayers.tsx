@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton } from "../../components/Buttons/Submit";
+import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
@@ -49,7 +49,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
           )
         })}
 
-        <ExitLobbyButton
+        <ExitLobbyShadedButton
           text={"Quit Game"}
           type={"submit"}
           disabled={false} 
@@ -68,6 +68,10 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
         { process.env.REACT_APP_STAGE === "dev" &&
           <p>Current Player: {player.name}</p>
         } 
+
+        <div 
+          className="no-action-bg">
+        </div>
 
       </div>
     );
