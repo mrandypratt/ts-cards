@@ -6,6 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
+import { Container } from "@mui/material";
 
 export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
@@ -44,7 +45,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Container className="page-container" maxWidth="sm">   
 
       <h1><b>Invite Friends</b></h1>
 
@@ -122,7 +123,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
           messages={[MESSAGES.dialogue.hostAbandonLobby1, MESSAGES.dialogue.hostAbandonLobby2]}
         />
       }
-    </div>
+    </Container>
 
   );
 };

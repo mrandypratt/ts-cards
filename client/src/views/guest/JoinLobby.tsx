@@ -1,8 +1,8 @@
+import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
@@ -34,7 +34,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Container className="page-container" maxWidth="sm">   
 
     <h1><b>Join a Game</b></h1>
 
@@ -76,6 +76,6 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
         onClick={returnHome}
       />
 
-    </div>
+    </Container>
   );
 };

@@ -6,6 +6,8 @@ import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+import Container from '@mui/material/Container';
+import { cardHandSize } from "../../data/constants/cardHandSize";
 
 export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -25,19 +27,23 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
-        
-        <hr></hr>
-        
-        <h3 style={{margin: "auto"}}>Judge's Turn</h3>
+        <Container className="page-container" maxWidth="sm">
 
-        <hr></hr>
+          <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+          
+          <hr></hr>
+          
+          <h3 style={{margin: "auto"}}>Judge's Turn</h3>
 
-        <h2>Select the Winning Card</h2>
+          <hr></hr>
+
+          <h2>Select the Winning Card</h2>
+
+        </Container>
   
         <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
-        <div className="players-hand">
+        <div className={"players-hand-container " + cardHandSize[game.players.length - 1]}>
   
           {round.playersSessionIds.map((playerSessionId) => {
             let card = round.getSelection(playerSessionId);
@@ -62,20 +68,24 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
           })}
   
         </div>
-  
-        <SubmitButton
-          onClick={selectWinner}
-          disabled={!round.isWinningCardSelected()}
-          type="button"
-          text="Submit Card"
-        />
 
-        <ExitLobbyButton
-          text={"Quit Game"}
-          type={"submit"}
-          disabled={false} 
-          onClick={showConfirmDeleteDialogue}
-        />
+        <Container className="page-container" maxWidth="sm">
+  
+          <SubmitButton
+            onClick={selectWinner}
+            disabled={!round.isWinningCardSelected()}
+            type="button"
+            text="Submit Card"
+          />
+
+          <ExitLobbyButton
+            text={"Quit Game"}
+            type={"submit"}
+            disabled={false} 
+            onClick={showConfirmDeleteDialogue}
+          />
+
+        </Container>
 
         { showDialogue && 
           <ConfirmDeleteDialogue

@@ -27,8 +27,7 @@ export const ConfirmDeleteDialogue = ({game, socket, setShowDialogue, messages}:
             return (
               <div 
                 className="confirmation-text"
-                key={message}
-              >
+                key={message}>
                 {message}
               </div>
             )

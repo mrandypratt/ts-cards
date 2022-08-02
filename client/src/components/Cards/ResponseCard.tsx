@@ -58,14 +58,26 @@ export const ResponseCard = ({ className, player, card, game, setGame, sessionId
     );
   }
   
-  if (game.getPlayerView(sessionId) === VIEWS.results.round ||
-      game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
+  if (game.getPlayerView(sessionId) === VIEWS.player.waitingForJudge) {
     return (
-      <div className="playing-card">
+      <div>
         <PlayingCard 
           className={ className }
           type="response" 
           text={ card.text }
+        />
+      </div>
+    );
+  }
+
+  if (game.getPlayerView(sessionId) === VIEWS.results.round) {
+    return (
+      <div>
+        <PlayingCard 
+          className={ className }
+          type="response" 
+          text={ card.text }
+          playerName={player.name}
         />
       </div>
     );

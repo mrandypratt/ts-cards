@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
@@ -30,7 +31,7 @@ export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): J
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Container className="page-container" maxWidth="sm">   
 
       <h1><b>Create Game</b></h1>
 
@@ -66,6 +67,6 @@ export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): J
         onClick={returnHome}
       />
 
-    </div>
+    </Container>
   );
 };

@@ -6,6 +6,7 @@ import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
 import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+import { PromptCard } from "../../components/Cards/PromptCard";
 
 export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -29,7 +30,12 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
   
         <hr></hr>
 
-        <p>Please wait for the other players to submit their cards.</p>
+        <p>Please Wait...</p>
+
+        <PromptCard
+          text="Other players are making their selections."
+          className="solo-prompt-card"
+        />
         
         <hr></hr>
   

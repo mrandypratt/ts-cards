@@ -7,6 +7,8 @@ import { MESSAGES } from "../../data/constants/messages";
 import { EVENTS } from "../../data/constants/socketEvents";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
+import Container from '@mui/material/Container';
+import { cardHandSize } from "../../data/constants/cardHandSize";
 
 export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -24,8 +26,11 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   }
 
   if (round && player) {
+
     return (
       <div style={{ textAlign: "center" }}>
+
+        <Container className="page-container" maxWidth="sm">
         
         <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1} - Submit Card</h2>
 
@@ -34,10 +39,12 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
         <h3 style={{margin: "auto"}}>{game.getJudgePlayer()?.name} is the Judge</h3>
 
         <hr></hr>
+
+        </Container>
   
         <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
-        <div className="players-hand">
+        <div className={"players-hand-container " + cardHandSize[player.cards.length]}>
   
           {player.cards.map((card) => {
             
@@ -55,20 +62,23 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
           })}
   
         </div>
-  
-        <SubmitButton
-          onClick={submitSelection}
-          disabled={!round.hasPlayerSelected(player.sessionId)}
-          type="button"
-          text="Submit Card"
-          />
+        
+        <Container className="page-container" maxWidth="sm">
+          <SubmitButton
+            onClick={submitSelection}
+            disabled={!round.hasPlayerSelected(player.sessionId)}
+            type="button"
+            text="Submit Card"
+            />
 
-        <ExitLobbyButton
-          text={"Quit Game"}
-          type={"submit"}
-          disabled={false} 
-          onClick={showConfirmDeleteDialogue}
-          />
+          <ExitLobbyButton
+            text={"Quit Game"}
+            type={"submit"}
+            disabled={false} 
+            onClick={showConfirmDeleteDialogue}
+            />
+        </Container>
+  
 
           { showDialogue && 
             <ConfirmDeleteDialogue
