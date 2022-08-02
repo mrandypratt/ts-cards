@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton } from "../../components/Buttons/Submit";
+import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { MESSAGES } from "../../data/constants/messages";
@@ -58,7 +58,7 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
   
         </div>
 
-        <ExitLobbyButton
+        <ExitLobbyShadedButton
           text={"Quit Game"}
           type={"submit"}
           disabled={false} 

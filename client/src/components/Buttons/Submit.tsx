@@ -39,7 +39,13 @@ const exitLobbyStyles = {
   fontSize: 18,
   maxWidth: 200,
   color: "red",
-  backgroundColor: "white"
+  backgroundColor: "white",
+  border: "solid 1px",
+  zIndex: 3,
+}
+
+const exitLobbyShadedStyles = {
+  backgroundColor: "#969393",
 }
 
 type SubmitButtonProps = {
@@ -81,6 +87,19 @@ export const ExitLobbyButton = ({ text, type, onClick }: SubmitButtonProps): JSX
       variant="outlined"
       type={type}
       style={ exitLobbyStyles }
+      onClick={onClick}
+      color="error"
+      // color={'error'}
+    >{ text }</Button>
+  );
+}
+
+export const ExitLobbyShadedButton = ({ text, type, onClick }: SubmitButtonProps): JSX.Element => {
+  return (
+    <Button
+      variant="outlined"
+      type={type}
+      style={ Object.assign({}, exitLobbyStyles, exitLobbyShadedStyles ) }
       onClick={onClick}
       color="error"
       // color={'error'}
