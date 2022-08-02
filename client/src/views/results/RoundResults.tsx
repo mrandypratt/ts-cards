@@ -8,6 +8,8 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { MESSAGES } from "../../data/constants/messages";
+import { Container } from "@mui/material";
+import { cardHandSize } from "../../data/constants/cardHandSize";
 
 export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -37,16 +39,35 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
     return (
       <div style={{ textAlign: "center" }}>
 
-       <h2 style={{margin: "auto"}}>Round {game.rounds.length}</h2>
-        
-        <hr></hr>
-        
-        <h2 style={{margin: "auto"}}>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h2>
+        <Container className="page-container" maxWidth="sm">
+
+          <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+            
+          <hr></hr>
+          
+          <h2 style={{margin: "auto"}}>{ winner.name } won {game.isGameWinner() ? "the game" : "the round"}!</h2>
+
+          <hr></hr>
+
+
+          <div style={{textAlign: "center", marginTop: 10, display: "flex", width: "100%", justifyContent: "center"}}>
+            
+            <ResultsTable
+              game={game}
+              setGame={setGame}
+              socket={socket}
+              sessionId={sessionId}
+              />
+
+          </div>
+
 
         <hr></hr>
-  
-        <></>
-        <div className="winning-card-container">
+        <h4 style={{margin: "auto", marginBottom: "0.5rem"}}>Winning Card</h4>
+
+        </Container>
+        
+        <div className="winning-card-container two-card-hand">
 
           <PromptCard
             className="prompt-card-results"
@@ -63,38 +84,55 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           />
 
         </div>
+
+        <h4 style={{margin: "auto", marginTop: "0.5rem", marginBottom: "0.5rem"}}>Other Player Submissions</h4>
+        <div className={"winning-card-container " + cardHandSize[game.players.length - 2]}>
+
+
+          {game.players.map(player => {
+            let selectedCard = round.getSelection(player.sessionId)
+
+            if (selectedCard && player.sessionId !== round.winnerSessionId) {
+              return (
+                <ResponseCard
+                  className="response-card-results"
+                  player={player}
+                  card={selectedCard}
+                  game={game}
+                  setGame={setGame}
+                  sessionId={sessionId}
+                />
+              )
+            }
+          })}
+
+          </div>
   
-        <div style={{textAlign: "center", marginTop: 10, display: "flex", width: "100%", justifyContent: "center"}}>
-          
-          <ResultsTable
-            game={game}
-            setGame={setGame}
-            socket={socket}
-            sessionId={sessionId}
+
+        <Container className="page-container" maxWidth="sm">
+
+          {!game.isGameWinner() && <SubmitButton
+            onClick={() => startNextRound()}
+            type="button"
+            text="Next Round"
+            disabled={false}
+          />}
+
+          {game.isGameWinner() && <SubmitButton
+            onClick={() => startNewGame()}
+            type="button"
+            text="Start New Game"
+            disabled={false}
+          />}
+
+          <ExitLobbyButton
+            text={"Quit Game"}
+            type={"submit"}
+            disabled={false} 
+            onClick={showConfirmDeleteDialogue}
           />
 
-        </div>
-
-        {!game.isGameWinner() && <SubmitButton
-          onClick={() => startNextRound()}
-          type="button"
-          text="Next Round"
-          disabled={false}
-        />}
-
-        {game.isGameWinner() && <SubmitButton
-          onClick={() => startNewGame()}
-          type="button"
-          text="Start New Game"
-          disabled={false}
-        />}
-
-        <ExitLobbyButton
-          text={"Quit Game"}
-          type={"submit"}
-          disabled={false} 
-          onClick={showConfirmDeleteDialogue}
-        />
+        </Container>
 
         { showDialogue && 
           <ConfirmDeleteDialogue

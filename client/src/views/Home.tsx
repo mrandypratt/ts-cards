@@ -2,6 +2,7 @@ import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import { VIEWS } from "../data/types/VIEWS";
+import Container from '@mui/material/Container';
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   
@@ -21,7 +22,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Container className="page-container" maxWidth="sm">   
 
       <h1><b>{MESSAGES.home.welcomeBanner}</b></h1>
 
@@ -55,7 +56,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
         <p style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}>Getting Started</p>
       </div>
 
-    </div>
+    </Container>
   )
 
 }

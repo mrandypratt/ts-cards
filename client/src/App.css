@@ -1,5 +1,13 @@
+/* APP LEVEL STYLES */
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  margin: auto;
+  margin-top: 8px;
+}
+
+.page-container {
+  text-align: center;
 }
 
 h1 {
@@ -13,7 +21,165 @@ p {
   padding-left: 10%;
 }
 
-/* Quit and End Game Dialogue styles*/
+#nsfw-toggle {
+  border: solid 1px;
+  border-color: darkgrey;
+  border-radius: 4px;
+  max-width: 192px;
+  display: flex;
+  flex-direction: column;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:1.25rem;
+  margin-bottom:1rem;
+  padding-bottom: .5rem;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.submitted-icon {
+  color: green;
+  vertical-align: bottom;
+}
+
+.waiting-icon {
+  color: yellow;
+  vertical-align: bottom;
+}
+
+.no-action-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+  opacity: 0.55;
+  overflow: hidden; /* disable scrolling*/
+  z-index: 2; /* higher than all other items, but lower than 
+  the confirm box*/
+}
+
+/* CARD STYLES */
+
+.players-hand-container {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+.winning-card-container {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitting-player-text {
+  color:rgb(148, 148, 148);
+}
+
+/* Playing Cards are 2.5in x 3.5in. 
+That is 0.71 x 1 */
+.playing-card {
+  height: 200px;
+  width: 143px;
+  margin: auto;
+  text-align: left;
+}
+
+.response-card-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-text {
+  font-size: 1rem;
+  padding-right: 7.5%;
+  padding-left: 7.5%;
+}
+
+.solo-prompt-card {
+  margin: auto;
+}
+
+/* RESPONSIVE CARD HAND CONTAINER MEDIA QUERIES */
+
+/* Card width is 145px */
+@media only screen and (max-width: 290px) {
+  .two-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 435px) {
+  .three-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .four-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 725px) {
+  .five-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  .six-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1015px) {
+  .seven-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1160px) {
+  .eight-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1305px) {
+  .nine-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1450px) {
+  .ten-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1595px) {
+  .eleven-card-hand {
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 1740px) {
+  .twelve-card-hand {
+    justify-content: start;
+  }
+}
+
+/* QUIT GAME & END GAME DIALOGUE */
 
 .confirm-bg {
   position: fixed;
@@ -97,93 +263,4 @@ p {
 .resume-game:hover {
   background-color: #b2b2b2;
   cursor: pointer;
-}
-
-#nsfw-toggle {
-  border: solid 1px;
-  border-color: darkgrey;
-  border-radius: 4px;
-  max-width: 192px;
-  display: flex;
-  flex-direction: column;
-  margin-left:auto;
-  margin-right:auto;
-  margin-top:1.25rem;
-  margin-bottom:1rem;
-  padding-bottom: .5rem;
-}
-
-.clickable:hover {
-  cursor: pointer;
-}
-
-.submitted-icon {
-  color: green;
-  vertical-align: bottom;
-}
-
-.waiting-icon {
-  color: yellow;
-  vertical-align: bottom;
-}
-
-.no-action-bg {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #141414;
-  opacity: 0.55;
-  overflow: hidden; /* disable scrolling*/
-  z-index: 2; /* higher than all other items, but lower than 
-    the confirm box*/
-}
-
-
-/* Media Query smaller than 425 */
-
-/* for 2 cards in hand, media query at 420. Greater justify center less justify start */
-
-
-/* Card Styles */
-
-.solo-prompt-card {
-
-}
-
-.response-card-in-hand {
-
-}
-
-.players-hand {
-  overflow-x: scroll;
-  overflow-y: visible;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  padding-top: 40px;
-}
-
-.winning-card-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0;
-}
-
-/* Playing Cards are 2.5in x 3.5in. That is 0.71 x */
-.playing-card {
-  height: 200px;
-  width: 143px;
-  margin: auto;
-}
-
-.card-text {
-  font-size: 1rem;
-}
-
-.solo-prompt-card {
-  margin: auto;
 }

@@ -10,12 +10,12 @@ import { ViewPropsType } from "../data/types/ViewPropsType"
 
 export const ResultsTable = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element  => {
   return (
-    <TableContainer sx={{ maxWidth: 350, textAlign: "center"}} component={Paper}>
+    <TableContainer sx={{ maxWidth: 300, textAlign: "center"}} component={Paper}>
       <Table sx={{ maxWidth: 350 }} size="small" aria-label="Scoreboard">
-        <TableHead>
+        <TableHead style={{backgroundColor: "black", color: "white"}}>
           <TableRow>
-            <TableCell>Player</TableCell>
-            <TableCell align="center">Score</TableCell>
+            <TableCell style={{color: "white"}}>Player</TableCell>
+            <TableCell style={{color: "white"}} align="center">Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

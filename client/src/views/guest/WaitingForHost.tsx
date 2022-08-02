@@ -1,6 +1,8 @@
+import { Container } from "@mui/material";
 import { useState } from "react";
 import { ConfirmExitLobbyDialogue } from "../../components/Buttons/ConfirmExitLobbyDialogue";
 import { ExitLobbyButton } from "../../components/Buttons/Submit";
+import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
@@ -12,13 +14,20 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Container className="page-container" maxWidth="sm">   
 
       <h1><b>Waiting for Host</b></h1>
 
       <hr></hr>
 
       <h3 style={{margin: "auto"}}>You joined the lobby!</h3>
+
+      <hr></hr>
+
+      <PromptCard
+        text="Please wait for the host to begin the game..."
+        className="solo-prompt-card"
+      />
 
       <hr></hr>
 
@@ -33,10 +42,6 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
           })}
 
       </div>
-
-      <hr></hr>
-
-      <p>Please wait for the host to begin the game...</p>
 
       <ExitLobbyButton
         text={"Exit Lobby"}
@@ -54,6 +59,6 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
         />
       }
 
-    </div>
+    </Container>
   );
 };

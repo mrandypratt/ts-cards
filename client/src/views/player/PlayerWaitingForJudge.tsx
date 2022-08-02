@@ -1,10 +1,14 @@
+import { Container } from "@mui/material";
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { ResponseCard } from "../../components/Cards/ResponseCard";
+import { cardHandSize } from "../../data/constants/cardHandSize";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
+
+
 
 export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -20,19 +24,23 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
     return (
       <div style={{ textAlign: "center" }}>
 
-        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
-        
-        <hr></hr>
-  
-        <h3 style={{margin: "auto"}}>Judge's Turn</h3>
+        <Container className="page-container" maxWidth="sm">
 
-        <hr></hr>
+          <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+          
+          <hr></hr>
+    
+          <h3 style={{margin: "auto"}}>Judge's Turn</h3>
 
-        <h2>{game.getJudgePlayer()?.name} is selecting...</h2>
+          <hr></hr>
+
+          <h2>{game.getJudgePlayer()?.name} is selecting...</h2>
+
+        </Container>
   
         <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
   
-        <div className="players-hand">
+        <div className={"players-hand-container " + cardHandSize[game.players.length - 1]}>
   
           {round.playersSessionIds.map((sessionId) => {
             let card = round.getSelection(sessionId);
@@ -40,7 +48,7 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
             if (card !== null) {
               return (
                 <ResponseCard
-                  className={"response-card-in-hand-judge-round"}
+                  className={""}
                   key={card.id}
                   player={player}
                   card={card}
@@ -58,12 +66,16 @@ export const PlayerWaitingForJudge = ({ game, setGame, socket, sessionId }: View
   
         </div>
 
-        <ExitLobbyShadedButton
-          text={"Quit Game"}
-          type={"submit"}
-          disabled={false} 
-          onClick={showConfirmDeleteDialogue}
-        />
+        <Container className="page-container" maxWidth="sm">
+
+          <ExitLobbyShadedButton
+            text={"Quit Game"}
+            type={"submit"}
+            disabled={false} 
+            onClick={showConfirmDeleteDialogue}
+          />
+
+        </Container>
 
 
         { showDialogue && 

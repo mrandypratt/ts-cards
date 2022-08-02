@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton } from "../../components/Buttons/Submit";
+import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
 import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { VIEWS } from "../../data/types/VIEWS";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
 import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+import { Container } from "@mui/material";
 
 export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -19,14 +20,16 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
 
   return (
     <div style={{ textAlign: "center" }}>
+              
+      <Container className="page-container" maxWidth="sm">
 
-      <h2 style={{margin: "auto"}}>Round {game.rounds.length}</h2>
-      
-      <hr></hr>
-      
-      <h3 style={{margin: "auto"}}>Moving to Next Round</h3>
+        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+        
+        <hr></hr>
+        
+        <h3 style={{margin: "auto"}}>Moving to Next Round</h3>
 
-      <hr></hr>
+        <hr></hr>
 
       <PromptCard className="solo-prompt-card" text="Waiting for all players to move to next round..."/>
 
@@ -40,12 +43,14 @@ export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPr
         )
       })}
 
-      <ExitLobbyButton
-        text={"Quit Game"}
-        type={"submit"}
-        disabled={false} 
-        onClick={showConfirmDeleteDialogue}
-      />
+        <ExitLobbyShadedButton
+          text={"Quit Game"}
+          type={"submit"}
+          disabled={false} 
+          onClick={showConfirmDeleteDialogue}
+        />
+
+      </Container>
 
       { showDialogue && 
         <ConfirmDeleteDialogue

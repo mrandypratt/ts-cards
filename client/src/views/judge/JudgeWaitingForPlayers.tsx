@@ -6,6 +6,7 @@ import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
 import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+import { Container } from "@mui/material";
 
 
 export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
@@ -20,7 +21,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
 
   if (round && player) {
     return (
-      <div style={{ textAlign: "center" }}>
+      <Container className="page-container" maxWidth="sm">
 
         <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
   
@@ -73,7 +74,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
           className="no-action-bg">
         </div>
 
-      </div>
+      </Container>
     );
   } else {
     return (
