@@ -7,6 +7,7 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
 import { WaitingIcon } from "../../components/Icons/WaitingIcon";
 import { PromptCard } from "../../components/Cards/PromptCard";
+import { Container } from "@mui/material";
 
 export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
@@ -20,7 +21,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
 
   if (round && player) {
     return (
-      <div style={{ textAlign: "center" }}>
+      <Container className="page-container" maxWidth="sm">
 
         <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
 
@@ -71,7 +72,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
         <div 
           className="no-action-bg">
         </div>
-      </div>
+      </Container>
     );
   } else {
     return (
