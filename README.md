@@ -30,4 +30,5 @@
 - Install Git: `sudo yum install git -y`
 - Clone Repo: `git clone https://github.com/mrandypratt/ts-cards.git`
 - `npm run setup` from root installs dependencies in both `client` and `server`
+- `NODE_ENV={Mongo_URI}` and insert Mongo_URI from MongoDB
 - In `server` directory, run `pm2 start index.ts --watch` then `pm2 logs` to get terminal logs
