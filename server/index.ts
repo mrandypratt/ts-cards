@@ -1,35 +1,34 @@
 // Use HTTPS for prod, HTTP for dev
+import express from "express";
+import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { sessionStore } from "./data/SessionStore";
 import { gameStore } from "./data/GameStore";
 import { EVENTS } from "../client/src/data/constants/EVENTS"
-import { CardDataType, GameDataType, PlayerDataType } from "../client/src/data/types/ClassTypes";
+import { CardDataType, GameDataType } from "../client/src/data/types/ClassTypes";
 import { VIEWS } from "../client/src/data/constants/VIEWS"
 import { Game } from "./classes/Game";
 import { Player } from "./classes/Player";
+import { log } from "./functions/log"
 
-const httpServer = createServer();
+// Express Server
+const app = express();
+app.use(cors())
+app.use(express.json())
+
+// HTTP Server with Socket
+const server = createServer(app);
 const PORT = process.env.port || 8787;
-
-const io = new Server(httpServer, {
+const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
 
-const log = (event: string, sessionId: string, socketId: string, lobbyId?: string, ...messages: string[]): void => {
-  console.log(event);
-  console.log(`-- SessionID: ${sessionId}`)
-  console.log(`-- SocketID: ${socketId}`);
-  if (lobbyId && (lobbyId !== "")) {
-    console.log(`--LobbyId: ${lobbyId}`)
-  }
-  messages.forEach(message => console.log(`--${message}`));
-  console.log("")
-  gameStore.logGames();
-  console.log("")
-}
+app.get("/api", (req, res) => {
+  console.log("Express Routes")
+});
 
 
 io.use((socket, next) => {
@@ -340,7 +339,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on(EVENTS.client.startNextGame, (gameData: GameDataType): void => {
-
+    // STUB
   });
 
   socket.on(EVENTS.client.deleteLobby, () => {
@@ -397,8 +396,7 @@ io.on("connection", (socket) => {
   });
 });
 
-
-httpServer.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Listening on PORT: " + PORT);
   console.log("")
   console.log('-------------')
