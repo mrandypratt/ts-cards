@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { Player } from "../../data/classes/Player";
+import { PlayerDataType } from "../../data/types/ClassTypes";
 
 const buttonStyles = {
   width: "60%",
@@ -21,7 +21,7 @@ const styles = {
 };
 
 type SelectPlayerButtonProps = {
-  player: Player;
+  player: PlayerDataType;
   disabled: boolean;
   onClick: () => void;
 }

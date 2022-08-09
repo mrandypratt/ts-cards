@@ -1,10 +1,10 @@
+import { CardDataType } from "../../client/src/data/types/ClassTypes";
 import { shuffle } from "../functions/shuffle";
-import { CardDataType } from "../types/ClassTypes";
 import { Card } from "./Card"
 
 export class PromptCard extends Card {
-  constructor(text: string, cardData?: CardDataType) {
-    super(text, "prompt", cardData)
+  constructor(cardData: CardDataType | null, text?: string, NSFW?: boolean) {
+    super(cardData, text, "prompt", NSFW || false)
     PromptCard.allPromptCards.push(this);
   }
 

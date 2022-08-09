@@ -5,29 +5,25 @@ import { useState } from "react";
 import NSFWToggle from "../../components/Buttons/NSFWToggle";
 import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
+import { EVENTS } from "../../data/constants/EVENTS";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
+import { VIEWS } from "../../data/constants/VIEWS";
 
 export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
+  const [ NSFW, setNSFW ] = useState(false);
 
   const updateName = (event: any) => {
     setName(event.target.value);
   }
 
   const createGame = () => {
-    game.generateLobbyId();
-    game.setPlayerName(sessionId, name);
-    game.setView(sessionId, VIEWS.host.inviteParticipants);
-    socket?.emit(EVENTS.createLobby, game);
+    socket?.emit(EVENTS.client.createLobby, name, NSFW)
   }
 
   const returnHome = () => {
-    game.setView(sessionId, VIEWS.home);
-    socket?.emit(EVENTS.updateView, VIEWS.home);
-    setGame(game.clone());
+    socket?.emit(EVENTS.client.updateView, VIEWS.home);
   }
 
   return (
@@ -49,8 +45,8 @@ export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): J
       </Box>
 
       <NSFWToggle
-        game={game}
-        setGame={setGame}
+        NSFW={NSFW}
+        setNSFW={setNSFW}
       />
 
       <SubmitButton

@@ -1,3 +1,4 @@
+
 import { PromptCard } from "../classes/PromptCard";
 import { ResponseCard } from "../classes/ResponseCard";
 import { allCardText} from "./allCardText";
@@ -21,19 +22,19 @@ class CardStore {
   }
 
   dealCleanPromptCards(): PromptCard[] {
-    return this.allCardText.prompts.clean.map(text => new PromptCard(text))
+    return this.allCardText.prompts.clean.map(text => new PromptCard(null, text, true))
   }
 
   dealCleanResponseCards(): PromptCard[] {
-    return this.allCardText.responses.clean.map(text => new ResponseCard(text))
+    return this.allCardText.responses.clean.map(text => new ResponseCard(null, text, true))
   }
 
   dealNSFWPromptCards(): PromptCard[] {
-    return this.allCardText.prompts.NSFW.map(text => new PromptCard(text))
+    return this.allCardText.prompts.NSFW.map(text => new PromptCard(null, text, false))
   }
 
   dealNSFWResponseCards(): PromptCard[] {
-    return this.allCardText.responses.NSFW.map(text => new ResponseCard(text))
+    return this.allCardText.responses.NSFW.map(text => new ResponseCard(null, text, false))
   }
 
 }

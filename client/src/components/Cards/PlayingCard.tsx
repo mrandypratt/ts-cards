@@ -1,7 +1,5 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { CSSProperties } from "react"
-import { Player } from "../../data/classes/Player";
 
 const cardStyles = {
   fontFamily: "Helvetica",
@@ -37,42 +35,25 @@ const styles = {
 };
 
 type PlayingCardProps = {
+  className: "response-card" | "solo-prompt-card" | "response-card-results" | "prompt-card-results";
   type: "prompt" | "response" | "selected";
-  style?: CSSProperties | undefined;
-  onClick?: () => void;
   text: string;
-  className: string;
+  onClick?: () => void;
   playerName?: string;
 }
 
-export const PlayingCard = ({ type, className, style, onClick, text, playerName}: PlayingCardProps): JSX.Element =>  {
-  const fullClassName = "playing-card " + className;
-  
-  if (className !== "response-card-results") {
-    return (
-      <Grid>
-        <Paper
-          className={fullClassName}
-          onClick={onClick}
-          elevation={15}
-          style={ Object.assign(styles[type], style) }
-        >
-          <p className="card-text">{text}</p>
-        </Paper>
-      </Grid>
-    );
-  }
+export const PlayingCard = ({ className, type, text, onClick, playerName}: PlayingCardProps): JSX.Element =>  {
 
   return (
     <Grid>
       <Paper
-        className={fullClassName}
+        className={"playing-card " + className + (onClick ? " clickable" : "")}
         onClick={onClick}
         elevation={15}
-        style={ Object.assign(styles[type], style) }
+        style={ Object.assign(styles[type]) }
       >
         <p className="card-text">{text}</p>
-        <p className="card-text submitting-player-text">{playerName}'s Card</p>
+        { playerName && <p className="card-text submitting-player-text">{playerName}'s Card</p>}
       </Paper>
     </Grid>
   );

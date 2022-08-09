@@ -1,6 +1,6 @@
 import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
+import { EVENTS } from "../../data/constants/EVENTS";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
@@ -14,15 +14,20 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   const [showDialogue, setShowDialogue] = useState(false);
 
   const startGame = () => {
-    socket?.emit(EVENTS.startRound, game);
+    socket?.emit(EVENTS.client.startFirstRound, game);
   }
 
   const minimumPlayersJoined = (): boolean => {
-    return game.players.length >= 3;
+    const players = game?.players;
+    if (players) {
+      return game?.players?.length >= 3;
+    }
+    return false;
   }
 
   const handleCopyClick = () => {
-    let lobbyId = game.lobbyId
+    let lobbyId = game?.id
+
     if (lobbyId) {
       navigator.clipboard.writeText(lobbyId);
       setOpenSnackbar(true)
@@ -60,7 +65,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
       <div style={{border: "2px", borderStyle: "solid", marginTop: ".5rem"}}>
 
         <h3>
-          <b>{game.lobbyId} </b> 
+          <b>{game?.id} </b> 
 
           { process.env.REACT_APP_STAGE === "dev" && <ContentCopyIcon
               onMouseEnter={() => setIsHovering(true)}
@@ -88,7 +93,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       <h3><b><u>Players in Lobby:</u></b></h3>
 
-      {game.players.map(participant => {
+      {game?.players.map(participant => {
         return (
           <p key={participant.sessionId}>{participant.name}</p>
         )
@@ -117,7 +122,6 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       { showDialogue && 
         <ConfirmDeleteDialogue
-          game={game}
           socket={socket}
           setShowDialogue={setShowDialogue}
           messages={[MESSAGES.dialogue.hostAbandonLobby1, MESSAGES.dialogue.hostAbandonLobby2]}

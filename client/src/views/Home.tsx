@@ -1,24 +1,22 @@
 import { SubmitButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
-import { VIEWS } from "../data/types/VIEWS";
 import Container from '@mui/material/Container';
+import { EVENTS } from "../data/constants/EVENTS";
+import { VIEWS } from "../data/constants/VIEWS";
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   
   const newGame = () => {
-    game.setView(sessionId, VIEWS.host.createLobby);
-    setGame(game.clone());
+    socket.emit(EVENTS.client.updateView, VIEWS.host.createLobby)
   }
   
   const joinLobby = () => {
-    game.setView(sessionId, VIEWS.guest.joinLobby);
-    setGame(game.clone());
+    socket.emit(EVENTS.client.updateView, VIEWS.guest.joinLobby)
   }
   
   const gettingStarted = () => {
-    game.setView(sessionId, VIEWS.gettingStarted);
-    setGame(game.clone());
+    socket.emit(EVENTS.client.updateView, VIEWS.gettingStarted)
   }
 
   return (

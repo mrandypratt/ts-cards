@@ -1,6 +1,6 @@
-import { Game } from "../client/src/data/classes/Game";
-import { Player } from "../client/src/data/classes/Player";
-import { GameDataType } from "../client/src/data/types/ClassTypes";
+import { GameDataType } from "../../client/src/data/types/ClassTypes";
+import { Game } from "../classes/Game";
+import { Player } from "../classes/Player";
 
 class GameStore {
   games: Game[];
@@ -11,10 +11,6 @@ class GameStore {
 
   addGame(game: Game): void {
     this.games.push(game);
-  }
-
-  setLobbyId(lobbyId: string, sessionId: string): void {
-    this.findGameBySessionId(sessionId)?.setLobby(lobbyId);
   }
 
   updatePlayer(gameData: GameDataType, sessionId: string): void {
@@ -33,22 +29,6 @@ class GameStore {
         })
       }
     });
-  }
-
-  updateGame(gameData: GameDataType | Game): void {
-    let newGame = new Game(gameData);
-
-    this.games.find((game, gameIndex): void => {
-      if (game.id === newGame.id) {
-        if (game instanceof Game) {
-          this.games[gameIndex] = newGame;
-        } else {
-          this.games[gameIndex] = new Game(newGame);
-        }
-        
-        return;
-      }
-    })
   }
 
   deleteGame(gameId: string): void {
@@ -70,7 +50,7 @@ class GameStore {
   findGameByLobbyId(lobbyId: string | null): Game | null {
     let game;
     if (lobbyId) {
-      game = this.games.find(game => game.lobbyId === lobbyId);
+      game = this.games.find(game => game.id === lobbyId);
     }
     if (game) return game;
     return null
@@ -94,7 +74,7 @@ class GameStore {
     console.log("--------------")
     this.games.forEach((game, gameIndex) => {
       console.log(`-- Game ${gameIndex + 1}: ${game.id}`)
-      console.log(`-- -- Lobby: ${game.lobbyId}`)
+      console.log(`-- -- Lobby: ${game.id}`)
       console.log("-- -- Players")
       game.players.forEach((player, playerIndex) => {
         console.log(`-- -- -- P${playerIndex + 1}: ${player.name}`)

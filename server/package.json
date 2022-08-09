@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "mongoose": "^6.5.1",
+    "short-unique-id": "^4.4.4",
     "socket.io": "^4.4.1"
   },
   "name": "server",

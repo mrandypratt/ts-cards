@@ -1,11 +1,12 @@
 import { MESSAGES } from "../../data/constants/messages";
+import { EVENTS } from "../../data/constants/EVENTS";
+import { VIEWS } from "../../data/constants/VIEWS";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
+
 
 export const GettingStarted = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const returnHome = () => {
-    game.setView(sessionId, VIEWS.home)
-    setGame(game.clone());
+    socket.emit(EVENTS.client.updateView, VIEWS.host.createLobby)
   }
 
   return (
