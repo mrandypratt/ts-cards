@@ -1,19 +1,23 @@
 import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
-import { EVENTS } from "../../data/constants/socketEvents";
+import { EVENTS } from "../../data/constants/EVENTS";
 import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/types/VIEWS";
+import Alert from '@mui/material/Alert';
+import { VIEWS } from "../../data/constants/VIEWS";
+
 
 export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
-  const [ room, setRoom ] = useState("");
+  const [ lobbyId, setLobbyId ] = useState("");
   const [ name, setName ] = useState("");
+  const [ alertMessage, setAlertMessage] = useState<string | null>(null)
 
-  const updateRoom = (event: any) => {
-    setRoom(event.target.value);
+
+  const updateLobbyId = (event: any) => {
+    setLobbyId(event.target.value);
   }
 
   const updateName = (event: any) => {
@@ -21,20 +25,29 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   }
   
   const joinLobby = () => {
-    game.setPlayerName(sessionId, name);
-    game.setLobby(room);
-    game.setView(sessionId, VIEWS.guest.waitingForHost);
-    socket?.emit(EVENTS.joinLobby, game, game.getPlayer(sessionId));
+    socket?.emit(EVENTS.client.joinLobby, lobbyId, name);
+  }
+  
+  const returnHome = () => {
+    socket?.emit(EVENTS.client.updateView, VIEWS.home);
   }
 
-  const returnHome = () => {
-    game.setView(sessionId, VIEWS.home);
-    socket?.emit(EVENTS.updateView, VIEWS.home);
-    setGame(game.clone());
-  }
+  useEffect(() => {
+    socket.on(EVENTS.server.invalidLobbyId, (lobbyId: string) => {
+      setAlertMessage(`${lobbyId} is not a valid Lobby Id`);
+
+      setTimeout(() => {
+        setAlertMessage(null);
+      }, 5000)
+    })
+  }, [socket])
 
   return (
     <Container className="page-container" maxWidth="sm">   
+    
+    { alertMessage && 
+      <Alert severity="error">{alertMessage}</Alert>
+    }
 
     <h1><b>Join a Game</b></h1>
 
@@ -48,7 +61,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
           label="Lobby ID"
           variant="outlined"
           helperText="Enter Lobby ID"
-          onChange={updateRoom}
+          onChange={updateLobbyId}
         />
       </Box>
 

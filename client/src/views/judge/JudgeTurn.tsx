@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { PromptCard } from "../../components/Cards/PromptCard";
-import { ResponseCard } from "../../components/Cards/ResponseCard";
 import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/socketEvents";
+import { EVENTS } from "../../data/constants/EVENTS";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { cardHandSize } from "../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../data/functions/getPlayer";
+import { CardDataType } from "../../data/types/ClassTypes";
+import { PlayingCard } from "../../components/Cards/PlayingCard";
 
 export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
-  const [showDialogue, setShowDialogue] = useState(false);
+  const [ showDialogue, setShowDialogue ] = useState(false);
+  const [ selectedCard, setSelectedCard ] = useState<CardDataType | null>(null);
 
-  const round = game.round;
-  const player = game.getPlayer(sessionId);
+  const round = game?.round;
+  const player = getCurrentPlayer(game, sessionId);
 
   const selectWinner = (): void => {
-    socket.emit(EVENTS.winnerSelected, game);
+    socket.emit(EVENTS.client.judgeSelection, selectedCard);
   }
 
   const showConfirmDeleteDialogue = () => {
@@ -29,7 +31,7 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
 
         <Container className="page-container" maxWidth="sm">
 
-          <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+          <h2 style={{margin: "auto"}}>Round {round.number}</h2>
           
           <hr></hr>
           
@@ -41,23 +43,27 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
 
         </Container>
   
-        <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
+        <PlayingCard 
+          className={"solo-prompt-card"}
+          type="prompt"
+          text={round.promptCard.text}
+        />
   
         <div className={"players-hand-container " + cardHandSize[game.players.length - 1]}>
   
-          {round.playersSessionIds.map((playerSessionId) => {
-            let card = round.getSelection(playerSessionId);
+          {round.players.map((player) => {
+            let card = player.selectedCard;
 
             if (card !== null) {
               return (
-                <ResponseCard
-                  className="response-card-in-hand-judge-round"
+                <PlayingCard 
                   key={card.id}
-                  player={player}
-                  card={card}
-                  game={game}
-                  setGame={setGame}
-                  sessionId={sessionId}
+                  className="response-card"
+                  type={ selectedCard?.id === card?.id ? "selected" : "response" }
+                  text={ card.text } 
+                  onClick={ () => {
+                    setSelectedCard(selectedCard?.id === card?.id ? null : card)
+                  }}
                 />
                 );
               } else {
@@ -73,7 +79,7 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   
           <SubmitButton
             onClick={selectWinner}
-            disabled={!round.isWinningCardSelected()}
+            disabled={!selectedCard}
             type="button"
             text="Submit Card"
           />
@@ -89,7 +95,6 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
 
         { showDialogue && 
           <ConfirmDeleteDialogue
-            game={game}
             socket={socket}
             setShowDialogue={setShowDialogue}
             messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}

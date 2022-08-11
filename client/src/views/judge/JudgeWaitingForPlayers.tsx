@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
 import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
-import { PromptCard } from "../../components/Cards/PromptCard";
 import { MESSAGES } from "../../data/constants/messages";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import { SuccessIcon } from "../../components/Icons/SuccessIcon";
 import { WaitingIcon } from "../../components/Icons/WaitingIcon";
 import { Container } from "@mui/material";
+import { getCurrentPlayer } from "../../data/functions/getPlayer";
+import { PlayingCard } from "../../components/Cards/PlayingCard";
 
 
 export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
   
-  const round = game.round;
-  const player = game.getPlayer(sessionId);
+  const round = game?.round;
+  const player = getCurrentPlayer(game, sessionId);
 
   const showConfirmDeleteDialogue = () => {
     setShowDialogue(true);
@@ -23,7 +24,7 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
     return (
       <Container className="page-container" maxWidth="sm">
 
-        <h2 style={{margin: "auto"}}>Round {game.rounds.length + 1}</h2>
+        <h2 style={{margin: "auto"}}>Round {round.number}</h2>
   
         <hr></hr>
         
@@ -31,7 +32,11 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
 
         <hr></hr>
   
-        <PromptCard className={"solo-prompt-card"} text={round.promptCard.text} />
+        <PlayingCard 
+          className={"solo-prompt-card"}
+          text={round.promptCard.text}
+          type="prompt"
+        />
   
         <hr></hr>
 
@@ -43,10 +48,11 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
   
         <h3><b><u>Submissions:</u></b></h3>
 
-        {round.playersSessionIds.map(playerSessionId => {
-          let player = game.getPlayer(playerSessionId);
+        {round.players.map(player => {
           return (
-            <p key={player?.name}>{player?.name}: {round.hasPlayerSelected(playerSessionId) ? <SuccessIcon/> : <WaitingIcon/>}</p>
+            <p key={player.name}>
+              {player.name}: {player.selectedCard !== null ? <SuccessIcon/> : <WaitingIcon/>}
+            </p>
           )
         })}
 
@@ -59,7 +65,6 @@ export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: Vie
 
         { showDialogue && 
           <ConfirmDeleteDialogue
-            game={game}
             socket={socket}
             setShowDialogue={setShowDialogue}
             messages={[MESSAGES.dialogue.playerEndGame1, MESSAGES.dialogue.playerEndGame2]}

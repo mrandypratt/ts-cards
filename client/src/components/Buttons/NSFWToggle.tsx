@@ -2,7 +2,6 @@ import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Game } from '../../data/classes/Game';
 import { FormHelperText } from '@mui/material';
 
 
@@ -47,10 +46,9 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function NSFWToggle({game, setGame}: {game: Game, setGame: (game: Game) => void}): JSX.Element {
+export default function NSFWToggle({NSFW, setNSFW}: {NSFW: boolean, setNSFW: (NSFW: boolean) => void}): JSX.Element {
   const toggleNSFW = () => {
-    game.toggleNSFW()
-    setGame(game);
+    setNSFW(!NSFW);
   }
   
   return (

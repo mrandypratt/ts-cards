@@ -1,9 +1,9 @@
 import { Socket } from "socket.io-client";
-import { Game } from "../classes/Game";
+import { GameDataType, RoundDataType } from "./ClassTypes";
 
 export type ViewPropsType = {
-  game: Game;
-  setGame: (game: Game) => void;
+  game: GameDataType | null;
+  setGame: (game: GameDataType) => void;
   socket: Socket;
   sessionId: string
 }

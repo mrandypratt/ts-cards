@@ -1,21 +1,19 @@
 import { Socket } from "socket.io-client";
-import { Game } from "../../data/classes/Game";
-import { EVENTS } from "../../data/constants/socketEvents"
+import { EVENTS } from "../../data/constants/EVENTS"
 
 type DialoguePropsType = {
-  game: Game;
   socket: Socket;
   setShowDialogue: React.Dispatch<React.SetStateAction<boolean>>
   messages: string[];
 }
 
-export const ConfirmExitLobbyDialogue = ({game, socket, setShowDialogue, messages}: DialoguePropsType): JSX.Element => {
+export const ConfirmExitLobbyDialogue = ({socket, setShowDialogue, messages}: DialoguePropsType): JSX.Element => {
   const hideDialogue = () => {
     setShowDialogue(false)
   }
 
   const exitLobby = () => {
-    socket?.emit(EVENTS.exitLobby, game);
+    socket?.emit(EVENTS.client.exitLobby);
   }
 
   return (

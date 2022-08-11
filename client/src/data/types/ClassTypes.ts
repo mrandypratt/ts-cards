@@ -1,43 +1,45 @@
-import { PromptCard } from "../classes/PromptCard";
-
-export type CardDataType = {
-  id: number;
-  text: string;
-  type: string;
-};
-
-export type PlayerDataType = {
-  name: string;
-  cards: CardDataType[];
+export type SessionDataType = {
   sessionId: string;
+  socketId: string;
+  lobbyId: string | null;
   view: string;
-}
-
-export type RoundDataType = {
-  playersSessionIds: string[];
-  judgeSessionId: string;
-  promptCard: CardDataType;
-  selectedCardStore: {
-    [playerSessionId: string]: CardDataType | null
-  };
-  winningCard: CardDataType | null;
-  winnerSessionId: string | null;
 }
 
 export type GameDataType = {
   id: string;
   NSFW: boolean;
   round: RoundDataType | null;
-  rounds: RoundDataType[];
+  previousRounds: RoundDataType[];
   players: PlayerDataType[];
+  judgeIndex: number;
   promptCards: CardDataType[];
   responseCards: CardDataType[];
-  lobbyId: string | null;
+  cardsPerPlayer: number;
+  pointsToWin: number;
+  winner: PlayerDataType;
+};
+
+export type RoundDataType = {
+  number: number;
+  players: PlayerDataType[];
+  judge: PlayerDataType | null;
+  promptCard: CardDataType;
+  winner: PlayerDataType | null;
 }
 
-export type NewRoundPropsType = {
-  playersSessionIds: string[];
-  judgeSessionId: string;
-  promptCard: PromptCard;
+export type PlayerDataType = {
+  sessionId: string;
+  name: string;
+  cards: CardDataType[];
+  selectedCard: CardDataType | null;
+  wins: number;
+  readyForNextRound: Boolean;
 }
+
+export type CardDataType = {
+  id: number;
+  text: string;
+  type: string;
+  NSFW: boolean;
+};
 

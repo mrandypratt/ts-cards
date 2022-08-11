@@ -49,6 +49,23 @@ p {
   vertical-align: bottom;
 }
 
+.winning-icon {
+  color: rgb(239, 208, 98);
+  vertical-align: bottom;
+  text-align: right;
+}
+
+.crown-icon {
+  color: rgb(239, 208, 98);
+  vertical-align: text-top;
+  text-align: right;
+}
+
+.winner-column {
+  padding: auto;
+  width: 0px;
+}
+
 .no-action-bg {
   position: fixed;
   left: 0;
