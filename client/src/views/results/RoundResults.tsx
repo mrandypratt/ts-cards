@@ -36,7 +36,13 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
             
           <hr></hr>
           
-          <h2 style={{margin: "auto"}}>{ round.winner?.name } won {"the round"}!</h2>
+          { player.sessionId === round.winner?.sessionId &&
+            <h2 style={{margin: "auto"}}>You won the round!</h2>
+          }
+
+          { player.sessionId !== round.winner?.sessionId &&
+            <h3 style={{margin: "auto"}}>{ round.winner?.name } won {"the round"}!</h3>
+          }
 
           <hr></hr>
 
