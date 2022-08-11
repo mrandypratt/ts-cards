@@ -113,21 +113,27 @@ export class Game {
           this.loadResponseCards();
         } 
 
+        // Only put card in hand that isn't currently in play
         let newCard = this.responseCards.pop();
-        
-        // put card back in deck if player already has this card
-        if (newCard) {
-          console.log(newCard)
 
-          if (player.alreadyHasCard(newCard)) {
-            console.log("Player already has card")
-            this.responseCards.unshift(newCard);
-          } else {
-            console.log("Player Draws Card")
+        if (newCard) {
+          let cardIsUnique = true;
+
+          this.players.forEach(player => {
+            player.cards.forEach(card => {
+              if (card.text === newCard?.text) {
+                cardIsUnique = false;
+              }
+            })
+          })
+  
+          if (cardIsUnique) {
             player.drawCard(newCard)
+          } else {
+            this.responseCards.unshift(newCard);
           }
         } else {
-          console.log("Not a Response Card")
+          console.log("Error: Not a Response Card")
         }
       }
     });
