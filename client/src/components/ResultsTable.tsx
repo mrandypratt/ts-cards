@@ -22,7 +22,9 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {game?.players.map((player: PlayerDataType) => (
+          {game?.players.sort((a, b) => {
+            return b.wins - a.wins;
+          }).map((player: PlayerDataType) => (
             <TableRow
               key={player.sessionId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
