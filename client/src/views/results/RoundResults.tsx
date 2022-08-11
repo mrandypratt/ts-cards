@@ -69,7 +69,7 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           />
 
           <PlayingCard
-            className="response-card-results"
+            className="response-card-results winner"
             type="response"
             text={winningCard.text}
             playerName={winner.name}
@@ -95,7 +95,6 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
               
           </div>
   
-
         <Container className="page-container" maxWidth="sm">
 
           <SubmitButton

@@ -1,5 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import { FaCrown } from 'react-icons/fa';
 
 const cardStyles = {
   fontFamily: "Helvetica",
@@ -35,7 +36,7 @@ const styles = {
 };
 
 type PlayingCardProps = {
-  className: "response-card" | "solo-prompt-card" | "response-card-results" | "prompt-card-results";
+  className: "response-card" | "solo-prompt-card" | "response-card-results" | "response-card-results winner" | "prompt-card-results";
   type: "prompt" | "response" | "selected";
   text: string;
   onClick?: () => void;
@@ -53,7 +54,14 @@ export const PlayingCard = ({ className, type, text, onClick, playerName}: Playi
         style={ Object.assign(styles[type]) }
       >
         <p className="card-text">{text}</p>
-        { playerName && <p className="card-text submitting-player-text">{playerName}'s Card</p>}
+        
+        { playerName && className === "response-card-results" && <p className="card-text submitting-player-text">
+          {playerName}
+        </p>}
+
+        { playerName && className === "response-card-results winner" && <p className="card-text submitting-player-text">
+          <FaCrown className="crown-icon"/> {playerName}
+        </p>}
       </Paper>
     </Grid>
   );

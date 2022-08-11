@@ -74,7 +74,7 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
           />
 
           <PlayingCard
-            className="response-card-results"
+            className="response-card-results winner"
             type="response"
             text={winningCard.text}
             playerName={winner.name}

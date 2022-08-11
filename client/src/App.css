@@ -55,6 +55,12 @@ p {
   text-align: right;
 }
 
+.crown-icon {
+  color: rgb(239, 208, 98);
+  vertical-align: text-top;
+  text-align: right;
+}
+
 .winner-column {
   padding: auto;
   width: 0px;
