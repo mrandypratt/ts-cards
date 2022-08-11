@@ -10,7 +10,7 @@ import { cardHandSize } from "../../data/constants/cardHandSize";
 import { getCurrentPlayer } from "../../data/functions/getPlayer";
 import { PlayingCard } from "../../components/Cards/PlayingCard";
 
-export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
   
   const round = game?.round;
@@ -18,25 +18,36 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
   const winner = round?.winner;
   const winningCard = winner?.selectedCard;
 
-  const startNextRound = () => {
-    socket.emit(EVENTS.client.startNextRound);
+  const startNextGame = () => {
+    socket.emit(EVENTS.client.startNextGame);
   }
 
   const showConfirmDeleteDialogue = () => {
     setShowDialogue(true);
   }
 
-  if (round && player && winner && winningCard) {
+  if (game && round && player && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
 
         <Container className="page-container" maxWidth="sm">
 
-          <h2 style={{margin: "auto"}}>Round {round.number}</h2>
+          { game.winner.sessionId === player.sessionId && 
+            <h2 style={{margin: "auto"}}>Congratulations!</h2>
+          }
             
+          { game.winner.sessionId !== player.sessionId && 
+            <h2 style={{margin: "auto"}}>Game Over</h2>
+          }
           <hr></hr>
           
-          <h2 style={{margin: "auto"}}>{ round.winner?.name } won {"the Game!"}!</h2>
+          { game.winner.sessionId === player.sessionId && 
+            <h2 style={{margin: "auto"}}>You won the Game!!!</h2>
+          }
+
+          { game.winner.sessionId !== player.sessionId && 
+            <h2 style={{margin: "auto"}}>{ game.winner?.name } is the winner!</h2>
+          }
 
           <hr></hr>
 
@@ -92,9 +103,9 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
         <Container className="page-container" maxWidth="sm">
 
           <SubmitButton
-            onClick={() => startNextRound()}
+            onClick={startNextGame}
             type="button"
-            text="Next Round"
+            text="Start New Game"
             disabled={false}
           />
 

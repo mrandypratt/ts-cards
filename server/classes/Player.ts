@@ -43,4 +43,10 @@ export class Player {
     this.readyForNextRound = true;
   }
 
+  alreadyHasCard(card: ResponseCard): Boolean {
+    return !!this.cards.find(cardInHand => {
+      return cardInHand.text === card.text;
+    })
+  }
+
 }

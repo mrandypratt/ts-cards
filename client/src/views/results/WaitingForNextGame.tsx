@@ -27,22 +27,22 @@ export const WaitingForNextGame = ({ game, setGame, socket, sessionId }: ViewPro
               
       <Container className="page-container" maxWidth="sm">
 
-        <h2 style={{margin: "auto"}}>Round {game?.round?.number}</h2>
+        <h2 style={{margin: "auto"}}>New Game</h2>
         
         <hr></hr>
         
-        <h3 style={{margin: "auto"}}>Moving to Next Round</h3>
+        <h3 style={{margin: "auto"}}>Starting a New Game</h3>
 
         <hr></hr>
 
         <PlayingCard
           className="solo-prompt-card"
           type="prompt"
-          text="Waiting for all players to move to next round..."/>
+          text="Getting all the players rounded up..."/>
 
         <hr></hr>
 
-        <h3><b><u>Ready for Next Round:</u></b></h3>
+        <h3><b><u>Ready for New Game:</u></b></h3>
 
         {game?.players.map(player => {
           return (

@@ -113,7 +113,22 @@ export class Game {
           this.loadResponseCards();
         } 
 
-        player.drawCard(this.responseCards.pop() || new ResponseCard(null, "Error", this.NSFW))
+        let newCard = this.responseCards.pop();
+        
+        // put card back in deck if player already has this card
+        if (newCard) {
+          console.log(newCard)
+
+          if (player.alreadyHasCard(newCard)) {
+            console.log("Player already has card")
+            this.responseCards.unshift(newCard);
+          } else {
+            console.log("Player Draws Card")
+            player.drawCard(newCard)
+          }
+        } else {
+          console.log("Not a Response Card")
+        }
       }
     });
   }
@@ -164,21 +179,19 @@ export class Game {
     });
   }
 
-  updateCardsAfterRound(): void {
+  resetPlayersAfterRound(): void {
     this.players.forEach(player => {
-      if (player.sessionId === this.round?.winner?.sessionId) {
-        player.cards = this.round?.winner.cards;
-      }
-      this.round?.players.forEach(roundPlayer => {
-        if (player.sessionId === roundPlayer.sessionId) {
-          player.cards = roundPlayer.cards;
-        }
-      })
+      player.selectedCard = null;
+      player.readyForNextRound = false;
     })
   }
 
   incrementJudgeIndex(): void {
     this.judgeIndex += 1;
+
+    if (this.judgeIndex >= this.players.length) {
+      this.judgeIndex = 0;
+    }
   }
 
   archiveRound(): void {
@@ -198,4 +211,32 @@ export class Game {
     })
   }
   
+  reset(): void {
+    // Keep cards and otherwise clear all prior game data
+    this.round = null;
+    this.previousRounds = [];
+
+    this.players.forEach(player => {
+      player.wins = 0;
+      player.readyForNextRound = false;
+      player.selectedCard = null;
+    })
+
+    this.winner = null;
+  }
+  
 }
+
+/*
+
+  round: Round | null;
+  previousRounds: Round[];
+  players: Player[];
+  promptCards: PromptCard[];
+  responseCards: ResponseCard[];
+  judgeIndex: number;
+  cardsPerPlayer: number;
+  pointsToWin: number;
+  winner: Player | null;
+
+*/

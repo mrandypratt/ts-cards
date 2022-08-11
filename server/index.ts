@@ -129,10 +129,10 @@ io.on("connection", (socket) => {
 
   socket.on(EVENTS.client.startFirstRound, (): void => {
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-
+    
     if (sessionId) {
       const game = gameStore.findGameBySessionId(sessionId)
-
+      
       if (game) {
         // Randomize Player Order
         game.randomizePlayerOrder();
@@ -196,6 +196,8 @@ io.on("connection", (socket) => {
 
         if (round.allSelectionsMade()) {
 
+          round.randomizePlayerOrder();
+
           // Judge Player 
           const judgePlayer = game.getJudgePlayer();
           const judgeView = VIEWS.judge.turn;
@@ -245,11 +247,7 @@ io.on("connection", (socket) => {
         round.setWinner(selectedCard);
 
         // Increment Wins on Game Player
-        console.log(game.players)
-
         game.incrementWins();
-
-        console.log(game.players)
 
         // UPDATE VIEWS & CLIENTS (Based on Win Type)
 
@@ -282,17 +280,24 @@ io.on("connection", (socket) => {
         // Mark Player as Ready 
         player.markAsReady()
 
+        // Reset Player's "Ready" and Card Selected
         if (!game.allPlayersReady()) {
           
           // Update Game & Set View for Current Player
           sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.waitingForNextRound)
           socket.emit(EVENTS.server.updateClient, game, VIEWS.results.waitingForNextRound)
-
+          
           // Update GameData of other Clients
           socket.to(game.id).emit(EVENTS.server.updateGame, game);
         } else {
+          // Reset "Ready for next Round"
+          game.players.forEach(player => {
+            player.readyForNextRound = false;
+            player.selectedCard = null;
+          })
+
           // Update Player Hands for Round Selections
-          game.updateCardsAfterRound();
+          game.resetPlayersAfterRound();
 
           // Increment Judge Index
           game.incrementJudgeIndex();
@@ -339,7 +344,69 @@ io.on("connection", (socket) => {
   });
 
   socket.on(EVENTS.client.startNextGame, (gameData: GameDataType): void => {
-    // STUB
+    const session = sessionStore.findSessionBySocketId(socket.id)
+    
+    if (session) {
+      const game = gameStore.findGameBySessionId(session.id);
+      const player = game?.getPlayer(session.id);
+      
+      if (game && player) {
+        // Mark Player as Ready 
+        player.markAsReady()
+
+        // Reset Player's "Ready" and Card Selected
+        if (!game.allPlayersReady()) {
+          
+          // Update Game & Set View for Current Player
+          sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.waitingForNextGame)
+          socket.emit(EVENTS.server.updateClient, game, VIEWS.results.waitingForNextGame)
+          
+          // Update GameData of other Clients
+          socket.to(game.id).emit(EVENTS.server.updateGame, game);
+        } else {
+        
+          // Update Player Hands for Round Selection
+          game.reset();
+
+          // Increment Judge Index
+          game.incrementJudgeIndex();
+
+          // Deal cards to all players
+          game.dealCardsToPlayers();
+
+          // Create New Round
+          game.createNewRound();
+
+          // UPDATE VIEWS & CLIENTS
+
+          // Judge Player 
+          const judgePlayer = game.getJudgePlayer();
+          const judgeView = VIEWS.judge.waitingforSelections;
+          
+          if (judgePlayer) {
+            // Update View
+            sessionStore.findSession(judgePlayer.sessionId)?.updateView(judgeView);
+            
+            // Emit Update to specific socket ID
+            const judgeSessionId = sessionStore.getSocketId(judgePlayer.sessionId)
+            io.to(judgeSessionId).emit(EVENTS.server.updateClient, game, judgeView);
+          }
+
+          // Non-Judge Players
+          const players = game.getNonJudgePlayers();
+          const playerView = VIEWS.player.turn;
+
+          players.forEach((player) => {
+            // Update View
+            sessionStore.findSession(player.sessionId)?.updateView(playerView);
+
+            // Emit Update to specific socket ID
+            const playerSessionId = sessionStore.getSocketId(player.sessionId)
+            io.to(playerSessionId).emit(EVENTS.server.updateClient, game, playerView);
+        })
+        }
+      }
+    }
   });
 
   socket.on(EVENTS.client.deleteLobby, () => {

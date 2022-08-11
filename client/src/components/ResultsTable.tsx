@@ -6,6 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { GameDataType, PlayerDataType } from '../data/types/ClassTypes';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
   return (
@@ -14,7 +15,10 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
         <TableHead style={{backgroundColor: "black", color: "white"}}>
           <TableRow>
             <TableCell style={{color: "white"}}>Player</TableCell>
-            <TableCell style={{color: "white"}} align="center">Score</TableCell>
+            <TableCell style={{color: "white"}} align="right">{game.winner ? "Final Score" : "Score"}</TableCell>
+            {game.winner && 
+              <TableCell className="winner-column" style={{color: "white", width: "0px", padding: "0px"}}></TableCell>
+            }
           </TableRow>
         </TableHead>
         <TableBody>
@@ -26,7 +30,16 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
               <TableCell component="th" scope="row">
                 {player.name}
               </TableCell>
-              <TableCell align="center">{player.wins}</TableCell>
+
+              <TableCell align="right">
+                {player.wins}
+              </TableCell>
+
+              {game.winner && 
+                <TableCell style={{width: "0px", padding: "0px"}}>
+                  {game.winner.sessionId === player.sessionId && <EmojiEventsIcon className="winning-icon" />}
+                </TableCell>
+                } 
             </TableRow>
           ))}
         </TableBody>

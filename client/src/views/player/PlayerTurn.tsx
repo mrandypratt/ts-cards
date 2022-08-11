@@ -31,14 +31,16 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   
         <Container className="page-container" maxWidth="sm">
         
-        <h2 style={{margin: "auto"}}>Round {round.number} - Submit Card</h2>
+        <h2 style={{margin: "auto"}}>Round {round.number}</h2>
   
         <hr></hr>
         
-        <h3 style={{margin: "auto"}}>{round.judge?.name} is the Judge</h3>
+        <h3 style={{margin: "auto"}}>Submit Card</h3>
   
         <hr></hr>
   
+        <h4 style={{margin: "auto", marginBottom: ".75rem", fontSize: "x-large"}}>{round.judge?.name} is the Judge</h4>
+
         </Container>
   
         <PlayingCard

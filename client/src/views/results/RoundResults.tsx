@@ -78,6 +78,7 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           {round.players.map(player => {
             return (
               <PlayingCard
+                key={player.sessionId}
                 className="response-card-results"
                 type="response"
                 text={player.selectedCard?.text || "Error"}

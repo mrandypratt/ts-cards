@@ -16,6 +16,7 @@ import { JudgeTurn } from "./views/judge/JudgeTurn";
 import { PlayerSelectionMade } from "./views/player/PlayerSelectionMade";
 import { PlayerWaitingForJudge } from "./views/player/PlayerWaitingForJudge";
 import { RoundResults } from "./views/results/RoundResults";
+import { GameResults } from "./views/results/GameResults";
 import { WaitingForNextRound } from "./views/results/WaitingForNextRound";
 import { WaitingForNextGame } from "./views/results/WaitingForNextGame";
 import socket from "./socket";
@@ -183,6 +184,17 @@ export const App = (): JSX.Element => {
     if (view === VIEWS.results.round) {
       return (
         <RoundResults
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+
+    if (view === VIEWS.results.game) {
+      return (
+        <GameResults
           game={game}
           setGame={setGame}
           socket={socket}

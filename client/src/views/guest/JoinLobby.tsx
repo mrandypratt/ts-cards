@@ -40,13 +40,13 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
         setAlertMessage(null);
       }, 5000)
     })
-  }, [])
+  }, [socket])
 
   return (
     <Container className="page-container" maxWidth="sm">   
     
     { alertMessage && 
-      <Alert severity="error">alertMessage</Alert>
+      <Alert severity="error">{alertMessage}</Alert>
     }
 
     <h1><b>Join a Game</b></h1>

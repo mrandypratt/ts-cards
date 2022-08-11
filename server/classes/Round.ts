@@ -1,5 +1,6 @@
 
 import { CardDataType, RoundDataType } from "../../client/src/data/types/ClassTypes";
+import { shuffle } from "../functions/shuffle";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 
@@ -41,6 +42,10 @@ export class Round {
 
   allSelectionsMade(): boolean {
     return this.players.every(player => player.selectedCard !== null);
+  }
+
+  randomizePlayerOrder(): void {
+    this.players = shuffle(this.players)
   }
 
   setWinner(winningCard: CardDataType): void {
