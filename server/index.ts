@@ -8,8 +8,8 @@ import { gameStore } from "./data/GameStore";
 import { EVENTS } from "../client/src/data/constants/EVENTS"
 import { CardDataType, GameDataType } from "../client/src/data/types/ClassTypes";
 import { VIEWS } from "../client/src/data/constants/VIEWS"
-import { Game } from "./classes/Game";
-import { Player } from "./classes/Player";
+import { Game } from "./data/classes/Game";
+import { Player } from "./data/classes/Player";
 import { log } from "./functions/log"
 
 // Express Server
@@ -97,6 +97,7 @@ io.on("connection", (socket) => {
   });
   
   socket.on(EVENTS.client.joinLobby, (lobbyId: string, name: string): void => {
+    lobbyId = lobbyId.toUpperCase();
     const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
     const nextView = VIEWS.guest.waitingForHost;
     const game = gameStore.findGameByLobbyId(lobbyId);

@@ -1,6 +1,6 @@
 
-import { PromptCard } from "../classes/PromptCard";
-import { ResponseCard } from "../classes/ResponseCard";
+import { PromptCard } from "./classes/PromptCard";
+import { ResponseCard } from "./classes/ResponseCard";
 import { allCardText} from "./allCardText";
 
 type allCardsTextType = {

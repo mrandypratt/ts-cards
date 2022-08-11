@@ -1,4 +1,4 @@
-import { CardDataType } from "../../client/src/data/types/ClassTypes";
+import { CardDataType } from "../../../client/src/data/types/ClassTypes";
 
 let cardIdCounter = 0;
 

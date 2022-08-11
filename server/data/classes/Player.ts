@@ -1,4 +1,4 @@
-import { CardDataType, PlayerDataType } from "../../client/src/data/types/ClassTypes";
+import { CardDataType, PlayerDataType } from "../../../client/src/data/types/ClassTypes";
 import { ResponseCard } from "./ResponseCard";
 
 export class Player {

@@ -1,5 +1,5 @@
-import { CardDataType } from "../../client/src/data/types/ClassTypes";
-import { shuffle } from "../functions/shuffle";
+import { CardDataType } from "../../../client/src/data/types/ClassTypes";
+import { shuffle } from "../../functions/shuffle";
 import { Card } from "./Card"
 
 export class PromptCard extends Card {

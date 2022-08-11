@@ -1,6 +1,6 @@
 
-import { CardDataType, RoundDataType } from "../../client/src/data/types/ClassTypes";
-import { shuffle } from "../functions/shuffle";
+import { CardDataType, RoundDataType } from "../../../client/src/data/types/ClassTypes";
+import { shuffle } from "../../functions/shuffle";
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 

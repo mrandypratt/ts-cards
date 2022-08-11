@@ -1,13 +1,13 @@
-import { cardStore } from "../data/CardStore"
+import { cardStore } from "../CardStore"
 import { Player } from "./Player";
 import { PromptCard } from "./PromptCard";
 import { ResponseCard } from "./ResponseCard";
 import { Round } from "./Round";
 import ShortUniqueID from "short-unique-id";
-import { shuffle } from "../functions/shuffle";
-import { GameDataType } from "../../client/src/data/types/ClassTypes";
+import { shuffle } from "../../functions/shuffle";
+import { GameDataType } from "../../../client/src/data/types/ClassTypes";
 
-const gameIdGenerator = new ShortUniqueID({length: 8});
+const gameIdGenerator = new ShortUniqueID({length: 4, dictionary: "alphanum_upper"});
 
 export class Game {
   id: string;

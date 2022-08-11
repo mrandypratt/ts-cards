@@ -1,6 +1,6 @@
 import { GameDataType } from "../../client/src/data/types/ClassTypes";
-import { Game } from "../classes/Game";
-import { Player } from "../classes/Player";
+import { Game } from "./classes/Game";
+import { Player } from "./classes/Player";
 
 class GameStore {
   games: Game[];

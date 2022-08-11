@@ -1,6 +1,6 @@
 import { VIEWS } from "../../client/src/data/constants/VIEWS";
-import { Game } from "../classes/Game";
-import { Session } from "../classes/Session";
+import { Game } from "./classes/Game";
+import { Session } from "./classes/Session";
 
 class SessionStore {
   sessions: Session[];
