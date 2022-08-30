@@ -4,6 +4,7 @@ import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
+const APDevIcon = require('../APDevLogo.png');
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   
@@ -52,6 +53,13 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
       <div onClick={gettingStarted} style={{marginTop: 10}}>
         <p style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}>Getting Started</p>
+      </div>
+
+      <div className="footer">
+        <p className="footer-text">Created by: </p>
+        <a className="footer-links" href={"http://www.andyprattdev.com"} target="_blank" rel="noreferrer noopener" >
+          <img src={APDevIcon} alt="Andy Pratt" className="footer-image"></img>
+        </a>
       </div>
 
     </Container>

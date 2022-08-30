@@ -281,3 +281,56 @@ That is 0.71 x 1 */
   background-color: #b2b2b2;
   cursor: pointer;
 }
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  text-align: center;
+  color: #c3bdbd;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #0c0d0d;
+}
+
+.footer-image {
+  cursor: pointer;
+  height: 2.25rem;
+}
+
+.footer-text {
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 520px) {
+  .footer {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    text-align: center;
+    color: #c3bdbd;
+    font-size: 1.5rem;
+  }
+
+  .footer-text {
+    margin: 0px;
+    padding: 0px;
+    font-size: 1.15rem;
+  }
+
+  .footer-image {
+    height: 1.75rem;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .footer {
+    flex-direction: column;
+  }
+}
