@@ -20,6 +20,10 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
     socket.emit(EVENTS.client.updateView, VIEWS.gettingStarted)
   }
 
+  const APIRequest = () => {
+    // Send event to back end
+  }
+
   return (
     <Container className="page-container" maxWidth="sm">   
 
@@ -44,6 +48,15 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
           <SubmitButton 
             text={"Join Lobby"}
             onClick={joinLobby}
+            type="button"
+            disabled={false}
+          />
+        </div>
+
+        <div>
+          <SubmitButton 
+            text={"API Request"}
+            onClick={APIRequest}
             type="button"
             disabled={false}
           />
