@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
-// import { mongoURI } from "../keys/mongoURI"
-const mongoURI = "mongodb+srv://apratt:wsNYuMpnGCvNmLTo@cardswithfriendsinstanc.k9ksw.mongodb.net/?retryWrites=true&w=majority";
+
+const mongoURI = process.env.mongoURI || "";
 
 const client = new MongoClient(mongoURI);
 
