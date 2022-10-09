@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { GameDataType, RoundDataType } from "./ClassTypes";
+import { GameDataType } from "./ClassTypes";
 
 export type ViewPropsType = {
   game: GameDataType | null;

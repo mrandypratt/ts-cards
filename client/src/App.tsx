@@ -5,6 +5,7 @@ import { VIEWS } from "./data/constants/VIEWS";
 
 import { Home } from "./views/Home";
 import { GettingStarted } from "./views/info/GettingStarted";
+import { Feedback } from "./views/info/Feedback";
 import { CreateGame } from "./views/host/CreateGame";
 import { InviteParticipants } from "./views/host/InviteParticipants";
 import { JoinLobby } from "./views/guest/JoinLobby";
@@ -81,7 +82,18 @@ export const App = (): JSX.Element => {
         />
       )
     }
-        
+    
+    if (view === VIEWS.feedback) {
+      return (
+        <Feedback
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      )
+    }
+  
     if (view === VIEWS.host.createLobby) {
       return (
         <CreateGame

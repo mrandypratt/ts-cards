@@ -26,8 +26,8 @@ const io = new Server(server, {
   },
 });
 
-app.get("/api", (req, res) => {
-  console.log("Express Routes")
+app.post("/api", (req, res) => {
+  console.log(req)
 });
 
 

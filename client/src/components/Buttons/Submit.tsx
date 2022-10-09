@@ -31,6 +31,28 @@ const returnHomeStyles = {
   maxWidth: 200,
 }
 
+const submitFeedbackStyles = {
+  width: "40%",
+  height: "100%",
+  margin: 10,
+  marginTop: 20,
+  fontSize: "1em",
+  borderWidth: "3px",
+  maxWidth: 200,
+  minWidth: 125,
+}
+
+const gettingStartedStyles = {
+  width: "40%",
+  height: "100%",
+  margin: 10,
+  marginTop: 70,
+  fontSize: "1em",
+  borderWidth: "3px",
+  maxWidth: 200,
+  minWidth: 125,
+}
+
 const exitLobbyStyles = {
   width: "40%%",
   height: 40,
@@ -81,6 +103,32 @@ export const ReturnHomeButton = ({ text, type, onClick, disabled }: SubmitButton
   );
 }
 
+export const SubmitFeedbackButton = ({ text, type, onClick, disabled }: SubmitButtonProps): JSX.Element => {
+  return (
+    <Button
+      disabled={disabled}
+      variant="outlined"
+      type={type}
+      style={ submitFeedbackStyles }
+      color={'inherit'}
+      onClick={onClick}
+    >{ text }</Button>
+  );
+}
+
+export const GettingStartedButton = ({ text, type, onClick, disabled }: SubmitButtonProps): JSX.Element => {
+  return (
+    <Button
+      disabled={disabled}
+      variant="outlined"
+      type={type}
+      style={ gettingStartedStyles }
+      color={'inherit'}
+      onClick={onClick}
+    >{ text }</Button>
+  );
+}
+
 export const ExitLobbyButton = ({ text, type, onClick }: SubmitButtonProps): JSX.Element => {
   return (
     <Button
@@ -89,7 +137,6 @@ export const ExitLobbyButton = ({ text, type, onClick }: SubmitButtonProps): JSX
       style={ exitLobbyStyles }
       onClick={onClick}
       color="error"
-      // color={'error'}
     >{ text }</Button>
   );
 }
@@ -102,7 +149,6 @@ export const ExitLobbyShadedButton = ({ text, type, onClick }: SubmitButtonProps
       style={ Object.assign({}, exitLobbyStyles, exitLobbyShadedStyles ) }
       onClick={onClick}
       color="error"
-      // color={'error'}
     >{ text }</Button>
   );
 }

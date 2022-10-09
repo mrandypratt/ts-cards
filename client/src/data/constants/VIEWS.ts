@@ -1,5 +1,6 @@
 export const VIEWS = {
   home: "home",
+  feedback: "feedback",
   gettingStarted: "gettingStarted",
   host: {
     createLobby: "hostCreateLobby",
