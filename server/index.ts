@@ -1,7 +1,7 @@
 // Use HTTPS for prod, HTTP for dev
 import express from "express";
 import mongoose from "mongoose"
-const routes = require("./routes")
+const routes = require("./routes/feedback")
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io"
