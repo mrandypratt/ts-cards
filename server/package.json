@@ -20,7 +20,7 @@
   "scripts": {
     "start": "nodemon index.ts",
     "prod": "NODE_ENV=prod node index.js",
-    "dev": "NODE_ENV=dev node index.js",
+    "dev": "pm2 start ecosystem.config.js",
     "build": "tsc"
   },
   "keywords": [],

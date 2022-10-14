@@ -14,4 +14,5 @@ const feedbackSchema = new Schema<IFeedback>({
   collection: 'Feedback'
 });
 
-module.exports = model<IFeedback>('Feedback', feedbackSchema);
+const Feedback = model<IFeedback>('Feedback', feedbackSchema);
+export default Feedback;

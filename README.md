@@ -31,5 +31,22 @@
 - `npm run setup` from root installs dependencies in both `client` and `server`
 - Install PM2: `npm i pm2 -g`
 - Install TS for PM2: `pm2 install typescript`
-- `NODE_ENV={Mongo_URI}` and insert Mongo_URI from MongoDB
-- In `server` directory, run `pm2 start index.ts --watch` then `pm2 logs` to get terminal logs
+- MongoDB Setup:
+  - In `server` directory, run `pm2 init simple`
+  - `vim ecosystem.config.js` and edit file as follows:
+
+  ```javascript
+    module.exports = {
+      apps : [{
+        name   : "CardsWithFriendsGame",
+        script : "./index.ts",
+        watch: true,
+        env: {
+            "MONGO_URI": "mongodb+srv://{username}:{DBPassword}@cardswithfriendsinstanc.k9ksw.mongodb.net/{DB_Name}?retryWrites=true&w=majority",
+            "NODE_ENV": "prod",
+        }
+      }]
+    }
+  ```
+
+- In `server` directory, run `npm run prod` then `pm2 logs` to get terminal logs

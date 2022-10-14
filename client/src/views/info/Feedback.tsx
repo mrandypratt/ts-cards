@@ -36,14 +36,21 @@ export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX
     const baseURL = process.env.REACT_APP_STAGE === "prod" ? "52.20.228.225:8787" : "http://localhost:8787";
     const APIURL = baseURL + "/api/feedback";
 
+    console.log(APIURL)
+
+    const feedbackData = {
+      name: name,
+      email: email,
+      feedback: feedback,
+    }
+
+    console.log(JSON.stringify(feedbackData))
+
+
     try {
       const response = await fetch(APIURL, {
         method: 'POST',
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          feedback: feedback,
-        }),
+        body: JSON.stringify(feedbackData),
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
