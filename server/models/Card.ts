@@ -7,4 +7,4 @@ const cardSchema = new Schema({
   NSFW: Boolean,
 });
 
-mongoose.model('cards', cardSchema);
+mongoose.model('Card', cardSchema);

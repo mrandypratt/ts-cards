@@ -1,5 +1,7 @@
 // Use HTTPS for prod, HTTP for dev
 import express from "express";
+import mongoose from "mongoose"
+const routes = require("./routes")
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io"
@@ -11,8 +13,6 @@ import { VIEWS } from "../client/src/data/constants/VIEWS"
 import { Game } from "./data/classes/Game";
 import { Player } from "./data/classes/Player";
 import { log } from "./functions/log"
-import mongoose from "mongoose"
-import { Console } from "console";
 require('dotenv').config();
 
 const mongoURI = process.env.MONGO_URI || "";
@@ -24,7 +24,8 @@ mongoose
     const app = express();
     app.use(cors())
     app.use(express.json())
-    
+    app.use("/api", routes)
+
     // HTTP Server with Socket
     const server = createServer(app);
     const PORT = process.env.port || 8787;
@@ -32,13 +33,7 @@ mongoose
       cors: {
         origin: "*",
       },
-    });
-    
-    app.post("/api/feedback", (req, res) => {
-      console.log(req.body)
-      res.status(201).send({accepted: true})
-    });
-    
+    });  
     
     io.use((socket, next) => {
       let sessionId = socket.handshake.auth.sessionId;
