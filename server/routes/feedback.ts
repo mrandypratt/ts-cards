@@ -1,10 +1,10 @@
 import express from "express";
-const router = express.Router()
+const apiroute = express.Router()
 import Feedback from "../models/Feedback"
 
 // https://rahmanfadhil.com/express-rest-api/
 
-router.post("/feedback", async (req, res) => {
+apiroute.post("/feedback", async (req, res) => {
 
   console.log("Feedback Received:")
   console.log("------------------")
@@ -26,4 +26,4 @@ router.post("/feedback", async (req, res) => {
   res.status(201).send(feedback);
 })
 
-module.exports = router;
+export default apiroute;
