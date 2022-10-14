@@ -1,13 +1,15 @@
-import { SubmitButton } from "../components/Buttons/Submit";
+import { SubmitButton, SubmitFeedbackButton, GettingStartedButton } from "../components/Buttons/Submit";
 import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
+import { useState } from "react";
+
 const APDevIcon = require('../APDevLogo.png');
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
-  
+
   const newGame = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.host.createLobby)
   }
@@ -18,6 +20,10 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   
   const gettingStarted = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.gettingStarted)
+  }
+
+  const submitFeedback = () => {
+    socket.emit(EVENTS.client.updateView, VIEWS.feedback)
   }
 
   return (
@@ -51,9 +57,25 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
       </div> 
 
-      <div onClick={gettingStarted} style={{marginTop: 10}}>
-        <p style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}>Getting Started</p>
+      <div>
+        <GettingStartedButton 
+          text={"How to Play"}
+          onClick={gettingStarted}
+          type="submit"
+          disabled={false}
+        />
       </div>
+
+      <div>
+        <SubmitFeedbackButton 
+          text={"Submit Feedback"}
+          onClick={submitFeedback}
+          type="submit"
+          disabled={false}
+        />
+      </div>
+
+
 
       <div className="footer">
         <p className="footer-text">Created by: </p>
