@@ -1,3 +1,4 @@
 node_modules
 keys/dev.ts
 .env
+ecosystem.config.js
