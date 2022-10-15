@@ -1,52 +1,25 @@
 # Cards with Friends - Open Source Cards Against Humanity Clone
 
-## Development:
+This game a clone of Cards Against Humanity inspired by the gameplay style of Jackbox.tv games. 
 
-### Local Setup
-  - `npm run setup` install all dependencies with npm for client and server
+The game is currently live and can be played by visiting www.CardsWithFriendsGame.com.
 
-### Run app in Development
-  - `npm run dev` from root will run react dev and server with concurrently
+Cards with Friends is created with in-person or video-call gatherings in mind, so right now you'll need two friends.  
 
-## Deployment
+For those flying solo, just hang tight, as our next feature is solo-mode and is coming within the week.
 
-### Client
-  - `npm run predeploy` will build and set env variable to "prod"
-  - `npm run deploy`
+For those who decide to play, please leave feedback using the button on the home screen.
 
-### Server
-  - push code to github
-  - SSH into EC2 instance to pull code and restart
-  - `pm2 kill` to stop server
-  - `npm run setup` from root to install any new dependencies
-  - `cd server`
-  - `pm2 start index.ts --watch`
-  - `pm2 logs`
+For anyone who likes the idea, I would love to work with others.  Just email me at mrandypratt@gmail.com to let me know.
 
-## Provisioning server (EC2 Instance):
-- Download NVM: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash`
-- Install Node: `nvm i --lts`
-- Install Git: `sudo yum install git -y`
-- Clone Repo: `git clone https://github.com/mrandypratt/ts-cards.git`
-- `npm run setup` from root installs dependencies in both `client` and `server`
-- Install PM2: `npm i pm2 -g`
-- Install TS for PM2: `pm2 install typescript`
-- MongoDB Setup:
-  - In `server` directory, run `pm2 init simple`
-  - `vim ecosystem.config.js` and edit file as follows:
+Below is just a non-exhaustive short list of things that I have considered as options for potential contributors:
 
-  ```javascript
-    module.exports = {
-      apps : [{
-        name   : "CardsWithFriendsGame",
-        script : "./index.ts",
-        watch: true,
-        env: {
-            "MONGO_URI": "mongodb+srv://{username}:{DBPassword}@cardswithfriendsinstanc.k9ksw.mongodb.net/{DB_Name}?retryWrites=true&w=majority",
-            "NODE_ENV": "prod",
-        }
-      }]
-    }
-  ```
-
-- In `server` directory, run `npm run prod` then `pm2 logs` to get terminal logs
+- Additional Content:
+  - Creating Content
+  - Devising a Feature for user-generated Content
+- More Gameplay Options:
+  - Select number of cards
+  - Select number of rounds
+  - Select between more deck options (need more content first)
+- Other Games:
+  - Adding other multi-player games to the same web app so that users can choose between multiple party games
