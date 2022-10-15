@@ -33,7 +33,9 @@ export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX
   const submitFeedback = async () => {
     setIsLoading(true);
 
-    const baseURL = process.env.REACT_APP_STAGE === "prod" ? "52.20.228.225:8787" : "http://localhost:8787";
+    console.log(process.env.REACT_APP_STAGE)
+
+    const baseURL = process.env.REACT_APP_STAGE === "prod" ? "http://52.20.228.225:8787" : "http://localhost:8787";
     const APIURL = baseURL + "/api/feedback";
 
     console.log(APIURL)
