@@ -10,19 +10,19 @@ const APDevIcon = require('../APDevLogo.png');
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
   const newGame = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.host.createLobby)
+    socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.host.createLobby)
   }
   
   const joinLobby = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.guest.joinLobby)
+    socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.guest.joinLobby)
   }
   
   const gettingStarted = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.gettingStarted)
+    socket.emit(EVENTS.client.updateView, VIEWS.info.howToPlay)
   }
 
   const submitFeedback = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.feedback)
+    socket.emit(EVENTS.client.updateView, VIEWS.info.feedback)
   }
 
   return (

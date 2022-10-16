@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { VIEWS } from "./data/constants/VIEWS";
 
 import { Home } from "./views/Home";
-import { GettingStarted } from "./views/info/GettingStarted";
+import { HowToPlay } from "./views/info/GettingStarted";
 import { Feedback } from "./views/info/Feedback";
-import { CreateGame } from "./views/multiplayer/host/CreateGame";
-import { InviteParticipants } from "./views/multiplayer/host/InviteParticipants";
-import { JoinLobby } from "./views/multiplayer/guest/JoinLobby";
-import { WaitingForHost } from "./views/multiplayer/guest/WaitingForHost";
+import { MultiPlayerHome } from "./views/multiPlayer/MultiPlayerHome";
+import { CreateGame } from "./views/multiPlayer/host/CreateGame";
+import { InviteParticipants } from "./views/multiPlayer/host/InviteParticipants";
+import { JoinLobby } from "./views/multiPlayer/guest/JoinLobby";
+import { WaitingForHost } from "./views/multiPlayer/guest/WaitingForHost";
 import { EVENTS } from "./data/constants/EVENTS";
 import { PlayerTurn } from "./views/gameplay/player/PlayerTurn";
 import { JudgeWaitingForPlayers } from "./views/gameplay/judge/JudgeWaitingForPlayers";
@@ -72,9 +73,9 @@ export const App = (): JSX.Element => {
       )
     }
       
-    if (view === VIEWS.gettingStarted) {
+    if (view === VIEWS.info.howToPlay) {
       return (
-        <GettingStarted
+        <HowToPlay
           game={game}
           setGame={setGame}
           socket={socket}
@@ -83,7 +84,7 @@ export const App = (): JSX.Element => {
       )
     }
     
-    if (view === VIEWS.feedback) {
+    if (view === VIEWS.info.feedback) {
       return (
         <Feedback
           game={game}
@@ -93,8 +94,19 @@ export const App = (): JSX.Element => {
         />
       )
     }
+
+    if (view === VIEWS.multiPlayer.home) {      
+      return (
+        <MultiPlayerHome
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      )
+    }
   
-    if (view === VIEWS.host.createLobby) {
+    if (view === VIEWS.multiPlayer.host.createLobby) {
       return (
         <CreateGame
           game={game}
@@ -105,7 +117,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.host.inviteParticipants) {
+    if (view === VIEWS.multiPlayer.host.inviteParticipants) {
       return (
         <InviteParticipants
           game={game}
@@ -116,7 +128,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (view === VIEWS.guest.joinLobby) {
+    if (view === VIEWS.multiPlayer.guest.joinLobby) {
       return (
         <JoinLobby
           game={game}
@@ -127,7 +139,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.guest.waitingForHost) {
+    if (view === VIEWS.multiPlayer.guest.waitingForHost) {
       return (
         <WaitingForHost
           game={game}
@@ -138,7 +150,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.player.turn) {
+    if (view === VIEWS.gameplay.player.turn) {
       return (
         <PlayerTurn
           game={game}
@@ -149,7 +161,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.player.selectionMade) {
+    if (view === VIEWS.gameplay.player.selectionMade) {
       return (
         <PlayerSelectionMade
           game={game}
@@ -160,7 +172,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (view === VIEWS.player.waitingForJudge) {
+    if (view === VIEWS.gameplay.player.waitingForJudge) {
       return (
         <PlayerWaitingForJudge
           game={game}
@@ -171,7 +183,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.judge.waitingforSelections) {
+    if (view === VIEWS.gameplay.judge.waitingforSelections) {
       return (
         <JudgeWaitingForPlayers
           game={game}
@@ -182,7 +194,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.judge.turn) {
+    if (view === VIEWS.gameplay.judge.turn) {
       return (
         <JudgeTurn
           game={game}
@@ -193,7 +205,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (view === VIEWS.results.round) {
+    if (view === VIEWS.gameplay.results.round) {
       return (
         <RoundResults
           game={game}
@@ -204,7 +216,7 @@ export const App = (): JSX.Element => {
       );
     }
 
-    if (view === VIEWS.results.game) {
+    if (view === VIEWS.gameplay.results.game) {
       return (
         <GameResults
           game={game}
@@ -215,7 +227,7 @@ export const App = (): JSX.Element => {
       );
     }
     
-    if (view === VIEWS.results.waitingForNextRound) {
+    if (view === VIEWS.gameplay.results.waitingForNextRound) {
       return (
         <WaitingForNextRound
           game={game}
@@ -226,7 +238,7 @@ export const App = (): JSX.Element => {
       );
     }
   
-    if (view === VIEWS.results.waitingForNextGame) {
+    if (view === VIEWS.gameplay.results.waitingForNextGame) {
       return (
         <WaitingForNextGame
           game={game}

@@ -77,7 +77,7 @@ mongoose
     
       socket.on(EVENTS.client.createLobby, (name: string, NSFW: boolean): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        const nextView = VIEWS.host.inviteParticipants
+        const nextView = VIEWS.multiPlayer.host.inviteParticipants
         
         if (sessionId) {
           // Create Game and add to Game Store
@@ -103,7 +103,7 @@ mongoose
       socket.on(EVENTS.client.joinLobby, (lobbyId: string, name: string): void => {
         lobbyId = lobbyId.toUpperCase();
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        const nextView = VIEWS.guest.waitingForHost;
+        const nextView = VIEWS.multiPlayer.guest.waitingForHost;
         const game = gameStore.findGameByLobbyId(lobbyId);
         
         if (sessionId && game) {
@@ -155,7 +155,7 @@ mongoose
     
             // Judge Player 
             const judgePlayer = game.getJudgePlayer();
-            const judgeView = VIEWS.judge.waitingforSelections;
+            const judgeView = VIEWS.gameplay.judge.waitingforSelections;
             
             if (judgePlayer) {
               // Update View
@@ -168,7 +168,7 @@ mongoose
     
             // Non-Judge Players
             const players = game.getNonJudgePlayers();
-            const playerView = VIEWS.player.turn;
+            const playerView = VIEWS.gameplay.player.turn;
     
             players.forEach((player) => {
               // Update View
@@ -205,7 +205,7 @@ mongoose
     
               // Judge Player 
               const judgePlayer = game.getJudgePlayer();
-              const judgeView = VIEWS.judge.turn;
+              const judgeView = VIEWS.gameplay.judge.turn;
               
               if (judgePlayer) {
                 // Update View
@@ -218,7 +218,7 @@ mongoose
     
               // Non-Judge Players
               const players = game.getNonJudgePlayers();
-              const playerView = VIEWS.player.waitingForJudge;
+              const playerView = VIEWS.gameplay.player.waitingForJudge;
     
               players.forEach((player) => {
                 // Update View
@@ -230,7 +230,7 @@ mongoose
               })
             } else {
               // Update Current Client GameData & View to PlayerSelectionMade
-              session.updateView(VIEWS.player.selectionMade)
+              session.updateView(VIEWS.gameplay.player.selectionMade)
               socket.emit(EVENTS.server.updateClient, game, session.view)
     
               // Update GameData of other Clients
@@ -259,15 +259,15 @@ mongoose
             if (!game.winner) {
               // Update All Views and Game Data
               game.players.forEach(player => {
-                sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.round)
+                sessionStore.findSession(player.sessionId)?.updateView(VIEWS.gameplay.results.round)
               })
-              io.to(game.id).emit(EVENTS.server.updateClient, game, VIEWS.results.round)
+              io.to(game.id).emit(EVENTS.server.updateClient, game, VIEWS.gameplay.results.round)
             } else {
               // Update All Views and Game Data
               game.players.forEach(player => {
-                sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.game)
+                sessionStore.findSession(player.sessionId)?.updateView(VIEWS.gameplay.results.game)
               })
-              io.to(game.id).emit(EVENTS.server.updateClient, game, VIEWS.results.game)
+              io.to(game.id).emit(EVENTS.server.updateClient, game, VIEWS.gameplay.results.game)
             }
           }
         }
@@ -289,8 +289,8 @@ mongoose
             if (!game.allPlayersReady()) {
               
               // Update Game & Set View for Current Player
-              sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.waitingForNextRound)
-              socket.emit(EVENTS.server.updateClient, game, VIEWS.results.waitingForNextRound)
+              sessionStore.findSession(player.sessionId)?.updateView(VIEWS.gameplay.results.waitingForNextRound)
+              socket.emit(EVENTS.server.updateClient, game, VIEWS.gameplay.results.waitingForNextRound)
               
               // Update GameData of other Clients
               socket.to(game.id).emit(EVENTS.server.updateGame, game);
@@ -320,7 +320,7 @@ mongoose
     
               // Judge Player 
               const judgePlayer = game.getJudgePlayer();
-              const judgeView = VIEWS.judge.waitingforSelections;
+              const judgeView = VIEWS.gameplay.judge.waitingforSelections;
               
               if (judgePlayer) {
                 // Update View
@@ -333,7 +333,7 @@ mongoose
     
               // Non-Judge Players
               const players = game.getNonJudgePlayers();
-              const playerView = VIEWS.player.turn;
+              const playerView = VIEWS.gameplay.player.turn;
     
               players.forEach((player) => {
                 // Update View
@@ -363,8 +363,8 @@ mongoose
             if (!game.allPlayersReady()) {
               
               // Update Game & Set View for Current Player
-              sessionStore.findSession(player.sessionId)?.updateView(VIEWS.results.waitingForNextGame)
-              socket.emit(EVENTS.server.updateClient, game, VIEWS.results.waitingForNextGame)
+              sessionStore.findSession(player.sessionId)?.updateView(VIEWS.gameplay.results.waitingForNextGame)
+              socket.emit(EVENTS.server.updateClient, game, VIEWS.gameplay.results.waitingForNextGame)
               
               // Update GameData of other Clients
               socket.to(game.id).emit(EVENTS.server.updateGame, game);
@@ -386,7 +386,7 @@ mongoose
     
               // Judge Player 
               const judgePlayer = game.getJudgePlayer();
-              const judgeView = VIEWS.judge.waitingforSelections;
+              const judgeView = VIEWS.gameplay.judge.waitingforSelections;
               
               if (judgePlayer) {
                 // Update View
@@ -399,7 +399,7 @@ mongoose
     
               // Non-Judge Players
               const players = game.getNonJudgePlayers();
-              const playerView = VIEWS.player.turn;
+              const playerView = VIEWS.gameplay.player.turn;
     
               players.forEach((player) => {
                 // Update View
