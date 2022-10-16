@@ -2,12 +2,12 @@ import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { SubmitButton, ReturnHomeButton } from "../../../components/Buttons/Submit";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { containsValidCharacters } from "../../../data/functions/arePlayerNamesValid";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import Alert from '@mui/material/Alert';
-import { VIEWS } from "../../data/constants/VIEWS";
+import { VIEWS } from "../../../data/constants/VIEWS";
 
 
 export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {

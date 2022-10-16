@@ -1,11 +1,11 @@
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
 import { Container } from "@mui/material";
 
 export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {

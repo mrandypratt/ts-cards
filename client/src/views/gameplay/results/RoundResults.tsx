@@ -1,14 +1,14 @@
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { ResultsTable } from "../../components/ResultsTable";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { ResultsTable } from "../../../components/ResultsTable";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { MESSAGES } from "../../data/constants/messages";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { MESSAGES } from "../../../data/constants/messages";
 import { Container } from "@mui/material";
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
 export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);

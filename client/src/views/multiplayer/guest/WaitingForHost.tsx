@@ -1,10 +1,10 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
-import { ConfirmExitLobbyDialogue } from "../../components/Buttons/ConfirmExitLobbyDialogue";
-import { ExitLobbyButton } from "../../components/Buttons/Submit";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
-import { MESSAGES } from "../../data/constants/messages";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ConfirmExitLobbyDialogue } from "../../../components/Buttons/ConfirmExitLobbyDialogue";
+import { ExitLobbyButton } from "../../../components/Buttons/Submit";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
+import { MESSAGES } from "../../../data/constants/messages";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 
 export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);

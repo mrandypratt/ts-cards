@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { SuccessIcon } from "../../components/Icons/SuccessIcon";
-import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { ExitLobbyShadedButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
+import { SuccessIcon } from "../../../components/Icons/SuccessIcon";
+import { WaitingIcon } from "../../../components/Icons/WaitingIcon";
 import { Container } from "@mui/material";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
 export const WaitingForNextRound = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);

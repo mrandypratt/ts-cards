@@ -2,13 +2,13 @@ import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import NSFWToggle from "../../components/Buttons/NSFWToggle";
-import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { VIEWS } from "../../data/constants/VIEWS";
+import NSFWToggle from "../../../components/Buttons/NSFWToggle";
+import { SubmitButton, ReturnHomeButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { containsValidCharacters } from "../../../data/functions/arePlayerNamesValid";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
+import { VIEWS } from "../../../data/constants/VIEWS";
 
 export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
