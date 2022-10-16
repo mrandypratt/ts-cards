@@ -4,13 +4,12 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import NSFWToggle from "../../../components/Buttons/NSFWToggle";
 import { SubmitButton, ReturnHomeButton } from "../../../components/Buttons/Submit";
-import { MESSAGES } from "../../../data/constants/messages";
 import { EVENTS } from "../../../data/constants/EVENTS";
 import { containsValidCharacters } from "../../../data/functions/arePlayerNamesValid";
 import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import { VIEWS } from "../../../data/constants/VIEWS";
 
-export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+export const CreateMultiPlayerGame = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ name, setName ] = useState("");
   const [ NSFW, setNSFW ] = useState(false);
 
@@ -29,11 +28,11 @@ export const CreateGame = ({game, setGame, socket, sessionId}: ViewPropsType): J
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>Create Game</b></h1>
+      <h1><b>New Game</b></h1>
 
       <hr></hr>
 
-      <p>{MESSAGES.host.startNewGame}</p>
+      <p>Before we get the party started, tell us who you are and how crazy you want to get!</p>
 
       <Box>
         <TextField 

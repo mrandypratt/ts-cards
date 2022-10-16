@@ -1,5 +1,4 @@
 import { SubmitButton, SubmitFeedbackButton, GettingStartedButton } from "../components/Buttons/Submit";
-import { MESSAGES } from "../data/constants/messages"
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
@@ -9,12 +8,12 @@ const APDevIcon = require('../APDevLogo.png');
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
-  const newGame = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.host.createLobby)
+  const multiPlayer = () => {
+    socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.home)
   }
   
-  const joinLobby = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.guest.joinLobby)
+  const singlePlayer = () => {
+    socket.emit(EVENTS.client.updateView, VIEWS.home)
   }
   
   const gettingStarted = () => {
@@ -28,18 +27,22 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>{MESSAGES.home.welcomeBanner}</b></h1>
+      <h1><b>Cards with Friends</b></h1>
 
       <hr></hr>
 
-      <p>{MESSAGES.home.getStarted1}</p>
+      <p>It's Cards Against Humanity... on the internet.</p>
+      
+      <hr></hr>
+
+      <p style={{marginTop: "2rem", fontSize: 20}}>So how do you want to play?</p>
 
       <div>
         
         <div>
           <SubmitButton 
-            text={"New Game"}
-            onClick={newGame}
+            text={"Laugh with friends"}
+            onClick={multiPlayer}
             type="button"
             disabled={false}
           />
@@ -47,8 +50,8 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
         <div>
           <SubmitButton 
-            text={"Join Lobby"}
-            onClick={joinLobby}
+            text={"Play with Myself"}
+            onClick={singlePlayer}
             type="button"
             disabled={false}
           />

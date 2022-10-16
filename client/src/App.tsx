@@ -7,7 +7,7 @@ import { Home } from "./views/Home";
 import { HowToPlay } from "./views/info/GettingStarted";
 import { Feedback } from "./views/info/Feedback";
 import { MultiPlayerHome } from "./views/multiPlayer/MultiPlayerHome";
-import { CreateGame } from "./views/multiPlayer/host/CreateGame";
+import { CreateMultiPlayerGame } from "./views/multiPlayer/host/CreateMultiPlayerGame";
 import { InviteParticipants } from "./views/multiPlayer/host/InviteParticipants";
 import { JoinLobby } from "./views/multiPlayer/guest/JoinLobby";
 import { WaitingForHost } from "./views/multiPlayer/guest/WaitingForHost";
@@ -108,7 +108,7 @@ export const App = (): JSX.Element => {
   
     if (view === VIEWS.multiPlayer.host.createLobby) {
       return (
-        <CreateGame
+        <CreateMultiPlayerGame
           game={game}
           setGame={setGame}
           socket={socket}

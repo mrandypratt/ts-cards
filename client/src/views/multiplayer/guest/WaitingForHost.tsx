@@ -16,13 +16,15 @@ export const WaitingForHost = ({game, setGame, socket, sessionId}: ViewPropsType
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>Waiting for Host</b></h1>
+      <h1><b>Game Lobby</b></h1>
 
       <hr></hr>
 
-      <h3 style={{margin: "auto"}}>You joined the lobby!</h3>
+      <h3 style={{margin: "auto"}}>Success, you joined the game!</h3>
 
       <hr></hr>
+
+      <p>Lobby ID: <b>{game?.id}</b></p>
 
       <PlayingCard
         className="solo-prompt-card"

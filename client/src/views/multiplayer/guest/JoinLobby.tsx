@@ -49,7 +49,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
       <Alert severity="error">{alertMessage}</Alert>
     }
 
-    <h1><b>Join a Game</b></h1>
+    <h1><b>Join Game</b></h1>
 
     <hr></hr>
 

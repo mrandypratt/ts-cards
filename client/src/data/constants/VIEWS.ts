@@ -2,7 +2,7 @@ export const VIEWS = {
   home: "home",
 
   singlePlayer: {
-    createLobby: "createLobby",
+    makeSelection: "makeSelection",
     findingPlayers: "findingPlayers",
   },
 

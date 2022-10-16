@@ -52,11 +52,11 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>Invite Friends</b></h1>
+      <h1><b>Lobby Created</b></h1>
 
       <hr></hr>
 
-      <h3 style={{margin: "auto"}}>You created a lobby!</h3>
+      <h3 style={{margin: "auto"}}>Invite your Friends!</h3>
       
       <hr></hr>
 
@@ -87,7 +87,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       </div>
 
-      <p>{MESSAGES.host.inviteParticipants.shareLobbyID}</p>
+      <p>Share the Lobby ID with your friends so they can join.</p>
 
       <hr></hr>
 
@@ -108,9 +108,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
 
       { !minimumPlayersJoined() && 
-        <p>
-          {MESSAGES.host.inviteParticipants.minimumPlayers}
-        </p>
+        <p>At least 3 players are required to start a game.</p>
       }
 
       <ExitLobbyButton

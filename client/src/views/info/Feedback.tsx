@@ -78,14 +78,14 @@ export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>{"Provide Feedback"}</b></h1>
+      <h1><b>Provide Feedback</b></h1>
 
       <hr></hr>
 
       { !isLoading &&
         <div>
-          <p>{"We love feedback."}</p>
-          <p>{"Hearing from you helps us prioritize new features and bug fixes to create a fun experience for our users"}</p>
+          <p>We think we're great, but we could totally be better! </p>
+          <p>Please help us by describing any issues with the game or suggestions what would make it more fun!</p>
 
           <Box style={{marginBottom: 10}}>
             <TextField 

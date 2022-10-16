@@ -35,7 +35,7 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   
         <hr></hr>
         
-        <h3 style={{margin: "auto"}}>Submit Card</h3>
+        <h3 style={{margin: "auto"}}>Select a Card</h3>
   
         <hr></hr>
   

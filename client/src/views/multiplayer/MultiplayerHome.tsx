@@ -1,11 +1,8 @@
-import { SubmitButton, SubmitFeedbackButton, GettingStartedButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages"
+import { SubmitButton, GettingStartedButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../../data/constants/EVENTS";
 import { VIEWS } from "../../data/constants/VIEWS";
-
-const APDevIcon = require('../../APDevLogo.png');
 
 export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
@@ -21,18 +18,20 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
     socket.emit(EVENTS.client.updateView, VIEWS.info.howToPlay)
   }
 
-  const submitFeedback = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.info.feedback)
+  const returnHome = () => {
+    socket?.emit(EVENTS.client.updateView, VIEWS.home);
   }
 
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>{MESSAGES.home.welcomeBanner}</b></h1>
+      <h1><b>Play with Friends</b></h1>
 
       <hr></hr>
 
-      <p>{MESSAGES.home.getStarted1}</p>
+      <p>Congrats on being popular!</p>
+
+      <p>Start a game and invite friends or join an existing game if you've already been invited.</p>
 
       <div>
         
@@ -47,7 +46,7 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
 
         <div>
           <SubmitButton 
-            text={"Join Lobby"}
+            text={"Join Game"}
             onClick={joinLobby}
             type="button"
             disabled={false}
@@ -65,23 +64,12 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
         />
       </div>
 
-      <div>
-        <SubmitFeedbackButton 
-          text={"Submit Feedback"}
-          onClick={submitFeedback}
-          type="submit"
-          disabled={false}
-        />
-      </div>
-
-
-
-      <div className="footer">
-        <p className="footer-text">Created by: </p>
-        <a className="footer-links" href={"http://www.andyprattdev.com"} target="_blank" rel="noreferrer noopener" >
-          <img src={APDevIcon} alt="Andy Pratt" className="footer-image"></img>
-        </a>
-      </div>
+      <ReturnHomeButton
+        text={"Return Home"}
+        type={"submit"}
+        disabled={false} 
+        onClick={returnHome}
+      />
 
     </Container>
   )
