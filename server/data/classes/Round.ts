@@ -58,5 +58,4 @@ export class Round {
       return player.selectedCard?.id !== winningCard.id;
     })
   }
-
 }

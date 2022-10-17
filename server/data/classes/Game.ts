@@ -153,6 +153,10 @@ export class Game {
     if (judge) return judge;
     return null;
   }
+
+  isJudge(sessionId: string): boolean {
+    return this.getJudgePlayer()?.sessionId === sessionId;
+  }
   
   createNewRound(): void {
     if (this.promptCards.length === 0) {

@@ -71,7 +71,70 @@ mongoose
         console.log("View Updated")
         console.log(session)
         socket.emit(EVENTS.server.updateView, view)
-      })
+      });
+
+      socket.on(EVENTS.client.singlePlayer.createGame, (name: string, NSFW: boolean): void => {
+        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
+        const nextView = VIEWS.singlePlayer.findingPlayers
+
+        
+        if (sessionId) {
+          // Create New Game & Add to Store
+          const game = new Game(null, new Player(null, sessionId, name), NSFW);
+          
+          // Add Bot Players to Game
+          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
+          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
+          gameStore.addGame(game);
+          
+          // Update View
+          sessionStore.findSession(sessionId)?.updateView(nextView)
+
+          // Update Client
+          socket.emit(EVENTS.server.updateClient, game, nextView)
+        }
+      });
+
+      socket.on(EVENTS.client.singlePlayer.startGame, (): void => {
+        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
+        
+        if (sessionId) {
+          const game = gameStore.findGameBySessionId(sessionId)
+          
+          if (game) {
+            // Randomize Player Order
+            game.randomizePlayerOrder();
+            
+            // Load & Deal Cards into Game
+            game.loadDeckIntoGame();
+            game.dealCardsToPlayers()
+            
+            // Create Round
+            game.createNewRound()
+    
+            console.log(game)
+    
+            // UPDATE VIEW AND CLIENT
+            const currentPlayer = game.getPlayer(sessionId);
+
+            if (currentPlayer) {
+              if (game.isJudge(sessionId)) {
+                const judgeView = VIEWS.gameplay.judge.waitingforSelections;
+                sessionStore.findSession(sessionId)?.updateView(judgeView);
+                socket.emit(EVENTS.server.updateClient, game, judgeView);
+              } else {
+                const playerView = VIEWS.gameplay.player.turn;
+                sessionStore.findSession(sessionId)?.updateView(playerView);
+                socket.emit(EVENTS.server.updateClient, game, playerView);
+
+              }
+            }
+          }
+        }
+    
+        gameStore.logGames();
+      });
+
     
       socket.on(EVENTS.client.multiPlayer.createLobby, (name: string, NSFW: boolean): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
@@ -129,28 +192,6 @@ mongoose
     
         gameStore.logGames();
       });
-
-      socket.on(EVENTS.client.singlePlayer.createGame, (name: string, NSFW: boolean): void => {
-        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        const nextView = VIEWS.singlePlayer.findingPlayers
-
-        
-        if (sessionId) {
-          // Create New Game & Add to Store
-          const game = new Game(null, new Player(null, sessionId, name), NSFW);
-          
-          // Add Bot Players to Game
-          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
-          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
-          gameStore.addGame(game);
-          
-          // Update View
-          sessionStore.findSession(sessionId)?.updateView(nextView)
-
-          // Update Client
-          socket.emit(EVENTS.server.updateClient, game, nextView)
-        }
-      })
     
       socket.on(EVENTS.client.multiPlayer.startFirstRound, (): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
