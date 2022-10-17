@@ -24,7 +24,7 @@ export const FindingPlayers = ({game, setGame, socket, sessionId}: ViewPropsType
 
   const startGame = () => {
     console.log("Start Game")
-    socket.emit(EVENTS.client.startSinglePlayerGame , game)
+    socket.emit(EVENTS.client.singlePlayer.startGame , game)
   }
 
   useEffect(() => {

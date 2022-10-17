@@ -2,17 +2,19 @@ export const EVENTS = {
   // Events triggered by Client
   client: {
     updateView: "updateViewOnServer",
-    createLobby: "createLobby",
-    joinLobby: "joinLobby",
-    createSinglePlayerGame: "createSinglePlayerGame",
-    startSinglePlayerGame: "startSinglePlayerGame",
-    startFirstRound: "startFirstRound",
-    playerSelection: "playerSelection",
-    judgeSelection: "judgeSelection",
-    startNextRound: "startNextRound",
-    startNextGame: "startNextGame",
-
-    
+    multiPlayer: {
+      createLobby: "createLobby",
+      joinLobby: "joinLobby",
+      startFirstRound: "startFirstRound",
+      playerSelection: "playerSelection",
+      judgeSelection: "judgeSelection",
+      startNextRound: "startNextRound",
+      startNextGame: "startNextGame",
+    },
+    singlePlayer: {
+      createGame: "createSinglePlayerGame",
+      startGame: "startSinglePlayerGame",
+    },
     
     deleteLobby: "deleteLobby",
     exitLobby: "exitLobby",

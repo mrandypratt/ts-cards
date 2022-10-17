@@ -25,7 +25,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   }
   
   const joinLobby = () => {
-    socket?.emit(EVENTS.client.joinLobby, lobbyId, name);
+    socket?.emit(EVENTS.client.multiPlayer.joinLobby, lobbyId, name);
   }
   
   const returnHome = () => {

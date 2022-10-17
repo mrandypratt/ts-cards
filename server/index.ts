@@ -73,7 +73,7 @@ mongoose
         socket.emit(EVENTS.server.updateView, view)
       })
     
-      socket.on(EVENTS.client.createLobby, (name: string, NSFW: boolean): void => {
+      socket.on(EVENTS.client.multiPlayer.createLobby, (name: string, NSFW: boolean): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
         const nextView = VIEWS.multiPlayer.host.inviteParticipants
         
@@ -98,7 +98,7 @@ mongoose
         gameStore.logGames();
       });
       
-      socket.on(EVENTS.client.joinLobby, (lobbyId: string, name: string): void => {
+      socket.on(EVENTS.client.multiPlayer.joinLobby, (lobbyId: string, name: string): void => {
         lobbyId = lobbyId.toUpperCase();
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
         const nextView = VIEWS.multiPlayer.guest.waitingForHost;
@@ -130,7 +130,7 @@ mongoose
         gameStore.logGames();
       });
 
-      socket.on(EVENTS.client.createSinglePlayerGame, (name: string, NSFW: boolean): void => {
+      socket.on(EVENTS.client.singlePlayer.createGame, (name: string, NSFW: boolean): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
         const nextView = VIEWS.singlePlayer.findingPlayers
 
@@ -146,13 +146,13 @@ mongoose
           
           // Update View
           sessionStore.findSession(sessionId)?.updateView(nextView)
-          
+
           // Update Client
           socket.emit(EVENTS.server.updateClient, game, nextView)
         }
       })
     
-      socket.on(EVENTS.client.startFirstRound, (): void => {
+      socket.on(EVENTS.client.multiPlayer.startFirstRound, (): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
         
         if (sessionId) {
@@ -204,7 +204,7 @@ mongoose
         gameStore.logGames();
       });
       
-      socket.on(EVENTS.client.playerSelection, (selectedCard: CardDataType): void => {
+      socket.on(EVENTS.client.multiPlayer.playerSelection, (selectedCard: CardDataType): void => {
         const session = sessionStore.findSessionBySocketId(socket.id)
         
         if (session) {
@@ -260,7 +260,7 @@ mongoose
         }
       });
       
-      socket.on(EVENTS.client.judgeSelection, (selectedCard: CardDataType): void => {
+      socket.on(EVENTS.client.multiPlayer.judgeSelection, (selectedCard: CardDataType): void => {
         const session = sessionStore.findSessionBySocketId(socket.id)
         
         if (session) {
@@ -293,7 +293,7 @@ mongoose
         }
       });
       
-      socket.on(EVENTS.client.startNextRound, (): void => {
+      socket.on(EVENTS.client.multiPlayer.startNextRound, (): void => {
         const session = sessionStore.findSessionBySocketId(socket.id)
         
         if (session) {
@@ -368,7 +368,7 @@ mongoose
         }
       });
     
-      socket.on(EVENTS.client.startNextGame, (gameData: GameDataType): void => {
+      socket.on(EVENTS.client.multiPlayer.startNextGame, (gameData: GameDataType): void => {
         const session = sessionStore.findSessionBySocketId(socket.id)
         
         if (session) {

@@ -15,7 +15,7 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   const [ selectedCard, setSelectedCard ] = useState<CardDataType | null>(null);
 
   const submitSelection = (): void => {
-    socket?.emit(EVENTS.client.playerSelection, selectedCard);
+    socket?.emit(EVENTS.client.multiPlayer.playerSelection, selectedCard);
   }
   
   const showConfirmDeleteDialogue = () => {

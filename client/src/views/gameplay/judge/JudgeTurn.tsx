@@ -18,7 +18,7 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   const player = getCurrentPlayer(game, sessionId);
 
   const selectWinner = (): void => {
-    socket.emit(EVENTS.client.judgeSelection, selectedCard);
+    socket.emit(EVENTS.client.multiPlayer.judgeSelection, selectedCard);
   }
 
   const showConfirmDeleteDialogue = () => {

@@ -19,7 +19,7 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
   const winningCard = winner?.selectedCard;
 
   const startNextGame = () => {
-    socket.emit(EVENTS.client.startNextGame);
+    socket.emit(EVENTS.client.multiPlayer.startNextGame);
   }
 
   const showConfirmDeleteDialogue = () => {

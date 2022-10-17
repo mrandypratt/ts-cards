@@ -18,7 +18,7 @@ export const CreateMultiPlayerGame = ({game, setGame, socket, sessionId}: ViewPr
   }
 
   const createGame = () => {
-    socket?.emit(EVENTS.client.createLobby, name, NSFW)
+    socket?.emit(EVENTS.client.multiPlayer.createLobby, name, NSFW)
   }
 
   const returnHome = () => {
