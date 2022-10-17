@@ -12,6 +12,7 @@ import { CardDataType, GameDataType } from "../client/src/data/types/ClassTypes"
 import { VIEWS } from "../client/src/data/constants/VIEWS"
 import { Game } from "./data/classes/Game";
 import { Player } from "./data/classes/Player";
+import { faker } from '@faker-js/faker';
 import { log } from "./functions/log"
 require('dotenv').config();
 
@@ -51,8 +52,6 @@ mongoose
         session.updateSocketId(socket.id);
         socket.emit(EVENTS.server.updateClient, game, session.view)
         return next();
-    
-    
       }
     
       session = sessionStore.createSession(socket.id, null, VIEWS.home);
@@ -65,7 +64,6 @@ mongoose
     io.on("connection", (socket) => {
     
       socket.on(EVENTS.client.updateView, (view: string) => {
-    
         const session = sessionStore.findSessionBySocketId(socket.id);
         console.log(session)
         session?.updateView(view);
@@ -131,6 +129,28 @@ mongoose
     
         gameStore.logGames();
       });
+
+      socket.on(EVENTS.client.createSinglePlayerGame, (name: string, NSFW: boolean): void => {
+        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
+        const nextView = VIEWS.singlePlayer.findingPlayers
+
+        
+        if (sessionId) {
+          // Create New Game & Add to Store
+          const game = new Game(null, new Player(null, sessionId, name), NSFW);
+          
+          // Add Bot Players to Game
+          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
+          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
+          gameStore.addGame(game);
+          
+          // Update View
+          sessionStore.findSession(sessionId)?.updateView(nextView)
+          
+          // Update Client
+          socket.emit(EVENTS.server.updateClient, game, nextView)
+        }
+      })
     
       socket.on(EVENTS.client.startFirstRound, (): void => {
         const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;

@@ -34,6 +34,7 @@ export type PlayerDataType = {
   selectedCard: CardDataType | null;
   wins: number;
   readyForNextRound: Boolean;
+  bot: Boolean;
 }
 
 export type CardDataType = {

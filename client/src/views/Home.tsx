@@ -13,7 +13,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   }
   
   const singlePlayer = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.home)
+    socket.emit(EVENTS.client.updateView, VIEWS.singlePlayer.createGame)
   }
   
   const gettingStarted = () => {

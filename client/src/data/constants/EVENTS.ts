@@ -4,11 +4,14 @@ export const EVENTS = {
     updateView: "updateViewOnServer",
     createLobby: "createLobby",
     joinLobby: "joinLobby",
+    createSinglePlayerGame: "createSinglePlayerGame",
+    startSinglePlayerGame: "startSinglePlayerGame",
     startFirstRound: "startFirstRound",
     playerSelection: "playerSelection",
     judgeSelection: "judgeSelection",
     startNextRound: "startNextRound",
     startNextGame: "startNextGame",
+
     
     
     deleteLobby: "deleteLobby",

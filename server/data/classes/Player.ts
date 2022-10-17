@@ -8,8 +8,9 @@ export class Player {
   selectedCard: ResponseCard | null;
   wins: number;
   readyForNextRound: Boolean;
+  bot: Boolean;
 
-  constructor(playerData: PlayerDataType | null, sessionId?: string, name?: string) {
+  constructor(playerData: PlayerDataType | null, sessionId?: string, name?: string, bot?: boolean) {
     // May remove Player Data Reinstantiation after more Understanding of DataBase Calls
     if (playerData) {
       this.sessionId = playerData.sessionId;
@@ -17,7 +18,8 @@ export class Player {
       this.cards = playerData.cards;
       this.selectedCard = playerData.selectedCard
       this.wins = playerData.wins; 
-      this.readyForNextRound = playerData.readyForNextRound
+      this.readyForNextRound = playerData.readyForNextRound;
+      this.bot = playerData.bot;
     } else {
       this.sessionId = sessionId || "";
       this.name = name || "";
@@ -25,6 +27,7 @@ export class Player {
       this.selectedCard = null;
       this.wins = 0; 
       this.readyForNextRound = false;
+      this.bot = bot || false;
     }
   }
   

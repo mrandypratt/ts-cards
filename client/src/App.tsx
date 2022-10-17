@@ -11,6 +11,8 @@ import { CreateMultiPlayerGame } from "./views/multiPlayer/host/CreateMultiPlaye
 import { InviteParticipants } from "./views/multiPlayer/host/InviteParticipants";
 import { JoinLobby } from "./views/multiPlayer/guest/JoinLobby";
 import { WaitingForHost } from "./views/multiPlayer/guest/WaitingForHost";
+import { CreateSinglePlayerGame } from "./views/singlePlayer/CreateSinglePlayerGame";
+import { FindingPlayers } from "./views/singlePlayer/FindingPlayers";
 import { EVENTS } from "./data/constants/EVENTS";
 import { PlayerTurn } from "./views/gameplay/player/PlayerTurn";
 import { JudgeWaitingForPlayers } from "./views/gameplay/judge/JudgeWaitingForPlayers";
@@ -142,6 +144,28 @@ export const App = (): JSX.Element => {
     if (view === VIEWS.multiPlayer.guest.waitingForHost) {
       return (
         <WaitingForHost
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+
+    if (view === VIEWS.singlePlayer.createGame) {
+      return (
+        <CreateSinglePlayerGame
+          game={game}
+          setGame={setGame}
+          socket={socket}
+          sessionId={sessionId}
+        />
+      );
+    }
+
+    if (view === VIEWS.singlePlayer.findingPlayers) {
+      return (
+        <FindingPlayers
           game={game}
           setGame={setGame}
           socket={socket}
