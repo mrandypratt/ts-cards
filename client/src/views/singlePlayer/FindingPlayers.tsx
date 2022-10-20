@@ -10,10 +10,7 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const FindingPlayers = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const [ showDialogue, setShowDialogue ] = useState(false);
-  
-  const humanPlayer = game?.players.find(player => player.bot === false)
-  const botPlayers = game?.players.filter(player => player.bot === true)
-
+  const humanPlayer = game?.players.find(player => player.botId === null)
   const [ playersToDisplay, setPlayersToDisplay ] = useState<PlayerDataType[]>(humanPlayer ? [humanPlayer] : []);
   const playersToDisplayRef = useRef(playersToDisplay);
   playersToDisplayRef.current = playersToDisplay;
@@ -21,38 +18,18 @@ export const FindingPlayers = ({game, setGame, socket, sessionId}: ViewPropsType
   const showConfirmDeleteDialogue = () => {
     setShowDialogue(true);
   }
-
-  const startGame = () => {
-    console.log("Start Game")
-    socket.emit(EVENTS.client.singlePlayer.startGame , game)
-  }
-
-  useEffect(() => {
-    const timer1 = setTimeout(() => {
-      const newBotToAdd = botPlayers?.pop();
-      if (playersToDisplayRef && newBotToAdd) {
-        setPlayersToDisplay([...playersToDisplayRef.current, newBotToAdd])
-      }
-    }, 2000)
-
-    const timer2 = setTimeout(() => {
-      const newBotToAdd = botPlayers?.pop();
-      if (playersToDisplayRef && newBotToAdd) {
-        setPlayersToDisplay([...playersToDisplayRef.current, newBotToAdd])
-      }
-    }, 4000)
-
-    const timer3 = setTimeout(() => {
-      startGame();
-    }, 6000)
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, [])
   
+  useEffect(() => {
+    socket.on(EVENTS.server.botJoinsLobby, (bot: PlayerDataType) => {
+      setPlayersToDisplay([...playersToDisplayRef.current, bot]);
+  
+      if (playersToDisplayRef.current.length === game?.players.length) {
+        setTimeout(() => {
+          socket.emit(EVENTS.client.singlePlayer.startFirstRound)
+        }, 1000)
+      }
+    })
+  }, []);
   
   
   return (

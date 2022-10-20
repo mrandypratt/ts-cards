@@ -27,6 +27,5 @@ export class Session {
     this.view = view;
   }
 
-
 };
 

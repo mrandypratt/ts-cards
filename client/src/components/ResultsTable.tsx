@@ -26,7 +26,7 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
             return b.wins - a.wins;
           }).map((player: PlayerDataType) => (
             <TableRow
-              key={player.sessionId}
+              key={player.name + (player.sessionId || "")}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">

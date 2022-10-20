@@ -14,7 +14,11 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   const [showDialogue, setShowDialogue] = useState(false);
 
   const startGame = () => {
-    socket?.emit(EVENTS.client.multiPlayer.startFirstRound, game);
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.startFirstRound, game);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.startFirstRound, game);
+    }
   }
 
   const minimumPlayersJoined = (): boolean => {

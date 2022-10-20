@@ -18,7 +18,11 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   const player = getCurrentPlayer(game, sessionId);
 
   const selectWinner = (): void => {
-    socket.emit(EVENTS.client.multiPlayer.judgeSelection, selectedCard);
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.judgeSelection, selectedCard);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.judgeSelection, selectedCard);
+    }
   }
 
   const showConfirmDeleteDialogue = () => {
@@ -60,7 +64,7 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
                   key={card.id}
                   className="response-card"
                   type={ selectedCard?.id === card?.id ? "selected" : "response" }
-                  text={ card.text } 
+                  text={ card.text || "Error"} 
                   onClick={ () => {
                     setSelectedCard(selectedCard?.id === card?.id ? null : card)
                   }}

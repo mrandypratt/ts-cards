@@ -49,12 +49,12 @@ class SessionStore {
   }
 
   logSessions(): void {
-    console.log("Session Store")
-    console.log("--------------")
-    this.sessions.forEach((session, sessionIndex) => {
-      console.log(session);
-    })
-    console.log("")
+    // console.log("Session Store")
+    // console.log("--------------")
+    // this.sessions.forEach((session, sessionIndex) => {
+    //   console.log(session);
+    // })
+    // console.log("")
   }
 }
 

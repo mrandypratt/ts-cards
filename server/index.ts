@@ -12,8 +12,8 @@ import { CardDataType, GameDataType } from "../client/src/data/types/ClassTypes"
 import { VIEWS } from "../client/src/data/constants/VIEWS"
 import { Game } from "./data/classes/Game";
 import { Player } from "./data/classes/Player";
-import { faker } from '@faker-js/faker';
 import { log } from "./functions/log"
+import singlePlayer from "./socketRoutes/singlePlayer";
 require('dotenv').config();
 
 const mongoURI = process.env.MONGO_URI || "";
@@ -48,14 +48,14 @@ mongoose
           socket.join(game.id)
         } 
         
-        log("Session Restored", sessionId, socket.id, game?.id)
+        // log("Session Restored", sessionId, socket.id, game?.id)
         session.updateSocketId(socket.id);
         socket.emit(EVENTS.server.updateClient, game, session.view)
         return next();
       }
     
       session = sessionStore.createSession(socket.id, null, VIEWS.home);
-      log("Session Created", session.id, socket.id);
+      // log("Session Created", session.id, socket.id);
       sessionStore.logSessions();
       socket.emit(EVENTS.server.newSession, sessionStore.findSessionBySocketId(socket.id)?.id)
       next();
@@ -65,74 +65,36 @@ mongoose
     
       socket.on(EVENTS.client.updateView, (view: string) => {
         const session = sessionStore.findSessionBySocketId(socket.id);
-        console.log(session)
+        // console.log(session)
         session?.updateView(view);
         
-        console.log("View Updated")
-        console.log(session)
+        // console.log("View Updated")
+        // console.log(session)
         socket.emit(EVENTS.server.updateView, view)
       });
 
-      socket.on(EVENTS.client.singlePlayer.createGame, (name: string, NSFW: boolean): void => {
-        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        const nextView = VIEWS.singlePlayer.findingPlayers
-
-        
-        if (sessionId) {
-          // Create New Game & Add to Store
-          const game = new Game(null, new Player(null, sessionId, name), NSFW);
-          
-          // Add Bot Players to Game
-          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
-          game.addPlayer(new Player(null, undefined, faker.name.firstName(), true));
-          gameStore.addGame(game);
-          
-          // Update View
-          sessionStore.findSession(sessionId)?.updateView(nextView)
-
-          // Update Client
-          socket.emit(EVENTS.server.updateClient, game, nextView)
-        }
+      socket.on(EVENTS.client.singlePlayer.createLobby, (name: string, NSFW: boolean): void => {
+        singlePlayer.createLobby(socket, name, NSFW);
       });
 
-      socket.on(EVENTS.client.singlePlayer.startGame, (): void => {
-        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        
-        if (sessionId) {
-          const game = gameStore.findGameBySessionId(sessionId)
-          
-          if (game) {
-            // Randomize Player Order
-            game.randomizePlayerOrder();
-            
-            // Load & Deal Cards into Game
-            game.loadDeckIntoGame();
-            game.dealCardsToPlayers()
-            
-            // Create Round
-            game.createNewRound()
-    
-            console.log(game)
-    
-            // UPDATE VIEW AND CLIENT
-            const currentPlayer = game.getPlayer(sessionId);
+      socket.on(EVENTS.client.singlePlayer.startFirstRound, (): void => {
+        singlePlayer.startFirstRound(socket);
+      });
 
-            if (currentPlayer) {
-              if (game.isJudge(sessionId)) {
-                const judgeView = VIEWS.gameplay.judge.waitingforSelections;
-                sessionStore.findSession(sessionId)?.updateView(judgeView);
-                socket.emit(EVENTS.server.updateClient, game, judgeView);
-              } else {
-                const playerView = VIEWS.gameplay.player.turn;
-                sessionStore.findSession(sessionId)?.updateView(playerView);
-                socket.emit(EVENTS.server.updateClient, game, playerView);
-
-              }
-            }
-          }
-        }
+      socket.on(EVENTS.client.singlePlayer.playerSelection, (selectedCard: CardDataType): void => {
+        singlePlayer.humanPlayerMakesSelection(socket, selectedCard)
+      });
+      
+      socket.on(EVENTS.client.singlePlayer.judgeSelection, (selectedCard: CardDataType): void => {
+        singlePlayer.humanJudgeMakesSelection(socket, selectedCard);
+      });
+      
+      socket.on(EVENTS.client.singlePlayer.startNextRound, (): void => {
+       singlePlayer.humanStartsNextRound(socket);
+      });
     
-        gameStore.logGames();
+      socket.on(EVENTS.client.singlePlayer.startNextGame, (gameData: GameDataType): void => {
+        singlePlayer.humanStartsNextGame(socket);
       });
 
     
@@ -194,29 +156,65 @@ mongoose
       });
     
       socket.on(EVENTS.client.multiPlayer.startFirstRound, (): void => {
-        const sessionId = sessionStore.findSessionBySocketId(socket.id)?.id;
-        
-        if (sessionId) {
-          const game = gameStore.findGameBySessionId(sessionId)
+        const session = sessionStore.findSessionBySocketId(socket.id);
+        const game = gameStore.findGameBySessionId(session ? session.id : "")
+
+        if (session && game) {
+          // Randomize Player Order
+          game.initializeNewGame();
+  
+          // UPDATE VIEWS & CLIENTS
+  
+          // Judge Player 
+          const judgePlayer = game.getJudgePlayer();
+          const judgeView = VIEWS.gameplay.judge.waitingforSelections;
           
-          if (game) {
-            // Randomize Player Order
-            game.randomizePlayerOrder();
+          if (judgePlayer) {
+            // Update View
+            sessionStore.findSession(judgePlayer.sessionId)?.updateView(judgeView);
             
-            // Load & Deal Cards into Game
-            game.loadDeckIntoGame();
-            game.dealCardsToPlayers()
-            
-            // Create Round
-            game.createNewRound()
+            // Emit Update to specific socket ID
+            const judgeSessionId = sessionStore.getSocketId(judgePlayer.sessionId)
+            io.to(judgeSessionId).emit(EVENTS.server.updateClient, game, judgeView);
+          }
+  
+          // Non-Judge Players
+          const players = game.getNonJudgePlayers();
+          const playerView = VIEWS.gameplay.player.turn;
+  
+          players.forEach((player) => {
+            // Update View
+            sessionStore.findSession(player.sessionId)?.updateView(playerView);
+  
+            // Emit Update to specific socket ID
+            const playerSessionId = sessionStore.getSocketId(player.sessionId)
+            io.to(playerSessionId).emit(EVENTS.server.updateClient, game, playerView);
+          })
+        }
     
-            console.log(game)
+        gameStore.logGames();
+      });
+      
+      socket.on(EVENTS.client.multiPlayer.playerSelection, (selectedCard: CardDataType): void => {
+        const session = sessionStore.findSessionBySocketId(socket.id)
+        const game = gameStore.findGameBySessionId(session? session.id : "");
+        const round = game?.round;
+
+        if (session && game && round) {
     
-            // UPDATE VIEWS & CLIENTS
-    
+          // Select Card
+          const player = game.getPlayer(session.id);
+          player?.playCard(selectedCard)
+  
+          // UPDATE VIEWS & CLIENTS (Based on Card Selections)
+  
+          if (round.allSelectionsMade()) {
+  
+            round.randomizePlayerOrder();
+  
             // Judge Player 
             const judgePlayer = game.getJudgePlayer();
-            const judgeView = VIEWS.gameplay.judge.waitingforSelections;
+            const judgeView = VIEWS.gameplay.judge.turn;
             
             if (judgePlayer) {
               // Update View
@@ -226,77 +224,26 @@ mongoose
               const judgeSessionId = sessionStore.getSocketId(judgePlayer.sessionId)
               io.to(judgeSessionId).emit(EVENTS.server.updateClient, game, judgeView);
             }
-    
+  
             // Non-Judge Players
             const players = game.getNonJudgePlayers();
-            const playerView = VIEWS.gameplay.player.turn;
-    
+            const playerView = VIEWS.gameplay.player.waitingForJudge;
+  
             players.forEach((player) => {
               // Update View
               sessionStore.findSession(player.sessionId)?.updateView(playerView);
-    
+  
               // Emit Update to specific socket ID
               const playerSessionId = sessionStore.getSocketId(player.sessionId)
               io.to(playerSessionId).emit(EVENTS.server.updateClient, game, playerView);
             })
-          }
-        }
-    
-        gameStore.logGames();
-      });
-      
-      socket.on(EVENTS.client.multiPlayer.playerSelection, (selectedCard: CardDataType): void => {
-        const session = sessionStore.findSessionBySocketId(socket.id)
-        
-        if (session) {
-          const game = gameStore.findGameBySessionId(session.id);
-          const round = game?.round;
-          
-          if (game && round) {
-    
-            // Select Card
-            const player = game.getPlayer(session.id);
-            player?.playCard(selectedCard)
-    
-            // UPDATE VIEWS & CLIENTS (Based on Card Selections)
-    
-            if (round.allSelectionsMade()) {
-    
-              round.randomizePlayerOrder();
-    
-              // Judge Player 
-              const judgePlayer = game.getJudgePlayer();
-              const judgeView = VIEWS.gameplay.judge.turn;
-              
-              if (judgePlayer) {
-                // Update View
-                sessionStore.findSession(judgePlayer.sessionId)?.updateView(judgeView);
-                
-                // Emit Update to specific socket ID
-                const judgeSessionId = sessionStore.getSocketId(judgePlayer.sessionId)
-                io.to(judgeSessionId).emit(EVENTS.server.updateClient, game, judgeView);
-              }
-    
-              // Non-Judge Players
-              const players = game.getNonJudgePlayers();
-              const playerView = VIEWS.gameplay.player.waitingForJudge;
-    
-              players.forEach((player) => {
-                // Update View
-                sessionStore.findSession(player.sessionId)?.updateView(playerView);
-    
-                // Emit Update to specific socket ID
-                const playerSessionId = sessionStore.getSocketId(player.sessionId)
-                io.to(playerSessionId).emit(EVENTS.server.updateClient, game, playerView);
-              })
-            } else {
-              // Update Current Client GameData & View to PlayerSelectionMade
-              session.updateView(VIEWS.gameplay.player.selectionMade)
-              socket.emit(EVENTS.server.updateClient, game, session.view)
-    
-              // Update GameData of other Clients
-              socket.to(game.id).emit(EVENTS.server.updateGame, game);
-            }
+          } else {
+            // Update Current Client GameData & View to PlayerSelectionMade
+            session.updateView(VIEWS.gameplay.player.selectionMade)
+            socket.emit(EVENTS.server.updateClient, game, session.view)
+  
+            // Update GameData of other Clients
+            socket.to(game.id).emit(EVENTS.server.updateGame, game);
           }
         }
       });

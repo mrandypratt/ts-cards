@@ -18,7 +18,7 @@ export const CreateSinglePlayerGame = ({game, setGame, socket, sessionId}: ViewP
   }
 
   const findGame = () => {
-    socket?.emit(EVENTS.client.singlePlayer.createGame, name, NSFW)
+    socket?.emit(EVENTS.client.singlePlayer.createLobby, name, NSFW)
   }
 
   const returnHome = () => {
