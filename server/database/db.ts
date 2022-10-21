@@ -7,7 +7,7 @@ const client = new MongoClient(mongoURI);
 async function run(): Promise<any> {
 
   try {
-    const db = client.db("CardsWithFriends");
+    const db = client.db(process.env.NODE_ENV === "prod" ? "CardsWithFriends" : "CardsWithFriendsTest");
     const coll = db.collection("Cards");
 
     const query = { this: "YayaDingDong" }

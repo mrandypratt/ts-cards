@@ -12,9 +12,10 @@ import multiPlayer from "./socketRoutes/multiPlayer";
 import lobbyEvents from "./socketRoutes/leaveLobby";
 import sessionMiddleware from "./socketRoutes/sessionMiddleware";
 import updateView from "./socketRoutes/updateView";
+import { getMongoURI } from "./database/config.database";
 require('dotenv').config();
 
-const mongoURI = process.env.MONGO_URI || "";
+const mongoURI = getMongoURI()
 
 mongoose
   .connect(mongoURI)
