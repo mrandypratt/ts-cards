@@ -39,8 +39,16 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
 
               {game.winner && 
                 <TableCell style={{width: "0px", padding: "0px"}}>
-                  { game.winner.sessionId === null && game.winner.sessionId === player.sessionId && <EmojiEventsIcon className="winning-icon" />}
-                  { game.winner.botId !== null && game.winner.botId === player.botId && <EmojiEventsIcon className="winning-icon" />}
+
+                  { !game.winner.botId
+                  && game.winner.sessionId === player.sessionId
+                  && <EmojiEventsIcon className="winning-icon" />
+                  }
+
+                  { game.winner.botId
+                  && game.winner.botId === player.botId
+                  && <EmojiEventsIcon className="winning-icon" />
+                  }
                   
                 </TableCell>
                 } 
