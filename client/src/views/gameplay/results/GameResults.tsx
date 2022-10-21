@@ -90,9 +90,10 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
 
         <div className={"winning-card-container " + cardHandSize[game.players.length - 2]}>
 
-          {game.players.map(player => {
+          {round.players.map(player => {
             return (
               <PlayingCard
+                key={player.sessionId || player.botId}
                 className="response-card-results"
                 type="response"
                 text={player.selectedCard?.text || "Error"}

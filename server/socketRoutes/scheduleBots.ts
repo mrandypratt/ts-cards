@@ -30,6 +30,8 @@ const playerSelection = (socket: Socket, session: Session, botPlayer: Player): v
         const view = VIEWS.gameplay.player.waitingForJudge;
         session.updateView(view);
         socket.emit(EVENTS.server.updateClient, game, view);
+
+        judgeSelection(socket, session);
       }
     } else if (!round.allSelectionsMade()) {
       if (game.isJudge(session.id)) {
