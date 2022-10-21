@@ -1,4 +1,4 @@
-import { SubmitButton, GettingStartedButton, ReturnHomeButton } from "../../components/Buttons/Submit";
+import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../../data/constants/EVENTS";
