@@ -26,7 +26,7 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
             return b.wins - a.wins;
           }).map((player: PlayerDataType) => (
             <TableRow
-              key={player.sessionId}
+              key={player.name + (player.sessionId || player.botId)}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -39,7 +39,17 @@ export const ResultsTable = ({ game }: {game: GameDataType}): JSX.Element  => {
 
               {game.winner && 
                 <TableCell style={{width: "0px", padding: "0px"}}>
-                  {game.winner.sessionId === player.sessionId && <EmojiEventsIcon className="winning-icon" />}
+
+                  { !game.winner.botId
+                  && game.winner.sessionId === player.sessionId
+                  && <EmojiEventsIcon className="winning-icon" />
+                  }
+
+                  { game.winner.botId
+                  && game.winner.botId === player.botId
+                  && <EmojiEventsIcon className="winning-icon" />
+                  }
+                  
                 </TableCell>
                 } 
             </TableRow>

@@ -1,15 +1,19 @@
+import ShortUniqueId from "short-unique-id";
 import { CardDataType, PlayerDataType } from "../../../client/src/data/types/ClassTypes";
 import { ResponseCard } from "./ResponseCard";
+import ShortUniqueID from "short-unique-id";
 
+const bodIdGenerator = new ShortUniqueID({length: 4});
 export class Player {
   sessionId: string;
   name: string;
   cards: ResponseCard[];
   selectedCard: ResponseCard | null;
   wins: number;
-  readyForNextRound: Boolean;
+  readyForNextRound: boolean;
+  botId: string | null;
 
-  constructor(playerData: PlayerDataType | null, sessionId?: string, name?: string) {
+  constructor(playerData: PlayerDataType | null, sessionId?: string, name?: string, bot?: boolean) {
     // May remove Player Data Reinstantiation after more Understanding of DataBase Calls
     if (playerData) {
       this.sessionId = playerData.sessionId;
@@ -17,7 +21,8 @@ export class Player {
       this.cards = playerData.cards;
       this.selectedCard = playerData.selectedCard
       this.wins = playerData.wins; 
-      this.readyForNextRound = playerData.readyForNextRound
+      this.readyForNextRound = playerData.readyForNextRound;
+      this.botId = playerData.botId;
     } else {
       this.sessionId = sessionId || "";
       this.name = name || "";
@@ -25,6 +30,11 @@ export class Player {
       this.selectedCard = null;
       this.wins = 0; 
       this.readyForNextRound = false;
+      if (bot) {
+        this.botId = bodIdGenerator();
+      } else {
+        this.botId = null;
+      }
     }
   }
   
@@ -37,6 +47,21 @@ export class Player {
     this.selectedCard = new ResponseCard(cardToSelect)
     // Remove from Hand
     this.cards = this.cards.filter(card => card.id !== cardToSelect.id)
+  }
+
+  playRandomCard(): void {
+    const randomCardIndex = Math.floor(Math.random() * this.cards.length);
+
+    // Add to Selected Card
+    this.selectedCard = this.cards.splice(randomCardIndex, 1)[0];
+  }
+
+  hasSelected(): boolean {
+    return this.selectedCard !== null;
+  }
+
+  isBot(): boolean {
+    return !!this.botId;
   }
 
   markAsReady(): void {

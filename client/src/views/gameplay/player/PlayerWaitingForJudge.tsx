@@ -1,12 +1,12 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { MESSAGES } from "../../data/constants/messages";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { ExitLobbyShadedButton } from "../../../components/Buttons/Submit";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { MESSAGES } from "../../../data/constants/messages";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 
 
 

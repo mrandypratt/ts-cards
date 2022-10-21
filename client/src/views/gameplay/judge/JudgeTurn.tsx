@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { CardDataType } from "../../data/types/ClassTypes";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { CardDataType } from "../../../data/types/ClassTypes";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
 export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [ showDialogue, setShowDialogue ] = useState(false);
@@ -18,7 +18,11 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   const player = getCurrentPlayer(game, sessionId);
 
   const selectWinner = (): void => {
-    socket.emit(EVENTS.client.judgeSelection, selectedCard);
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.judgeSelection, selectedCard);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.judgeSelection, selectedCard);
+    }
   }
 
   const showConfirmDeleteDialogue = () => {
@@ -60,7 +64,7 @@ export const JudgeTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): 
                   key={card.id}
                   className="response-card"
                   type={ selectedCard?.id === card?.id ? "selected" : "response" }
-                  text={ card.text } 
+                  text={ card.text || "Error"} 
                   onClick={ () => {
                     setSelectedCard(selectedCard?.id === card?.id ? null : card)
                   }}

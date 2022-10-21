@@ -4,7 +4,7 @@ import { VIEWS } from "../../data/constants/VIEWS";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 
-export const GettingStarted = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
+export const HowToPlay = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
   const returnHome = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.home)
   }

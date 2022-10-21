@@ -2,12 +2,12 @@ import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import { SubmitButton, ReturnHomeButton } from "../../components/Buttons/Submit";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { containsValidCharacters } from "../../data/functions/arePlayerNamesValid";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { SubmitButton, ReturnHomeButton } from "../../../components/Buttons/Submit";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { containsValidCharacters } from "../../../data/functions/arePlayerNamesValid";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import Alert from '@mui/material/Alert';
-import { VIEWS } from "../../data/constants/VIEWS";
+import { VIEWS } from "../../../data/constants/VIEWS";
 
 
 export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
@@ -25,11 +25,15 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
   }
   
   const joinLobby = () => {
-    socket?.emit(EVENTS.client.joinLobby, lobbyId, name);
+    socket?.emit(EVENTS.client.multiPlayer.joinLobby, lobbyId, name);
   }
   
   const returnHome = () => {
     socket?.emit(EVENTS.client.updateView, VIEWS.home);
+  }
+
+  const goBack = () => {
+    socket?.emit(EVENTS.client.updateView, VIEWS.multiPlayer.home);
   }
 
   useEffect(() => {
@@ -49,7 +53,7 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
       <Alert severity="error">{alertMessage}</Alert>
     }
 
-    <h1><b>Join a Game</b></h1>
+    <h1><b>Join Game</b></h1>
 
     <hr></hr>
 
@@ -87,6 +91,13 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
         type={"submit"}
         disabled={false} 
         onClick={returnHome}
+      />
+
+      <ReturnHomeButton
+        text={"Go Back"}
+        type={"submit"}
+        disabled={false} 
+        onClick={goBack}
       />
 
     </Container>

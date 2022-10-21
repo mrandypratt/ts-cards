@@ -132,7 +132,7 @@ export const allCardText = {
       "A Chick-fil-a employee",
       "A father of three with no life left in his eyes",
       "Macaroni, but with no cheese",
-      "An Uber driver who enjoyes their job too much",
+      "An Uber driver who enjoys their job too much",
       "A mute button for people",
       "Loving people individually, but not collectively",
       "That one coworker who has too much punch at the office party",

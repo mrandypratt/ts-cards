@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ReturnHomeButton, SubmitButton } from "../../components/Buttons/Submit";
 import { EVENTS } from "../../data/constants/EVENTS";
 import { VIEWS } from "../../data/constants/VIEWS";
+import { getServerURL } from "../../data/functions/getURL";
 import { ViewPropsType } from "../../data/types/ViewPropsType";
 
 export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
@@ -33,21 +34,14 @@ export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX
   const submitFeedback = async () => {
     setIsLoading(true);
 
-    console.log(process.env.REACT_APP_STAGE)
-
-    const baseURL = process.env.REACT_APP_STAGE === "prod" ? "http://52.20.228.225:8787" : "http://localhost:8787";
+    const baseURL = getServerURL();
     const APIURL = baseURL + "/api/feedback";
-
-    console.log(APIURL)
 
     const feedbackData = {
       name: name,
       email: email,
       feedback: feedback,
     }
-
-    console.log(JSON.stringify(feedbackData))
-
 
     try {
       const response = await fetch(APIURL, {
@@ -78,14 +72,14 @@ export const Feedback = ({game, setGame, socket, sessionId}: ViewPropsType): JSX
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>{"Provide Feedback"}</b></h1>
+      <h1><b>Provide Feedback</b></h1>
 
       <hr></hr>
 
       { !isLoading &&
         <div>
-          <p>{"We love feedback."}</p>
-          <p>{"Hearing from you helps us prioritize new features and bug fixes to create a fun experience for our users"}</p>
+          <p>We think we're great, but we could totally be better! </p>
+          <p>Please help us by describing any issues with the game or suggestions what would make it more fun!</p>
 
           <Box style={{marginBottom: 10}}>
             <TextField 

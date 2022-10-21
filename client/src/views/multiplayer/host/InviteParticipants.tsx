@@ -1,11 +1,11 @@
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
 import { Container } from "@mui/material";
 
 export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewPropsType): JSX.Element => {
@@ -14,7 +14,11 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   const [showDialogue, setShowDialogue] = useState(false);
 
   const startGame = () => {
-    socket?.emit(EVENTS.client.startFirstRound, game);
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.startFirstRound, game);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.startFirstRound, game);
+    }
   }
 
   const minimumPlayersJoined = (): boolean => {
@@ -52,11 +56,11 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
   return (
     <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>Invite Friends</b></h1>
+      <h1><b>Lobby Created</b></h1>
 
       <hr></hr>
 
-      <h3 style={{margin: "auto"}}>You created a lobby!</h3>
+      <h3 style={{margin: "auto"}}>Invite your Friends!</h3>
       
       <hr></hr>
 
@@ -87,7 +91,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
       </div>
 
-      <p>{MESSAGES.host.inviteParticipants.shareLobbyID}</p>
+      <p>Share the Lobby ID with your friends so they can join.</p>
 
       <hr></hr>
 
@@ -108,9 +112,7 @@ export const InviteParticipants = ({game, setGame, socket, sessionId}: ViewProps
 
 
       { !minimumPlayersJoined() && 
-        <p>
-          {MESSAGES.host.inviteParticipants.minimumPlayers}
-        </p>
+        <p>At least 3 players are required to start a game.</p>
       }
 
       <ExitLobbyButton

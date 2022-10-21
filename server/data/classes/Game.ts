@@ -8,7 +8,6 @@ import { shuffle } from "../../functions/shuffle";
 import { GameDataType } from "../../../client/src/data/types/ClassTypes";
 
 const gameIdGenerator = new ShortUniqueID({length: 4, dictionary: "alphanum_upper"});
-
 export class Game {
   id: string;
   NSFW: boolean;
@@ -21,6 +20,7 @@ export class Game {
   cardsPerPlayer: number;
   pointsToWin: number;
   winner: Player | null;
+  isSinglePlayer: boolean;
   
   constructor(gameData: GameDataType | null, player?: Player, NSFW?: boolean) {
     // May remove Player Data Reinstantiation after more Understanding of DataBase Calls
@@ -49,6 +49,7 @@ export class Game {
       this.cardsPerPlayer = gameData.cardsPerPlayer;
       this.pointsToWin = gameData.pointsToWin;
       this.winner = gameData.winner ? new Player(gameData.winner) : null;
+      this.isSinglePlayer = gameData.isSinglePlayer
     } else {
       // If creating a new game altogether with only one player and NSFW Selection
       this.id = gameIdGenerator();
@@ -68,15 +69,17 @@ export class Game {
       this.cardsPerPlayer = 3;
       this.pointsToWin = 3;
       this.winner = null;
+      this.isSinglePlayer = false;
     } 
   }
   
-  addPlayer (player: Player) {
-    return this.players.push(player);
+  addPlayer (player: Player): Game {
+    this.players.push(player);
+    return this;
   }
 
-  getPlayer(sessionId: string | undefined): Player | undefined {
-    return this.players.find(player => player.sessionId === sessionId);
+  getPlayer(sessionId: string | undefined): Player | null {
+    return this.players.find(player => player.sessionId === sessionId) || null;
   }
 
   randomizePlayerOrder(): void {
@@ -139,6 +142,13 @@ export class Game {
     });
   }
 
+  initializeNewGame(): void {
+    this.randomizePlayerOrder();
+    this.loadDeckIntoGame();
+    this.dealCardsToPlayers();
+    this.createNewRound();
+  }
+
   getNonJudgePlayers(): Player[] {
     return this.players.filter((player, index) => {
       return index !== this.judgeIndex;
@@ -152,6 +162,10 @@ export class Game {
 
     if (judge) return judge;
     return null;
+  }
+
+  isJudge(sessionId: string): boolean {
+    return this.getJudgePlayer()?.sessionId === sessionId;
   }
   
   createNewRound(): void {
@@ -175,12 +189,16 @@ export class Game {
 
   incrementWins(): void {
     this.players.forEach(player => {
-      if (player.sessionId === this.round?.winner?.sessionId) {
+      if (player.isBot() && player.botId === this.round?.winner?.botId) {
+        player.wins += 1
+      }
+      
+      if (!player.isBot() && player.sessionId === this.round?.winner?.sessionId) {
         player.wins += 1;
+      }
 
-        if (player.wins >= this.pointsToWin) {
-          this.winner = player;
-        }
+      if (player.wins >= this.pointsToWin) {
+        this.winner = player;
       }
     });
   }
@@ -208,6 +226,14 @@ export class Game {
     }
   }
 
+  startNextRound(): void {
+    this.resetPlayersAfterRound();
+    this.incrementJudgeIndex();
+    this.archiveRound();
+    this.dealCardsToPlayers();
+    this.createNewRound();
+  }
+
   removePlayer(sessionId: string | undefined): void {
     this.players.forEach((player, playerIndex) => {
       if (player.sessionId === sessionId) {
@@ -215,6 +241,13 @@ export class Game {
         return;
       };
     })
+  }
+
+  startNewGame(): void {
+    this.reset();
+    this.incrementJudgeIndex();
+    this.dealCardsToPlayers();
+    this.createNewRound();
   }
   
   reset(): void {
@@ -230,7 +263,18 @@ export class Game {
 
     this.winner = null;
   }
-  
+
+  getAllBots(): Player[] {
+    return this.players.filter(player => player.isBot() === true);
+  }
+
+  isWinner(): boolean {
+    return !!this.winner;
+  }
+
+  setAsSinglePlayer(): void {
+    this.isSinglePlayer = true;
+  }
 }
 
 /*

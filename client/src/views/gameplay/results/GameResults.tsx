@@ -1,16 +1,16 @@
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { ResultsTable } from "../../components/ResultsTable";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { ResultsTable } from "../../../components/ResultsTable";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { MESSAGES } from "../../data/constants/messages";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { MESSAGES } from "../../../data/constants/messages";
 import { Container } from "@mui/material";
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
-export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
   
   const round = game?.round;
@@ -18,30 +18,39 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
   const winner = round?.winner;
   const winningCard = winner?.selectedCard;
 
-  const startNextRound = () => {
-    socket.emit(EVENTS.client.startNextRound);
+  const startNextGame = () => {
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.startNextGame);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.startNextGame);
+    }
   }
 
   const showConfirmDeleteDialogue = () => {
     setShowDialogue(true);
   }
 
-  if (round && player && winner && winningCard) {
+  if (game && round && player && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
 
         <Container className="page-container" maxWidth="sm">
 
-          <h2 style={{margin: "auto"}}>Round {round.number}</h2>
+          { game.winner.sessionId === player.sessionId && 
+            <h2 style={{margin: "auto"}}>Congratulations!</h2>
+          }
             
+          { game.winner.sessionId !== player.sessionId && 
+            <h2 style={{margin: "auto"}}>Game Over</h2>
+          }
           <hr></hr>
           
-          { player.sessionId === round.winner?.sessionId &&
-            <h2 style={{margin: "auto"}}>You won the round!</h2>
+          { game.winner.sessionId === player.sessionId && 
+            <h2 style={{margin: "auto"}}>You won the Game!!!</h2>
           }
 
-          { player.sessionId !== round.winner?.sessionId &&
-            <h3 style={{margin: "auto"}}>{ round.winner?.name } won {"the round"}!</h3>
+          { game.winner.sessionId !== player.sessionId && 
+            <h2 style={{margin: "auto"}}>{ game.winner?.name } is the winner!</h2>
           }
 
           <hr></hr>
@@ -84,7 +93,7 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
           {round.players.map(player => {
             return (
               <PlayingCard
-                key={player.sessionId}
+                key={player.sessionId || player.botId}
                 className="response-card-results"
                 type="response"
                 text={player.selectedCard?.text || "Error"}
@@ -95,12 +104,13 @@ export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType
               
           </div>
   
+
         <Container className="page-container" maxWidth="sm">
 
           <SubmitButton
-            onClick={() => startNextRound()}
+            onClick={startNextGame}
             type="button"
-            text="Next Round"
+            text="Start New Game"
             disabled={false}
           />
 

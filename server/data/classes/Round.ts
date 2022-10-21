@@ -59,4 +59,18 @@ export class Round {
     })
   }
 
+  selectRandomWinner(): void {
+    const randomWinnerIndex = Math.floor(Math.random() * this.players.length);
+    this.players = this.players.filter((player, index) => {
+      if (index === randomWinnerIndex) {
+        this.winner = player;
+      }
+
+      return index !== randomWinnerIndex;
+    })
+  }
+
+  getBotPlayers(): Player[] {
+    return this.players.filter(player => player.isBot() === true);
+  }
 }

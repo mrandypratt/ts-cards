@@ -1,16 +1,16 @@
-
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyShadedButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
-import { SuccessIcon } from "../../components/Icons/SuccessIcon";
-import { WaitingIcon } from "../../components/Icons/WaitingIcon";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { ExitLobbyShadedButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
+import { SuccessIcon } from "../../../components/Icons/SuccessIcon";
+import { WaitingIcon } from "../../../components/Icons/WaitingIcon";
 import { Container } from "@mui/material";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
-export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+
+export const JudgeWaitingForPlayers = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
   
   const round = game?.round;
@@ -25,21 +25,25 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
       <Container className="page-container" maxWidth="sm">
 
         <h2 style={{margin: "auto"}}>Round {round.number}</h2>
+  
+        <hr></hr>
+        
+        <h3 style={{margin: "auto"}}>You are the Judge</h3>
 
         <hr></hr>
-                
-        <h3 style={{margin: "auto"}}>{MESSAGES.player.responseSubmitted.success}</h3>
+  
+        <PlayingCard 
+          className={"solo-prompt-card"}
+          text={round.promptCard.text}
+          type="prompt"
+        />
   
         <hr></hr>
 
-        <p>Please Wait...</p>
+        <p>Please wait...</p>
 
-        <PlayingCard
-          className="solo-prompt-card"
-          text="Other players are making their selections."
-          type="prompt"
-        />
-        
+        <p>{MESSAGES.judge.waiting}</p>
+
         <hr></hr>
   
         <h3><b><u>Submissions:</u></b></h3>
@@ -47,7 +51,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
         {round.players.map(player => {
           return (
             <p key={player.name}>
-              {player.name} {player.selectedCard !== null ? <SuccessIcon/> : <WaitingIcon/>}
+              {player.name}: {player.selectedCard !== null ? <SuccessIcon/> : <WaitingIcon/>}
             </p>
           )
         })}
@@ -58,7 +62,7 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
           disabled={false} 
           onClick={showConfirmDeleteDialogue}
         />
-        
+
         { showDialogue && 
           <ConfirmDeleteDialogue
             socket={socket}
@@ -68,17 +72,18 @@ export const PlayerSelectionMade = ({ game, setGame, socket, sessionId }: ViewPr
         }
 
         { process.env.REACT_APP_STAGE === "dev" &&
-          <p>Current Player: {player?.name}</p>
+          <p>Current Player: {player.name}</p>
         } 
 
         <div 
           className="no-action-bg">
         </div>
+
       </Container>
     );
   } else {
     return (
-      <div>Error on Player Selection Made</div>
+      <div>Error on JudgeWaitingForPlayers</div>
     )
   }
 }

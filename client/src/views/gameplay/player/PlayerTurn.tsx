@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { MESSAGES } from "../../data/constants/messages";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { MESSAGES } from "../../../data/constants/messages";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
-import { CardDataType } from "../../data/types/ClassTypes";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
+import { CardDataType } from "../../../data/types/ClassTypes";
 
 export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [ showDialogue, setShowDialogue ] = useState(false);
   const [ selectedCard, setSelectedCard ] = useState<CardDataType | null>(null);
 
   const submitSelection = (): void => {
-    socket?.emit(EVENTS.client.playerSelection, selectedCard);
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.playerSelection, selectedCard);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.playerSelection, selectedCard);
+    }
   }
   
   const showConfirmDeleteDialogue = () => {
@@ -35,7 +39,7 @@ export const PlayerTurn = ({ game, setGame, socket, sessionId }: ViewPropsType):
   
         <hr></hr>
         
-        <h3 style={{margin: "auto"}}>Submit Card</h3>
+        <h3 style={{margin: "auto"}}>Select a Card</h3>
   
         <hr></hr>
   

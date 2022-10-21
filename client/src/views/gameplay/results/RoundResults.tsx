@@ -1,16 +1,16 @@
-import { ExitLobbyButton, SubmitButton } from "../../components/Buttons/Submit";
-import { ResultsTable } from "../../components/ResultsTable";
-import { EVENTS } from "../../data/constants/EVENTS";
-import { ViewPropsType } from "../../data/types/ViewPropsType";
+import { ExitLobbyButton, SubmitButton } from "../../../components/Buttons/Submit";
+import { ResultsTable } from "../../../components/ResultsTable";
+import { EVENTS } from "../../../data/constants/EVENTS";
+import { ViewPropsType } from "../../../data/types/ViewPropsType";
 import { useState } from "react";
-import { ConfirmDeleteDialogue } from "../../components/Buttons/ConfirmDeleteDialogue";
-import { MESSAGES } from "../../data/constants/messages";
+import { ConfirmDeleteDialogue } from "../../../components/Buttons/ConfirmDeleteDialogue";
+import { MESSAGES } from "../../../data/constants/messages";
 import { Container } from "@mui/material";
-import { cardHandSize } from "../../data/constants/cardHandSize";
-import { getCurrentPlayer } from "../../data/functions/getPlayer";
-import { PlayingCard } from "../../components/Cards/PlayingCard";
+import { cardHandSize } from "../../../data/constants/cardHandSize";
+import { getCurrentPlayer } from "../../../data/functions/getPlayer";
+import { PlayingCard } from "../../../components/Cards/PlayingCard";
 
-export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
+export const RoundResults = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   const [showDialogue, setShowDialogue] = useState(false);
   
   const round = game?.round;
@@ -18,35 +18,34 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
   const winner = round?.winner;
   const winningCard = winner?.selectedCard;
 
-  const startNextGame = () => {
-    socket.emit(EVENTS.client.startNextGame);
+  const startNextRound = () => {
+    if (game?.isSinglePlayer) {
+      socket.emit(EVENTS.client.singlePlayer.startNextRound);
+    } else {
+      socket.emit(EVENTS.client.multiPlayer.startNextRound);
+    }
   }
 
   const showConfirmDeleteDialogue = () => {
     setShowDialogue(true);
   }
 
-  if (game && round && player && winner && winningCard) {
+  if (round && player && winner && winningCard) {
     return (
       <div style={{ textAlign: "center" }}>
 
         <Container className="page-container" maxWidth="sm">
 
-          { game.winner.sessionId === player.sessionId && 
-            <h2 style={{margin: "auto"}}>Congratulations!</h2>
-          }
+          <h2 style={{margin: "auto"}}>Round {round.number}</h2>
             
-          { game.winner.sessionId !== player.sessionId && 
-            <h2 style={{margin: "auto"}}>Game Over</h2>
-          }
           <hr></hr>
           
-          { game.winner.sessionId === player.sessionId && 
-            <h2 style={{margin: "auto"}}>You won the Game!!!</h2>
+          { player.sessionId === round.winner?.sessionId &&
+            <h2 style={{margin: "auto"}}>You won the round!</h2>
           }
 
-          { game.winner.sessionId !== player.sessionId && 
-            <h2 style={{margin: "auto"}}>{ game.winner?.name } is the winner!</h2>
+          { player.sessionId !== round.winner?.sessionId &&
+            <h3 style={{margin: "auto"}}>{ round.winner?.name } won {"the round"}!</h3>
           }
 
           <hr></hr>
@@ -86,9 +85,10 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
 
         <div className={"winning-card-container " + cardHandSize[game.players.length - 2]}>
 
-          {game.players.map(player => {
+          {round.players.map(player => {
             return (
               <PlayingCard
+                key={player.sessionId}
                 className="response-card-results"
                 type="response"
                 text={player.selectedCard?.text || "Error"}
@@ -99,13 +99,12 @@ export const GameResults = ({ game, setGame, socket, sessionId }: ViewPropsType)
               
           </div>
   
-
         <Container className="page-container" maxWidth="sm">
 
           <SubmitButton
-            onClick={startNextGame}
+            onClick={() => startNextRound()}
             type="button"
-            text="Start New Game"
+            text="Next Round"
             disabled={false}
           />
 

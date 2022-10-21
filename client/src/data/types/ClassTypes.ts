@@ -17,6 +17,7 @@ export type GameDataType = {
   cardsPerPlayer: number;
   pointsToWin: number;
   winner: PlayerDataType;
+  isSinglePlayer: boolean;
 };
 
 export type RoundDataType = {
@@ -33,7 +34,8 @@ export type PlayerDataType = {
   cards: CardDataType[];
   selectedCard: CardDataType | null;
   wins: number;
-  readyForNextRound: Boolean;
+  readyForNextRound: boolean;
+  botId: string | null;
 }
 
 export type CardDataType = {

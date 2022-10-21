@@ -1,28 +1,43 @@
 export const VIEWS = {
   home: "home",
-  feedback: "feedback",
-  gettingStarted: "gettingStarted",
-  host: {
-    createLobby: "hostCreateLobby",
-    inviteParticipants: "hostInviteParticipants"
+
+  singlePlayer: {
+    createGame: "createSinglePlayerGame",
+    findingPlayers: "findingPlayers",
   },
-  guest: {
-    joinLobby: "guestJoinLobby",
-    waitingForHost: "guestWaitingForHost",
+
+  multiPlayer: {
+    home: "multiPlayerHome",
+    host: {
+      createLobby: "hostCreateLobby",
+      inviteParticipants: "hostInviteParticipants"
+    },
+    guest: {
+      joinLobby: "guestJoinLobby",
+      waitingForHost: "guestWaitingForHost",
+    },
   },
-  player: {
-    turn: "playerTurn",
-    selectionMade: "playerSelectionMade",
-    waitingForJudge: "playerWaitingForJudge",
+
+  gameplay: {
+    player: {
+      turn: "playerTurn",
+      selectionMade: "playerSelectionMade",
+      waitingForJudge: "playerWaitingForJudge",
+    },
+    judge: {
+      waitingforSelections: "judgeWaitingForSelections",
+      turn: "judgeTurn",
+    },
+    results: {
+      round: "resultsRound",
+      waitingForNextRound: "resultsWaitingForNextRound",
+      game: "resultsGame",
+      waitingForNextGame: "resultsWaitingForNextGame",
+    },
   },
-  judge: {
-    waitingforSelections: "judgeWaitingForSelections",
-    turn: "judgeTurn",
-  },
-  results: {
-    round: "resultsRound",
-    waitingForNextRound: "resultsWaitingForNextRound",
-    game: "resultsGame",
-    waitingForNextGame: "resultsWaitingForNextGame",
+
+  info: {
+    feedback: "feedback",
+    howToPlay: "howToPlay",
   },
 }
