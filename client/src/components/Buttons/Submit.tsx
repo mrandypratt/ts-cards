@@ -5,7 +5,6 @@ const buttonStyles = {
   height: 55,
   margin: 10,
   marginTop: 25,
-  // float: "center",
   fontSize: 18,
   maxWidth: 400
 }
@@ -23,12 +22,13 @@ const styles = {
 };
 
 const returnHomeStyles = {
+  margin: "auto",
   width: "40%%",
   height: 40,
-  margin: 10,
-  marginTop: 25,
+  marginTop: 20,
   fontSize: 18,
   maxWidth: 200,
+  display: 'block',
 }
 
 const submitFeedbackStyles = {
@@ -46,7 +46,7 @@ const gettingStartedStyles = {
   width: "40%",
   height: "100%",
   margin: 10,
-  marginTop: 70,
+  marginTop: 40,
   fontSize: "1em",
   borderWidth: "3px",
   maxWidth: 200,

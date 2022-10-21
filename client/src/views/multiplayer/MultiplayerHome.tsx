@@ -13,10 +13,6 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
   const joinLobby = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.guest.joinLobby)
   }
-  
-  const gettingStarted = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.info.howToPlay)
-  }
 
   const returnHome = () => {
     socket?.emit(EVENTS.client.updateView, VIEWS.home);
@@ -44,7 +40,7 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
           />
         </div>
 
-        <div>
+        <div style={{marginBottom: 40}}>
           <SubmitButton 
             text={"Join Game"}
             onClick={joinLobby}
@@ -54,15 +50,6 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
         </div>
 
       </div> 
-
-      <div>
-        <GettingStartedButton 
-          text={"How to Play"}
-          onClick={gettingStarted}
-          type="submit"
-          disabled={false}
-        />
-      </div>
 
       <ReturnHomeButton
         text={"Return Home"}

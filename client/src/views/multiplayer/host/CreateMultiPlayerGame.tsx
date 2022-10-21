@@ -25,6 +25,10 @@ export const CreateMultiPlayerGame = ({game, setGame, socket, sessionId}: ViewPr
     socket?.emit(EVENTS.client.updateView, VIEWS.home);
   }
 
+  const goBack = () => {
+    socket?.emit(EVENTS.client.updateView, VIEWS.multiPlayer.home);
+  }
+
   return (
     <Container className="page-container" maxWidth="sm">   
 
@@ -60,6 +64,13 @@ export const CreateMultiPlayerGame = ({game, setGame, socket, sessionId}: ViewPr
         type={"submit"}
         disabled={false} 
         onClick={returnHome}
+      />
+
+      <ReturnHomeButton
+        text={"Go Back"}
+        type={"submit"}
+        disabled={false} 
+        onClick={goBack}
       />
 
     </Container>

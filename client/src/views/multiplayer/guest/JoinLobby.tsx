@@ -32,6 +32,10 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
     socket?.emit(EVENTS.client.updateView, VIEWS.home);
   }
 
+  const goBack = () => {
+    socket?.emit(EVENTS.client.updateView, VIEWS.multiPlayer.home);
+  }
+
   useEffect(() => {
     socket.on(EVENTS.server.invalidLobbyId, (lobbyId: string) => {
       setAlertMessage(`${lobbyId} is not a valid Lobby Id`);
@@ -87,6 +91,13 @@ export const JoinLobby = ({ game, setGame, socket, sessionId }: ViewPropsType): 
         type={"submit"}
         disabled={false} 
         onClick={returnHome}
+      />
+
+      <ReturnHomeButton
+        text={"Go Back"}
+        type={"submit"}
+        disabled={false} 
+        onClick={goBack}
       />
 
     </Container>
