@@ -78,8 +78,8 @@ export class Game {
     return this;
   }
 
-  getPlayer(sessionId: string | undefined): Player | undefined {
-    return this.players.find(player => player.sessionId === sessionId);
+  getPlayer(sessionId: string | undefined): Player | null {
+    return this.players.find(player => player.sessionId === sessionId) || null;
   }
 
   randomizePlayerOrder(): void {

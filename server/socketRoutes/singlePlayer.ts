@@ -7,10 +7,12 @@ import { Player } from "../data/classes/Player";
 import { gameStore } from "../data/GameStore";
 import { faker } from '@faker-js/faker';
 import scheduleBot from "./scheduleBots";
-import getValidatedData from "../functions/getValidatedData";
+import { getBackendData } from "../functions/getBackendData";
+import { sessionStore } from "../data/SessionStore";
 
 const createLobby = (socket: Socket, name: string, NSFW: boolean): void => {
-  const session = getValidatedData.session(socket.id);
+  const session = sessionStore.findSessionBySocketId(socket.id);
+  if (!session) return;
   
   const game = new Game(null, new Player(null, session.id, name), NSFW)
   .addPlayer(new Player(null, undefined, faker.name.firstName(), true))
@@ -23,29 +25,32 @@ const createLobby = (socket: Socket, name: string, NSFW: boolean): void => {
   socket.emit(EVENTS.server.updateClient, game, VIEWS.singlePlayer.findingPlayers)
 
   game.getAllBots().forEach(bot => {
-    scheduleBot.joinLobby(socket, session, bot);
+    scheduleBot.joinLobby(socket, bot);
   })
 }
 
 const startFirstRound = (socket: Socket): void => {
-  const { session, game } = getValidatedData.sessionGame(socket.id);
+  const { session, game } = getBackendData(socket.id);
+  if (!(session && game)) return;
 
   game.initializeNewGame()
-  const round = getValidatedData.round(game)
-
+  
   const view = game.isJudge(session.id) ? VIEWS.gameplay.judge.waitingforSelections : VIEWS.gameplay.player.turn;
   session.updateView(view);
   socket.emit(EVENTS.server.updateClient, game, view);
+  
+  const round = game.round;
+  if (!round) return;
 
-  const botPlayers = round.getBotPlayers();
-  botPlayers.forEach(botPlayer => {
+  round.getBotPlayers().forEach(botPlayer => {
     scheduleBot.playerSelection(socket, session, botPlayer);
   });
 }
 
 const humanPlayerMakesSelection = (socket: Socket, selectedCard: CardDataType): void => {
-  const { session, game, round, player } = getValidatedData.sessionGameRoundPlayer(socket.id);
-  
+  const { session, game, round, player } = getBackendData(socket.id);
+  if (!(session && game && round && player)) return;
+
   player.playCard(selectedCard);
 
   // Update View Based on whether player made last selection
@@ -67,7 +72,8 @@ const humanPlayerMakesSelection = (socket: Socket, selectedCard: CardDataType): 
 }
 
 const humanJudgeMakesSelection = (socket: Socket, selectedCard: CardDataType): void  => {
-  const { session, game, round } = getValidatedData.sessionGameRound(socket.id);
+  const { session, game, round } = getBackendData(socket.id);
+  if (!(session && game && round)) return;
     
   round.setWinner(selectedCard);
   game.incrementWins();
@@ -92,8 +98,9 @@ const humanJudgeMakesSelection = (socket: Socket, selectedCard: CardDataType): v
 }
 
 const humanStartsNextRound = (socket: Socket): void => {
-  const { session, game, player } = getValidatedData.sessionGamePlayer(socket.id);
-  
+  const { session, game, player } = getBackendData(socket.id);
+  if (!(session && game && player)) return;
+    
   player.markAsReady()
 
   if (game.allPlayersReady()) {
@@ -103,12 +110,12 @@ const humanStartsNextRound = (socket: Socket): void => {
     session.updateView(view);
     socket.emit(EVENTS.server.updateClient, game, view);
 
-    const round = getValidatedData.round(game);
-    const botPlayers = round.getBotPlayers();
-    botPlayers.forEach(botPlayer => {
+    const round = game.round;
+    if (!round) return;
+
+    round.getBotPlayers().forEach(botPlayer => {
       scheduleBot.playerSelection(socket, session, botPlayer);
     });
-
   } else {
     const view = VIEWS.gameplay.results.waitingForNextRound;
     session.updateView(view);
@@ -117,7 +124,8 @@ const humanStartsNextRound = (socket: Socket): void => {
 }
 
 const humanStartsNextGame = (socket: Socket): void => {
-  const { session, game, player } = getValidatedData.sessionGamePlayer(socket.id);
+  const { session, game, player } = getBackendData(socket.id);
+  if (!(session && game && player)) return;
 
   player.markAsReady()
 
@@ -128,9 +136,10 @@ const humanStartsNextGame = (socket: Socket): void => {
     session.updateView(view);
     socket.emit(EVENTS.server.updateClient, game, view);
 
-    const round = getValidatedData.round(game);
-    const botPlayers = round.getBotPlayers();
-    botPlayers.forEach(botPlayer => {
+    const round = game.round;
+    if (!round) return;
+
+    round.getBotPlayers().forEach(botPlayer => {
       scheduleBot.playerSelection(socket, session, botPlayer);
     });
     
@@ -151,50 +160,3 @@ const singlePlayer = {
 }
 
 export default singlePlayer;
-
-
-// Player is Judge
-  // Both bots are Player
-// Bot is Judge
-  // Humand and Bot are Players
-
-
-
-
-// Scenario 1: Human is Player
-
-// Initial State: Start Game Event with view on Finding Players
-  // Update view of client to Player Turn
-  // Bot Player needs to select random card after random delay
-    // If all selections are not made:
-      // Human Game needs to be updated with game state
-    // If all Selections are made:
-      // Human Game needs to be updated and view to Judge Round
-
-// Scenario 2: Human is Judge
-
-// Initial State: Start Game Event with view on Finding Players
-  // Update view of client to Judge waiting for players
-  // Bot Players need to select random card after random delay
-    // If all selections are not made:
-      // Human Game needs to be updated with game state after each selection
-    // If all Selections are made:
-      // Human Game needs to be updated and view to Judge Round
-
-
-// Scenario 3: Human is Player & Makes Selection
-  // Player is last to make Selection
-    // If not overall Game Winner
-      // Update Human Game & View to Round Results Page
-      // Trigger Bots to move to next round after delay
-        // If all are ready for next round
-          // Trigger start next Game Event
-
-    // If overall Game Winner
-        // Update Human Game & View to Game Results Page
-
-    // Trigger Bot's event to move to the next round after delay
-
-
-  // Bot is yet to have made a selection (handled on bot's end)
-    // Update Human Game & View to Player Selection Made
