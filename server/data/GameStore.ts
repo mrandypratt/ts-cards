@@ -68,22 +68,6 @@ class GameStore {
     if (player) return player;
     return null;
   }
-
-  logGames(): void {
-    // console.log("Game Store")
-    // console.log("--------------")
-    // this.games.forEach((game, gameIndex) => {
-    //   console.log(`-- Game ${gameIndex + 1}: ${game.id}`)
-    //   console.log(`-- -- Lobby: ${game.id}`)
-    //   console.log("-- -- Players")
-    //   game.players.forEach((player, playerIndex) => {
-    //     console.log(`-- -- -- P${playerIndex + 1}: ${player.name}`)
-    //   });
-    //   console.log("")
-    // })
-    // console.log("");
-  }
-
 }
 
 export const gameStore = new GameStore();
