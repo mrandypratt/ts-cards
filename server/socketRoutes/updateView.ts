@@ -7,6 +7,7 @@ const updateView = (socket: Socket, view: string): void => {
   session?.updateView(view);
   
   socket.emit(EVENTS.server.updateView, view)
+  console.log(`VIEW UPDATED: SessionID: ${session?.id} | View: ${view}`)
 }
 
 export default updateView;

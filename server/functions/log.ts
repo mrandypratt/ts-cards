@@ -9,6 +9,5 @@ export const log = (event: string, sessionId: string, socketId: string, lobbyId?
   }
   messages.forEach(message => console.log(`--${message}`));
   console.log("")
-  gameStore.logGames();
   console.log("")
 }

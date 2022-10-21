@@ -38,6 +38,7 @@ mongoose
     io.use(sessionMiddleware);
     
     io.on("connection", (socket) => {
+      console.log(`CLIENT CONNECTED: SocketID ${socket.id}`)
     
       socket.on(EVENTS.client.updateView, (view: string) => {
         updateView(socket, view);
@@ -104,7 +105,7 @@ mongoose
       });
     
       socket.on("disconnect", () => {
-        console.log("Disconnected");
+        console.log(`CLIENT DISCONNECTED: SocketID ${socket.id}`)
       });
     });
     

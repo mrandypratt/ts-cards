@@ -1,5 +1,4 @@
 import { VIEWS } from "../../client/src/data/constants/VIEWS";
-import { Game } from "./classes/Game";
 import { Session } from "./classes/Session";
 
 class SessionStore {
@@ -46,15 +45,6 @@ class SessionStore {
     const socketId = this.findSession(sessionId)?.socketId;
     if (socketId) return socketId;
     return "error";
-  }
-
-  logSessions(): void {
-    // console.log("Session Store")
-    // console.log("--------------")
-    // this.sessions.forEach((session, sessionIndex) => {
-    //   console.log(session);
-    // })
-    // console.log("")
   }
 }
 

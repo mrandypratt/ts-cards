@@ -19,18 +19,20 @@
 First Provision/Update Server, then build and test client
 ### Server
   - Instructions At Bottom: Server setup same in Test and Prod with the following exception:
+    - `git fetch origin branch-name` and switch to branch
+      - `git pull origin branch-name` also works, but all changes from feature branch will be automatically merged locally to `main`
     - In Test, ensure `ecosystem.config.js` only has `"NODE_ENV": "test",`
     - Use feature branch to test before merging feature branch to `main`
 ### Client
   - Test Server is stopped between feature deployments. Restarting the EC2 Instance will create a new URL.
-    - In `client/src/socket.ts`, update the `"test"` URL with the new IP
+    - In `client/src/data/functions/getURL.ts`, update the `"test"` URL with the new IP Address from the running instance.
 
   - `npm run predeploy-test` will build and set env variable to `"test"`
-  - `server -s build` will test locally (with test server & db)
+  - `serve -s build` will test locally (with test server & db)
 ## Production
 ### Client
   - `npm run predeploy` will build and set env variable to `"prod"`
-  - `server -s build` will test locally (with production server & db)
+  - `serve -s build` will test locally (with production server & db)
   - `npm run deploy` will push changes to S3
   - Invalidate Cache in AWS Cloudfront for CardsWithFriends
 
@@ -62,7 +64,7 @@ First Provision/Update Server, then build and test client
         watch: true,
         env: {
             "MONGO_URI": "mongodb+srv://{username}:{DBPassword}@cardswithfriendsinstanc.k9ksw.mongodb.net/",
-            "PORT": "8787"
+            "PORT": "8787",
             // For Production
             "NODE_ENV": "prod",
             // For Testing

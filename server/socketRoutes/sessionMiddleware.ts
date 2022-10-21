@@ -16,12 +16,13 @@ const sessionMiddleware = (socket: Socket, next: (err?: ExtendedError | undefine
     
     session.updateSocketId(socket.id);
     socket.emit(EVENTS.server.updateClient, game, session.view)
+    console.log(`SESSION RESTORED: SessionID: ${sessionId} | SocketID: ${socket.id}`)
     return next();
   }
 
   session = sessionStore.createSession(socket.id, null, VIEWS.home);
-  sessionStore.logSessions();
   socket.emit(EVENTS.server.newSession, sessionStore.findSessionBySocketId(socket.id)?.id);
+  console.log(`NEW SESSION: SessionID: ${sessionId} | SocketID: ${socket.id}`)
   next();
 }
 
