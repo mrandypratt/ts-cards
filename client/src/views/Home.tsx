@@ -1,5 +1,4 @@
 import { SubmitButton, GettingStartedButton } from "../components/Buttons/Submit";
-import { SubmitFeedbackButton } from "../components/Buttons/Feedback";
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
@@ -18,10 +17,6 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   
   const gettingStarted = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.info.howToPlay)
-  }
-
-  const submitFeedback = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.info.feedback)
   }
 
   return (
@@ -67,17 +62,6 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
           disabled={false}
         />
       </div>
-
-      <div>
-        <SubmitFeedbackButton 
-          text={"Submit Feedback"}
-          onClick={submitFeedback}
-          type="submit"
-          disabled={false}
-        />
-      </div>
-
-
 
       <APDevFooter/>
 

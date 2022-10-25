@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 
-const submitFeedbackStyles = {
+const feedbackButtonStyles = {
   width: "40%",
   height: "100%",
   margin: 10,
@@ -11,21 +11,20 @@ const submitFeedbackStyles = {
   minWidth: 125,
 }
 
-type SubmitButtonProps = {
+interface FeedbackButtonProps {
   text: string;
   type: "submit" | "button";
-  onClick?: () => void;
-  disabled: boolean;
+  onClick: () => void;
 }
 
-export const SubmitFeedbackButton = ({ text, type, onClick, disabled }: SubmitButtonProps): JSX.Element => {
+export const FeedbackButton = ({ text, type, onClick }: FeedbackButtonProps): JSX.Element => {
   return (
     <Button
-      disabled={disabled}
-      variant="outlined"
+      disabled={false}
+      variant="contained"
       type={type}
-      style={ submitFeedbackStyles }
-      color={'inherit'}
+      style={ feedbackButtonStyles }
+      color={'secondary'}
       onClick={onClick}
     >{ text }</Button>
   );
