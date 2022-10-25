@@ -9,7 +9,7 @@ export const getServerURL = (): string => {
       serverURL = "http://localhost:8787";
       break;
     case "test":
-      serverURL = "http://54.85.124.217:8787";
+      serverURL = "http://54.234.147.237:8787";
       break;
     default:
       serverURL = "http://localhost:8787";

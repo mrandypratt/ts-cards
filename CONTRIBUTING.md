@@ -56,23 +56,24 @@ First Provision/Update Server, then build and test client
   - In `server` directory, run `pm2 init simple`
   - `vim ecosystem.config.js` and edit file as follows:
 
-  ```javascript
-    module.exports = {
-      apps : [{
-        name   : "CardsWithFriendsGame",
-        script : "./index.ts",
-        watch: true,
-        env: {
-            "MONGO_URI": "mongodb+srv://{username}:{DBPassword}@cardswithfriendsinstanc.k9ksw.mongodb.net/",
-            "PORT": "8787",
-            // For Production
-            "NODE_ENV": "prod",
-            // For Testing
-            "NODE_ENV": "test",
-        }
-      }]
+```javascript
+module.exports = {
+  apps : [{
+    name   : "CardsWithFriendsGame",
+    script : "./index.ts",
+    watch: true,
+    env: {
+        // Insert Username & Password to Connection String
+        "MONGO_URI": "mongodb+srv://{username}:{DBPassword}@cardswithfriendsinstanc.k9ksw.mongodb.net/",
+        "PORT": "8787",
+        // For Production
+        "NODE_ENV": "prod",
+        // For Testing
+        "NODE_ENV": "test",
     }
-  ```
+  }]
+}
+```
 
   ## Updating Provisioned Server
   - push code to github
