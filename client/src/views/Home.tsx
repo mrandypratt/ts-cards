@@ -1,10 +1,10 @@
-import { SubmitButton, SubmitFeedbackButton, GettingStartedButton } from "../components/Buttons/Submit";
+import { SubmitButton, GettingStartedButton } from "../components/Buttons/Submit";
+import { SubmitFeedbackButton } from "../components/Buttons/Feedback";
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
-
-const APDevIcon = require('../APDevLogo.png');
+import { APDevFooter } from "../components/Footer/Footer";
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
@@ -79,12 +79,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
 
 
-      <div className="footer">
-        <p className="footer-text">Created by: </p>
-        <a className="footer-links" href={"http://www.andyprattdev.com"} target="_blank" rel="noreferrer noopener" >
-          <img src={APDevIcon} alt="Andy Pratt" className="footer-image"></img>
-        </a>
-      </div>
+      <APDevFooter/>
 
     </Container>
   )

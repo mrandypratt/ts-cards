@@ -31,17 +31,6 @@ const returnHomeStyles = {
   display: 'block',
 }
 
-const submitFeedbackStyles = {
-  width: "40%",
-  height: "100%",
-  margin: 10,
-  marginTop: 20,
-  fontSize: "1em",
-  borderWidth: "3px",
-  maxWidth: 200,
-  minWidth: 125,
-}
-
 const gettingStartedStyles = {
   width: "40%",
   height: "100%",
@@ -98,19 +87,6 @@ export const ReturnHomeButton = ({ text, type, onClick, disabled }: SubmitButton
       type={type}
       style={ returnHomeStyles }
       color={'info'}
-      onClick={onClick}
-    >{ text }</Button>
-  );
-}
-
-export const SubmitFeedbackButton = ({ text, type, onClick, disabled }: SubmitButtonProps): JSX.Element => {
-  return (
-    <Button
-      disabled={disabled}
-      variant="outlined"
-      type={type}
-      style={ submitFeedbackStyles }
-      color={'inherit'}
       onClick={onClick}
     >{ text }</Button>
   );

@@ -3,9 +3,12 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../../data/constants/EVENTS";
 import { VIEWS } from "../../data/constants/VIEWS";
+import { useState } from "react";
+import { SubmitFeedbackButton } from "../../components/Buttons/Feedback";
 
 export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
-
+  const [ showFeedbackForm, setShowFeedbackForm ] = useState(false);
+  
   const newGame = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.host.createLobby)
   }
@@ -57,6 +60,7 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
         disabled={false} 
         onClick={returnHome}
       />
+
 
     </Container>
   )
