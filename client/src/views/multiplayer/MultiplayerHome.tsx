@@ -3,7 +3,6 @@ import { ViewPropsType } from "../../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../../data/constants/EVENTS";
 import { VIEWS } from "../../data/constants/VIEWS";
-import { useState } from "react";
 
 export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
   
