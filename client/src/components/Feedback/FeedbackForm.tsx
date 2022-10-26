@@ -1,7 +1,5 @@
 import { Box, TextField } from "@mui/material";
-import Container from "@mui/material/Container";
 import { useState } from "react";
-import { SubmitButton } from "../Buttons/Submit";
 import { getServerURL } from "../../data/functions/getURL";
 
 type FeedbackFormPropsType = {
@@ -73,69 +71,76 @@ export const FeedbackForm = ({setShowFeedbackForm}: FeedbackFormPropsType): JSX.
 
   if (isComplete) {
     return (
-      <div>Complete! Thanks for providing your Feedback</div>
+      <div className="feedback-form">Complete! Thanks for providing your Feedback</div>
     )
   }
 
     
-  return (
-    <Container className="feedback-form" maxWidth="sm">   
-    
-        <h1><b>Provide Feedback</b></h1>
+  return (  
+    <div className="feedback-form">   
 
-        <hr></hr>
+      <h1 className="feedback-header"><b>Provide Feedback</b></h1>
 
-        { !isLoading &&
-          <div>
-            <p>We think we're great, but we could totally be better! </p>
-            <p>Please help us by describing any issues with the game or suggestions what would make it more fun!</p>
+      { !isLoading &&
+        <div>
+          <div className="feedback-header-bg"></div>
+          <p className="feedback-helper-text">Please tell me about bug-fixes, improvements, criticism, or compliments.</p>
 
-            <Box style={{marginBottom: 10}}>
-              <TextField 
-                id="standard-basic"
-                label="Name"
-                variant="outlined"
-                onChange={updateName}
-              />
-            </Box>
+          <Box style={{marginBottom: 7.5, marginTop: 10}}>
+            <TextField 
+              size="small"
+              id="standard-basic"
+              label="Name"
+              variant="outlined"
+              onChange={updateName}
+            />
+          </Box>
 
-            <Box style={{marginBottom: 10}}>
-              <TextField 
-                id="standard-basic"
-                label="Email"
-                variant="outlined"
-                onChange={updateEmail}
-              />
-            </Box>
+          <Box style={{marginBottom: 7.5}}>
+            <TextField 
+              size="small"
+              id="standard-basic"
+              label="Email"
+              variant="outlined"
+              onChange={updateEmail}
+            />
+          </Box>
 
-            <Box style={{marginBottom: 10}}>
-              <TextField 
-                multiline={true}
-                minRows={5}
-                id="standard-basic"
-                label="Feedback"
-                variant="outlined"
-                onChange={updateFeedback}
-                fullWidth={true}
-                helperText={"What can we improve? The more details the better :)"}
-              />
-            </Box>
+          <Box style={{marginBottom: 5}}>
+            <TextField 
+              multiline={true}
+              minRows={5}
+              id="standard-basic"
+              label="Feedback"
+              variant="outlined"
+              onChange={updateFeedback}
+              fullWidth={true}
+              size="small"
+            />
+          </Box>
 
-            <div>
-                <SubmitButton 
-                  text={"Submit Feedback"}
-                  onClick={submitFeedback}
-                  type="button"
-                  disabled={false}
-                />
-            </div>  
+          <div className="feedback-button-container">
+
+            <button 
+              className="submit-feedback"
+              onClick={submitFeedback}>
+                Submit
+            </button>
+
+            <button 
+              className="close-feedback" 
+              onClick={hideFeedbackForm}>
+                Close
+            </button>
           </div>
-        }
 
-        { isLoading && 
-          <h3>Submitting Feedback...</h3>
-        }
+        </div>
+      }
+
+      { isLoading && 
+        <h3>Submitting Feedback...</h3>
+      }
         
-      </Container>
+    </div>
   );
 };

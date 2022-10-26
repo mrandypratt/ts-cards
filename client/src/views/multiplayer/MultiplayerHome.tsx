@@ -27,59 +27,62 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
   }
 
   return (
-    <Container className="page-container" maxWidth="sm">   
+    <div style={{margin: "0px", padding: "0px", border: "0px"}}>
+      
+      <Container className="page-container" maxWidth="sm">   
 
-      <h1><b>Play with Friends</b></h1>
+        <h1><b>Play with Friends</b></h1>
 
-      <hr></hr>
+        <hr></hr>
 
-      <p>Congrats on being popular!</p>
+        <p>Congrats on being popular!</p>
 
-      <p>Start a game and invite friends or join an existing game if you've already been invited.</p>
+        <p>Start a game and invite friends or join an existing game if you've already been invited.</p>
 
-      <div>
-        
         <div>
-          <SubmitButton 
-            text={"New Game"}
-            onClick={newGame}
-            type="button"
-            disabled={false}
+          
+          <div>
+            <SubmitButton 
+              text={"New Game"}
+              onClick={newGame}
+              type="button"
+              disabled={false}
+            />
+          </div>
+
+          <div style={{marginBottom: 40}}>
+            <SubmitButton 
+              text={"Join Game"}
+              onClick={joinLobby}
+              type="button"
+              disabled={false}
+            />
+          </div>
+
+        </div> 
+
+        <ReturnHomeButton
+          text={"Return Home"}
+          type={"submit"}
+          disabled={false} 
+          onClick={returnHome}
+        />
+
+
+        { showFeedbackForm && 
+          <FeedbackForm
+          setShowFeedbackForm={setShowFeedbackForm}
           />
-        </div>
+        }
 
-        <div style={{marginBottom: 40}}>
-          <SubmitButton 
-            text={"Join Game"}
-            onClick={joinLobby}
-            type="button"
-            disabled={false}
-          />
-        </div>
-
-      </div> 
-
-      <ReturnHomeButton
-        text={"Return Home"}
-        type={"submit"}
-        disabled={false} 
-        onClick={returnHome}
-      />
+      </Container>
 
       <FeedbackButton
         text="Feedback?"
-        type="button"
         onClick={handleFeedbackButtonClick}
       />
 
-      { showFeedbackForm && 
-        <FeedbackForm
-          setShowFeedbackForm={setShowFeedbackForm}
-        />
-      }
-
-
-    </Container>
+    </div>
   )
 
 }
