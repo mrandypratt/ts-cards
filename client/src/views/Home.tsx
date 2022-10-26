@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
 import { APDevFooter } from "../components/Footer/Footer";
+import { Feedback } from "../components/Feedback";
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 

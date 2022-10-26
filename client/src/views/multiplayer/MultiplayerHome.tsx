@@ -4,11 +4,8 @@ import Container from '@mui/material/Container';
 import { EVENTS } from "../../data/constants/EVENTS";
 import { VIEWS } from "../../data/constants/VIEWS";
 import { useState } from "react";
-import { FeedbackButton } from "../../components/Feedback/FeedbackButton";
-import { FeedbackForm } from "../../components/Feedback/FeedbackForm";
 
 export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
-  const [ showFeedbackForm, setShowFeedbackForm ] = useState(false);
   
   const newGame = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.multiPlayer.host.createLobby)
@@ -20,10 +17,6 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
 
   const returnHome = () => {
     socket?.emit(EVENTS.client.updateView, VIEWS.home);
-  }
-
-  const handleFeedbackButtonClick = (): void => {
-    setShowFeedbackForm(true);
   }
 
   return (
@@ -68,19 +61,8 @@ export const MultiPlayerHome = ({ game, setGame, socket, sessionId }: ViewPropsT
           onClick={returnHome}
         />
 
-
-        { showFeedbackForm && 
-          <FeedbackForm
-          setShowFeedbackForm={setShowFeedbackForm}
-          />
-        }
-
       </Container>
 
-      <FeedbackButton
-        text="Feedback?"
-        onClick={handleFeedbackButtonClick}
-      />
 
     </div>
   )

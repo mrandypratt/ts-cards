@@ -5,3 +5,9 @@ export const SuccessIcon = (): JSX.Element => {
     <CheckCircleSharpIcon style={{color: "green", verticalAlign: "bottom"}}/>
   )
 }
+
+export const LargeSuccessIcon = (): JSX.Element => {
+  return (
+    <CheckCircleSharpIcon fontSize="large" style={{color: "green", verticalAlign: "bottom"}}/>
+  )
+}
