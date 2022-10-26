@@ -5,7 +5,6 @@ import { VIEWS } from "./data/constants/VIEWS";
 
 import { Home } from "./views/Home";
 import { HowToPlay } from "./views/info/GettingStarted";
-import { Feedback } from "./views/info/Feedback";
 import { MultiPlayerHome } from "./views/multiPlayer/MultiPlayerHome";
 import { CreateMultiPlayerGame } from "./views/multiPlayer/host/CreateMultiPlayerGame";
 import { InviteParticipants } from "./views/multiPlayer/host/InviteParticipants";
@@ -78,17 +77,6 @@ export const App = (): JSX.Element => {
     if (view === VIEWS.info.howToPlay) {
       return (
         <HowToPlay
-          game={game}
-          setGame={setGame}
-          socket={socket}
-          sessionId={sessionId}
-        />
-      )
-    }
-    
-    if (view === VIEWS.info.feedback) {
-      return (
-        <Feedback
           game={game}
           setGame={setGame}
           socket={socket}

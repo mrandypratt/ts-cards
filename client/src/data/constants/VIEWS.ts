@@ -37,7 +37,6 @@ export const VIEWS = {
   },
 
   info: {
-    feedback: "feedback",
     howToPlay: "howToPlay",
   },
 }

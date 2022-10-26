@@ -1,10 +1,10 @@
-import { SubmitButton, SubmitFeedbackButton, GettingStartedButton } from "../components/Buttons/Submit";
+import { SubmitButton, GettingStartedButton } from "../components/Buttons/Submit";
 import { ViewPropsType } from "../data/types/ViewPropsType";
 import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
-
-const APDevIcon = require('../APDevLogo.png');
+import { APDevFooter } from "../components/Footer/Footer";
+import { Feedback } from "../components/Feedback";
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
@@ -18,10 +18,6 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
   
   const gettingStarted = () => {
     socket.emit(EVENTS.client.updateView, VIEWS.info.howToPlay)
-  }
-
-  const submitFeedback = () => {
-    socket.emit(EVENTS.client.updateView, VIEWS.info.feedback)
   }
 
   return (
@@ -68,23 +64,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
         />
       </div>
 
-      <div>
-        <SubmitFeedbackButton 
-          text={"Submit Feedback"}
-          onClick={submitFeedback}
-          type="submit"
-          disabled={false}
-        />
-      </div>
-
-
-
-      <div className="footer">
-        <p className="footer-text">Created by: </p>
-        <a className="footer-links" href={"http://www.andyprattdev.com"} target="_blank" rel="noreferrer noopener" >
-          <img src={APDevIcon} alt="Andy Pratt" className="footer-image"></img>
-        </a>
-      </div>
+      <APDevFooter/>
 
     </Container>
   )
