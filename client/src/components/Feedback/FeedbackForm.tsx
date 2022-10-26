@@ -1,6 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { getServerURL } from "../../data/functions/getURL";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 type FeedbackFormPropsType = {
   setShowFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>
@@ -79,12 +80,16 @@ export const FeedbackForm = ({setShowFeedbackForm}: FeedbackFormPropsType): JSX.
   return (  
     <div className="feedback-form">   
 
-      <h1 className="feedback-header"><b>Provide Feedback</b></h1>
-
       { !isLoading &&
         <div>
-          <div className="feedback-header-bg"></div>
-          <p className="feedback-helper-text">Please tell me about bug-fixes, improvements, criticism, or compliments.</p>
+          <div className="close-feedback-icon-container" onClick={(hideFeedbackForm)}>
+            <CloseRoundedIcon className="close-feedback-icon"/>
+          </div>
+          <div className="feedback-header-bg">
+            <h1 className="feedback-header"><b>Provide Feedback</b></h1>
+          </div>
+
+          <p className="feedback-helper-text">Please let me know about your experience and any bugs, suggestions, criticism, or compliments.</p>
 
           <Box style={{marginBottom: 7.5, marginTop: 10}}>
             <TextField 
@@ -120,6 +125,11 @@ export const FeedbackForm = ({setShowFeedbackForm}: FeedbackFormPropsType): JSX.
           </Box>
 
           <div className="feedback-button-container">
+            <button 
+              className="close-feedback" 
+              onClick={hideFeedbackForm}>
+                Close
+            </button>
 
             <button 
               className="submit-feedback"
@@ -127,11 +137,6 @@ export const FeedbackForm = ({setShowFeedbackForm}: FeedbackFormPropsType): JSX.
                 Submit
             </button>
 
-            <button 
-              className="close-feedback" 
-              onClick={hideFeedbackForm}>
-                Close
-            </button>
           </div>
 
         </div>
@@ -140,7 +145,7 @@ export const FeedbackForm = ({setShowFeedbackForm}: FeedbackFormPropsType): JSX.
       { isLoading && 
         <h3>Submitting Feedback...</h3>
       }
-        
+    
     </div>
   );
 };

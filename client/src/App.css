@@ -351,10 +351,11 @@ That is 0.71 x 1 */
   padding-top: .35rem;
   padding-bottom: .35rem;
   border-radius: 10%;
+  cursor: pointer;
 }
 
 .feedback-form {
-  border: 5px solid;
+  border: 1.5px solid rgb(255, 255, 255);
   flex-direction: column;
   position: fixed;
   background-color: rgb(255, 255, 255);
@@ -363,29 +364,55 @@ That is 0.71 x 1 */
   width: 50%;
   top: 35%;
   left: 50%;
+  box-shadow:
+  inset 0 0 0 4px rgb(101, 100, 100);
   transform: translate(-50%, -20%);
-  border-radius: 1.5rem;
-  padding: .75rem;
+  border-radius: 1rem;
+  padding: .85rem;
   z-index: 5; /* Higher than the z-index of the background */
 }
 
 .feedback-header-bg {
-  background-color: #777d86;
+  background-color: #040404;
   position: absolute;
   top: 0px;
-  height: 20px;
+  left: 0px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  height: 11%;
+  width: 100%;
 }
 
 .feedback-header {
   font-size: 22px;
-  margin: 0;
+  color: white;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.close-feedback-icon {
+  color: white;
+  cursor: pointer;
+}
+
+.close-feedback-icon-container {
+  z-index: 7;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.feedback-helper-text {
+  font-size: .85em;
+  padding: 0;
+  margin-top: 38px;
+  z-index: inherit;
 }
 
 .feedback-button-container {
   display: flex;
   margin-top: 1rem;
   justify-content: space-between;
-
 }
 
 .submit-feedback {
@@ -426,9 +453,4 @@ That is 0.71 x 1 */
 .close-feedback:hover {
   background-color: #ff0000;
   cursor: pointer;
-}
-
-.feedback-helper-text {
-  font-size: .95em;
-  padding: 0;
 }
