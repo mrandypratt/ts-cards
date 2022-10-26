@@ -35,6 +35,7 @@ export const Feedback = (): JSX.Element => {
       name: name,
       email: email,
       feedback: feedback,
+      time: new Date(Date.now()).toString()
     }
 
     try {

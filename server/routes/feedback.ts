@@ -7,20 +7,17 @@ import Feedback from "../models/Feedback"
 apiroute.post("/feedback", async (req, res) => {
 
   console.log("Feedback Received:")
-  console.log("------------------")
-  console.log(`Name: ${req.body.name}`)
-  console.log(`Name: ${req.body.email}`)
-  console.log(`Name: ${req.body.feedback}`)
 
   const feedback = new Feedback({
     name: req.body.name,
     email: req.body.email,
     feedback: req.body.feedback,
+    time: req.body.time
   });
 
   await feedback.save();
 
-  console.log("Feedback below complete:")
+  console.log("Feedback Saved")
   console.log(feedback)
 
   res.status(201).send(feedback);
