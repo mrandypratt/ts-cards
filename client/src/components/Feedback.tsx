@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getServerURL } from "../data/functions/getURL";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { LargeSuccessIcon } from "./Icons/SuccessIcon";
+import CircularProgress from '@mui/material/CircularProgress';
 
 type FeedbackState = "button" | "form" | "loading" | "complete";
 
@@ -111,6 +112,8 @@ export const Feedback = (): JSX.Element => {
         </div>
 
         <h3 className="feedback-results-text">Submitting Feedback...</h3>
+
+        <CircularProgress/>
       </div>
     )
   }
