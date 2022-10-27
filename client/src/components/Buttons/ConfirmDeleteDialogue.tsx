@@ -19,7 +19,7 @@ export const ConfirmDeleteDialogue = ({socket, setShowDialogue, messages}: Dialo
   return (
     <div className="confirm-delete-dialogue">
 
-      <div className="container">
+      <div className="cdd-container">
 
           { messages.map(message => {
             return (

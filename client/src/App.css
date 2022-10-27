@@ -10,6 +10,11 @@ body {
   text-align: center;
 }
 
+.loading-container {
+  text-align: center;
+  padding-top: 20%;
+}
+
 h1 {
   padding-right: 10%;
   padding-left: 10%;
@@ -211,11 +216,12 @@ That is 0.71 x 1 */
     the confirm box*/
 }
 
-.container {
+.cdd-container {
   flex-direction: column;
   position: fixed;
   background-color: rgb(207, 207, 204);
   min-width: 230px;
+  max-width: 450px;
   width: 70%;
   top: 35%;
   left: 50%;
