@@ -6,11 +6,10 @@ import { Session } from "../data/classes/Session";
 import { getBackendData } from "../functions/getBackendData";
 import { randomDelay } from "../functions/randomDelay";
 
-
 const joinLobby = (socket: Socket, bot: Player): void => {
   setTimeout(() => {
     socket.emit(EVENTS.server.botJoinsLobby, bot)
-  }, randomDelay(2, 6));
+  }, randomDelay(2, 10));
 }
 
 const playerSelection = (socket: Socket, session: Session, botPlayer: Player): void => {
@@ -41,7 +40,7 @@ const playerSelection = (socket: Socket, session: Session, botPlayer: Player): v
         socket.emit(EVENTS.server.updateGame, game)
       }
     }
-  }, randomDelay(6, 10));
+  }, randomDelay(8, 14));
 }
 
 const judgeSelection = (socket: Socket, session: Session) => {
@@ -69,7 +68,7 @@ const judgeSelection = (socket: Socket, session: Session) => {
         nextRound(socket, session, botPlayer)
       });
     }
-  }, randomDelay(4, 6));
+  }, randomDelay(8, 14));
 }
 
 const nextRound = (socket: Socket, session: Session, botPlayer: Player): void => {
@@ -95,7 +94,7 @@ const nextRound = (socket: Socket, session: Session, botPlayer: Player): void =>
     } else if (!game.allPlayersReady()) {
       socket.emit(EVENTS.server.updateGame, game)
     }
-  }, randomDelay(3, 6))
+  }, randomDelay(8, 14))
 }
 
 const nextGame = (socket: Socket, session: Session, botPlayer: Player): void => {
@@ -121,7 +120,7 @@ const nextGame = (socket: Socket, session: Session, botPlayer: Player): void => 
     } else if (!game.allPlayersReady()) {
       socket.emit(EVENTS.server.updateGame, game)
     }
-  }, randomDelay(4, 6))
+  }, randomDelay(4, 10))
 }
 
 const scheduleBot = {

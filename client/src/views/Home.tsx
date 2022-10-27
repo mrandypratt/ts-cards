@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 import { EVENTS } from "../data/constants/EVENTS";
 import { VIEWS } from "../data/constants/VIEWS";
 import { APDevFooter } from "../components/Footer/Footer";
-import { Feedback } from "../components/Feedback";
 
 export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.Element => {
 
@@ -31,13 +30,13 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
       
       <hr></hr>
 
-      <p style={{marginTop: "2rem", fontSize: 20}}>So how do you want to play?</p>
+      <p style={{marginTop: "2rem", fontSize: 20}}>How do you want to play?</p>
 
       <div>
         
         <div>
           <SubmitButton 
-            text={"Laugh with friends"}
+            text={"Laugh with Friends"}
             onClick={multiPlayer}
             type="button"
             disabled={false}
@@ -46,7 +45,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
         <div>
           <SubmitButton 
-            text={"Play with Myself"}
+            text={"Play with Strangers"}
             onClick={singlePlayer}
             type="button"
             disabled={false}
