@@ -301,8 +301,8 @@ That is 0.71 x 1 */
   right: 0;
   bottom: 0;
   left: 0;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+  padding-top: .50rem;
+  padding-bottom: .50rem;
   text-align: center;
   color: #c3bdbd;
   display: flex;
