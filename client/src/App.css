@@ -84,6 +84,12 @@ p {
   the confirm box*/
 }
 
+.info-container {
+  max-width: 600px;
+  align-self: center;
+  margin: auto;
+}
+
 /* CARD STYLES */
 
 .players-hand-container {
@@ -295,8 +301,8 @@ That is 0.71 x 1 */
   right: 0;
   bottom: 0;
   left: 0;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+  padding-top: .50rem;
+  padding-bottom: .50rem;
   text-align: center;
   color: #c3bdbd;
   display: flex;
@@ -348,7 +354,7 @@ That is 0.71 x 1 */
   background-color: #000000;
   color: white;
   transform: rotate(270deg);
-  translate: 30px;
+  translate: 31px;
   position: fixed;
   font-size: medium;
   bottom: 11%;

@@ -30,7 +30,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
       
       <hr></hr>
 
-      <p style={{marginTop: "2rem", fontSize: 20}}>How do you want to play?</p>
+      <p style={{marginTop: "2rem", fontSize: 20}}>Who do you want to play?</p>
 
       <div>
         
@@ -45,7 +45,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
         <div>
           <SubmitButton 
-            text={"Play with Strangers"}
+            text={"Play with Myself"}
             onClick={singlePlayer}
             type="button"
             disabled={false}
@@ -56,7 +56,7 @@ export const Home = ({ game, setGame, socket, sessionId }: ViewPropsType): JSX.E
 
       <div>
         <GettingStartedButton 
-          text={"How to Play"}
+          text={"About CWF"}
           onClick={gettingStarted}
           type="submit"
           disabled={false}
